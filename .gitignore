@@ -1,0 +1,11 @@
+/opentofu/opentofu.tfvars
+kubeconfig
+*/.env
+
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+opentofu/.terraform
+opentofu/.terraform.lock.hcl
+opentofu/terraform-plugin-proxmox.log

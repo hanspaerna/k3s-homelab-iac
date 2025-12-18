@@ -1,0 +1,39 @@
+# Proxmox Connection
+proxmox_api_url = "https://<PROXMOX_HOST>:8006/api2/json"
+proxmox_api_token_id = "root@pam!opentofu"
+proxmox_api_token_secret = "<TOKEN>"
+
+# SSH Key
+ssh_public_key = "<PUBLIC KEY>"
+
+# Proxmox Settings
+proxmox_node = "pve"
+template_id = "debian-13-tpl"
+vm_id_start = 600
+storage = "<STORAGE NAME>"
+snippet_storage = "usb-storage-01"
+bridge = "vmbr0"
+gateway = "192.168.8.1"
+nameserver = "192.168.8.1"
+searchdomain = "local"
+
+cloud_init_username = "root"
+cloud_init_password = "<PASSWORD>"
+
+# Control Plane Configuration
+control_plane_count = 1
+control_plane_cpu = 2
+control_plane_memory = 4096
+control_plane_disk_size = "15G"
+control_plane_ip_start = "192.168.1.180"
+
+# Worker Configuration
+worker_count = 3
+worker_cpu = 1
+worker_memory = 2048
+worker_disk_size = "10G"
+worker_ip_start = "192.168.1.185"
+
+# K3s Configuration
+k3s_version = "v1.34.1+k3s1"
+# k3s_token = ""  # Leave empty to auto-generate
