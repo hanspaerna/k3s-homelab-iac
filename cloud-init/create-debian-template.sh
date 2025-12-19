@@ -7,6 +7,11 @@
 # Please run with ./execute.sh
 #
 
+if ! pveversion; then
+    echo "[ERROR] Please run the script either on Proxmox host or via ./execute.sh from a local machine"
+    exit 1;
+fi
+
 # enable strict mode (break if any command returns an error)
 set -e
 
