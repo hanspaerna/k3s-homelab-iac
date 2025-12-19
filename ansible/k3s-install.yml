@@ -5,6 +5,10 @@
   vars:
     k3s_token: '{{ lookup(''env'', ''K3S_TOKEN'') }}'
   tasks:
+    - name: check K3S_TOKEN is not empty
+      ansible.builtin.debug:
+        msg: "{{ lookup('env', 'K3S_TOKEN') }}"
+
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true

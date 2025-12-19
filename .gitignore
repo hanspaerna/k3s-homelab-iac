@@ -1,3 +1,6 @@
+/logs/*
+!/logs/.gitkeep
+
 /opentofu/opentofu.tfvars
 kubeconfig
 */.env
@@ -8,4 +11,5 @@ kubeconfig
 
 opentofu/.terraform
 opentofu/.terraform.lock.hcl
-opentofu/terraform-plugin-proxmox.log
+
+ansible/inventory.tf.yml

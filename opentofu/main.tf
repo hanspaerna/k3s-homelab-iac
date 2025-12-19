@@ -10,6 +10,11 @@ terraform {
       source = "hashicorp/random"
       version = "3.7.2"
     }
+
+    local = {
+      source = "hashicorp/local"
+      version = "2.6.1"
+    }
   }
 }
 
@@ -20,7 +25,7 @@ provider "proxmox" {
   pm_tls_insecure = true
   
   pm_log_enable = true 
-  pm_log_file = "terraform-plugin-proxmox.log"  
+  pm_log_file = "../logs/terraform-plugin-proxmox.log"  
   pm_log_levels = {
     _default = "debug"
     _capturelog = ""
@@ -96,7 +101,7 @@ resource "proxmox_vm_qemu" "k3s_control_plane" {
     type = "socket"
   }
   
-  ipconfig0 = "ip=${cidrhost("192.168.8.0/24", 180 + count.index)}/24,gw=${var.gateway}"
+  ipconfig0 = "ip=${cidrhost(var.subnet, 180 + count.index)}/24,gw=${var.gateway}"
 
   nameserver = var.nameserver
   searchdomain = var.searchdomain
@@ -173,7 +178,7 @@ resource "proxmox_vm_qemu" "k3s_worker" {
     type = "socket"
   }
 
-  ipconfig0 = "ip=${cidrhost("192.168.8.0/24", 185 + count.index)}/24,gw=${var.gateway}"
+  ipconfig0 = "ip=${cidrhost(var.subnet, 185 + count.index)}/24,gw=${var.gateway}"
 
   nameserver   = var.nameserver
   searchdomain = var.searchdomain
@@ -191,4 +196,19 @@ resource "proxmox_vm_qemu" "k3s_worker" {
   }
 
   depends_on = [proxmox_vm_qemu.k3s_control_plane]
+}
+
+resource "local_file" "ansible_inventory" {
+  content = templatefile("inventory.tmpl",
+    {
+      k3s_version = var.k3s_version
+      k3s_token = local.k3s_token
+      cloud_init_username = var.cloud_init_username
+      control_plane_hostnames = [for vm in proxmox_vm_qemu.k3s_control_plane : vm.name]
+      control_plane_ips = [for i in range(var.control_plane_count) : cidrhost(var.subnet, 180 + i)]
+      worker_hostnames = [for vm in proxmox_vm_qemu.k3s_worker : vm.name] 
+      worker_ips = [for i in range(var.worker_count) : cidrhost(var.subnet, 185 + i)]
+    }
+  )
+  filename = "../ansible/inventory.tf.yml"
 }

@@ -46,10 +46,10 @@ variable "storage" {
   default = "local-zfs"
 }
 
-variable "snippet_storage" {
-  description = "Storage for cloud-init snippets"
+variable "subnet" {
+  description = "Subnet (incl. bit mask)"
   type = string
-  default = "usb-storage-01"
+  default = "192.168.1.0/24"
 }
 
 variable "bridge" {
