@@ -2,12 +2,10 @@
 - name: Install K3s on Control Plane
   hosts: control_plane
   become: true
-  vars:
-    k3s_token: '{{ lookup(''env'', ''K3S_TOKEN'') }}'
   tasks:
     - name: check K3S_TOKEN is not empty
       ansible.builtin.debug:
-        msg: "{{ lookup('env', 'K3S_TOKEN') }}"
+        msg: "{{ k3s_token }}"
 
     - name: Update apt cache
       ansible.builtin.apt:

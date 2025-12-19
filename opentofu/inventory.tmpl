@@ -3,11 +3,11 @@ all:
     ansible_user: ${cloud_init_username}
     ansible_ssh_common_args: -o StrictHostKeyChecking=no
     k3s_version: ${k3s_version}
+    k3s_token: ${k3s_token}
 
 k3s_cluster:
   children:
     control_plane:
-      k3s_token = ${k3s_token}
       hosts:
 %{ for index, hostname in control_plane_hostnames ~}
         ${hostname}:

@@ -107,6 +107,12 @@ variable "control_plane_ip_start" {
   default = "192.168.1.180"
 }
 
+variable "control_plane_first_num" {
+  description = "A starting number in a subnet"
+  type = number
+  default = 180
+}
+
 # Worker Configuration
 variable "worker_count" {
   description = "Number of worker nodes"
@@ -136,6 +142,12 @@ variable "worker_ip_start" {
   description = "Starting IP for worker nodes"
   type = string
   default = "192.168.1.185"
+}
+
+variable "worker_first_num" {
+  description = "A starting number in a subnet"
+  type = number
+  default = 185
 }
 
 # K3s Configuration

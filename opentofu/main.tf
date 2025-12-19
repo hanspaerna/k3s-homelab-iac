@@ -101,7 +101,7 @@ resource "proxmox_vm_qemu" "k3s_control_plane" {
     type = "socket"
   }
   
-  ipconfig0 = "ip=${cidrhost(var.subnet, 180 + count.index)}/24,gw=${var.gateway}"
+  ipconfig0 = "ip=${cidrhost(var.subnet, var.control_plane_first_num + count.index)}/24,gw=${var.gateway}"
 
   nameserver = var.nameserver
   searchdomain = var.searchdomain
@@ -178,7 +178,7 @@ resource "proxmox_vm_qemu" "k3s_worker" {
     type = "socket"
   }
 
-  ipconfig0 = "ip=${cidrhost(var.subnet, 185 + count.index)}/24,gw=${var.gateway}"
+  ipconfig0 = "ip=${cidrhost(var.subnet, var.worker_first_num + count.index)}/24,gw=${var.gateway}"
 
   nameserver   = var.nameserver
   searchdomain = var.searchdomain
@@ -205,9 +205,9 @@ resource "local_file" "ansible_inventory" {
       k3s_token = local.k3s_token
       cloud_init_username = var.cloud_init_username
       control_plane_hostnames = [for vm in proxmox_vm_qemu.k3s_control_plane : vm.name]
-      control_plane_ips = [for i in range(var.control_plane_count) : cidrhost(var.subnet, 180 + i)]
+      control_plane_ips = [for i in range(var.control_plane_count) : cidrhost(var.subnet, var.control_plane_first_num + i)]
       worker_hostnames = [for vm in proxmox_vm_qemu.k3s_worker : vm.name] 
-      worker_ips = [for i in range(var.worker_count) : cidrhost(var.subnet, 185 + i)]
+      worker_ips = [for i in range(var.worker_count) : cidrhost(var.subnet, var.worker_first_num + i)]
     }
   )
   filename = "../ansible/inventory.tf.yml"
