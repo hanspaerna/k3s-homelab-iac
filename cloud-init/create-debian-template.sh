@@ -7,17 +7,24 @@
 # Please run with ./execute.sh
 #
 
+# enable strict mode (break if any command returns an error)
+set -e
+
 apt update
 apt install libguestfs-tools -y
 
-rm *.img
+[ -f "./${imageName}" ] && [ ! -z "${imageName}" ] && rm ./$imageName
 wget -O disk.tar.xz $imageURL
 tar -xf disk.tar.xz
+
 rm disk.tar.xz
 mv disk.raw $imageName
-qm destroy $virtualMachineId
 
-virt-customize -a $imageName --install qemu-guest-agent
+if qm status $virtualMachineId; then
+    qm destroy $virtualMachineId
+fi
+
+
 virt-customize -a $imageName --root-password password:$rootPasswd
 
 qm create $virtualMachineId --name $templateName --memory $tmp_memory --cores $tmp_cores --net0 virtio,bridge=vmbr0
