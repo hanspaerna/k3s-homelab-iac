@@ -212,6 +212,14 @@ resource "hcloud_ssh_key" "main" {
   public_key = var.ssh_public_key
 }
 
+resource "hcloud_primary_ip" "primary_ip_k3s_ext" {
+  name = "primary_ip_k3s_ext"
+  type= "ipv4"
+  assignee_type = "server"
+  datacenter = "nbg1-dc3"
+  auto_delete = false
+}
+
 resource "hcloud_server" "k3s_control_plane_external" {
   name = "k3s-control-plane-external"
   image = "debian-13"
@@ -223,6 +231,7 @@ resource "hcloud_server" "k3s_control_plane_external" {
   
   public_net {
     ipv4_enabled = true
+    ipv4 = hcloud_primary_ip.primary_ip_k3s_ext.id
     ipv6_enabled = true
   }
 
