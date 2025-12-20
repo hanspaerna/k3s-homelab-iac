@@ -29,7 +29,7 @@ control_plane_ip_start = "192.168.1.180"
 control_plane_first_num = 180
 
 # Worker Configuration
-worker_count = 3
+worker_count = 2
 worker_cpu = 1
 worker_memory = 2048
 worker_disk_size = "10G"
@@ -39,3 +39,6 @@ worker_first_num = 185
 # K3s Configuration
 k3s_version = "v1.34.1+k3s1"
 # k3s_token = ""  # Leave empty to auto-generate
+
+# Hetzner Cloud Configuration
+hcloud_token = ""

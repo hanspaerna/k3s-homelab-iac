@@ -15,6 +15,11 @@ terraform {
       source = "hashicorp/local"
       version = "2.6.1"
     }
+
+    hcloud = {
+      source = "opentofu/hcloud"
+      version = "1.57.0"
+    }
   }
 }
 
@@ -30,6 +35,10 @@ provider "proxmox" {
     _default = "debug"
     _capturelog = ""
   }
+}
+
+provider "hcloud" {
+  token = var.hcloud_token
 }
 
 # Generate random token for K3s cluster
@@ -198,6 +207,32 @@ resource "proxmox_vm_qemu" "k3s_worker" {
   depends_on = [proxmox_vm_qemu.k3s_control_plane]
 }
 
+resource "hcloud_ssh_key" "main" {
+  name       = "tofu-key"
+  public_key = var.ssh_public_key
+}
+
+resource "hcloud_server" "k3s_control_plane_external" {
+  name = "k3s-control-plane-external"
+  image = "debian-13"
+  server_type = "cx23"
+  datacenter = "nbg1-dc3"
+  ssh_keys = [
+    "tofu-key"
+  ]
+  
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = true
+  }
+
+  lifecycle {
+    ignore_changes = [
+      ssh_keys
+    ]
+  }
+}
+
 resource "local_file" "ansible_inventory" {
   content = templatefile("inventory.tmpl",
     {
@@ -208,6 +243,8 @@ resource "local_file" "ansible_inventory" {
       control_plane_ips = [for i in range(var.control_plane_count) : cidrhost(var.subnet, var.control_plane_first_num + i)]
       worker_hostnames = [for vm in proxmox_vm_qemu.k3s_worker : vm.name] 
       worker_ips = [for i in range(var.worker_count) : cidrhost(var.subnet, var.worker_first_num + i)]
+      control_plane_external_hostname = hcloud_server.k3s_control_plane_external.name
+      control_plane_external_ip = hcloud_server.k3s_control_plane_external.ipv4_address
     }
   )
   filename = "../ansible/inventory.tf.yml"

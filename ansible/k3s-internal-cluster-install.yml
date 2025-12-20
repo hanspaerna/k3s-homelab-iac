@@ -136,7 +136,7 @@
       ansible.builtin.copy:
         content: '{{ kubeconfig_content.content | b64decode |
           regex_replace(''127.0.0.1'', hostvars[groups[''control_plane''][0]][''ansible_host'']) }}'
-        dest: '{{ playbook_dir }}/../kubeconfig'
+        dest: '{{ playbook_dir }}/../.kubeconfig-internal'
         mode: '0600'
 
     - name: Display success message
@@ -145,5 +145,5 @@
           - K3s cluster is ready!
           - 'Control plane: {{ ansible_host }}'
           - 'Workers: {{ groups[''workers''] | map(''extract'', hostvars, ''ansible_host'') | list }}'
-          - 'Kubeconfig saved to: {{ playbook_dir }}/../kubeconfig'
-          - 'Use: export KUBECONFIG={{ playbook_dir }}/../kubeconfig'
+          - 'Kubeconfig saved to: {{ playbook_dir }}/../.kubeconfig-internal'
+          - 'Use: export KUBECONFIG={{ playbook_dir }}/../.kubeconfig-internal'

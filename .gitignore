@@ -2,7 +2,7 @@
 !/logs/.gitkeep
 
 /opentofu/opentofu.tfvars
-kubeconfig
+*kubeconfig*
 */.env
 
 *.tfstate

@@ -24,6 +24,11 @@ output "cluster_info" {
       memory = var.worker_memory
       ips = [for i in range(var.worker_count) : cidrhost(var.subnet, var.worker_first_num + i)]
     }
+    control_plane_external = {
+      ip = hcloud_server.k3s_control_plane_external.ipv4_address
+      server_type = hcloud_server.k3s_control_plane_external.server_type
+      location = hcloud_server.k3s_control_plane_external.location
+    }
     k3s_version = var.k3s_version
   }
 }

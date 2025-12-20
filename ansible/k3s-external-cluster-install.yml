@@ -1,0 +1,107 @@
+---
+- name: Install K3s on External Control Plane (VPS)
+  hosts: control_plane_external
+  become: true
+  tasks:
+    - name: check K3S_TOKEN is not empty
+      ansible.builtin.debug:
+        msg: "{{ k3s_token }}"
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - apt-transport-https
+          - ca-certificates
+        state: present
+
+    - name: Download K3s install script
+      ansible.builtin.get_url:
+        url: https://get.k3s.io
+        dest: /tmp/k3s-install.sh
+        mode: '0755'
+
+    - name: Install K3s server
+      ansible.builtin.shell: |
+        INSTALL_K3S_VERSION={{ k3s_version }} \
+        K3S_TOKEN={{ k3s_token }} \
+        sh /tmp/k3s-install.sh server \
+          --cluster-init \
+          --write-kubeconfig-mode=644 \
+          --tls-san={{ ansible_host }} \
+          --node-name={{ inventory_hostname }}
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for K3s to be ready
+      ansible.builtin.wait_for:
+        port: 6443
+        delay: 5
+        timeout: 300
+
+    - name: Get K3s node token
+      ansible.builtin.slurp:
+        src: /var/lib/rancher/k3s/server/node-token
+      register: node_token
+
+    - name: Save node token
+      ansible.builtin.set_fact:
+        k3s_node_token: '{{ node_token.content | b64decode | trim }}'
+
+    - name: Display control plane status
+      ansible.builtin.command: kubectl get nodes
+      register: nodes_status
+      changed_when: false
+
+    - name: Show nodes
+      ansible.builtin.debug:
+        var: nodes_status.stdout_lines
+
+- name: Verify Cluster
+  hosts: control_plane_external
+  become: true
+  tasks:
+    - name: Wait for all nodes to be ready
+      ansible.builtin.shell: |
+        kubectl wait --for=condition=Ready nodes --all --timeout=300s
+      register: wait_result
+      retries: 5
+      delay: 10
+      until: wait_result.rc == 0
+      changed_when: false
+
+    - name: Get cluster info
+      ansible.builtin.command: kubectl get nodes -o wide
+      register: cluster_info
+      changed_when: false
+
+    - name: Display cluster info
+      ansible.builtin.debug:
+        var: cluster_info.stdout_lines
+
+    - name: Get kubeconfig
+      ansible.builtin.slurp:
+        src: /etc/rancher/k3s/k3s.yaml
+      register: kubeconfig_content
+
+    - name: Save kubeconfig locally
+      delegate_to: localhost
+      become: false
+      ansible.builtin.copy:
+        content: '{{ kubeconfig_content.content | b64decode |
+          regex_replace(''127.0.0.1'', hostvars[groups[''control_plane_external''][0]][''ansible_host'']) }}'
+        dest: '{{ playbook_dir }}/../.kubeconfig-external'
+        mode: '0600'
+
+    - name: Display success message
+      ansible.builtin.debug:
+        msg:
+          - K3s cluster is ready!
+          - 'Control plane: {{ ansible_host }}'
+          - 'Kubeconfig saved to: {{ playbook_dir }}/../.kubeconfig-external'
+          - 'Use: export KUBECONFIG={{ playbook_dir }}/../.kubeconfig-external'

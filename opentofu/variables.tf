@@ -177,3 +177,8 @@ variable "cloud_init_password" {
   default = "debian"
   sensitive = true
 }
+
+variable "hcloud_token" {
+  description = "A token for Hetzner Cloud"
+  sensitive = true
+}
