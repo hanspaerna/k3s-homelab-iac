@@ -1,4 +1,20 @@
 ---
+- name: Ensure binary is installed on the local machine
+  hosts: localhost
+  become: false
+  tasks:
+    - name: Check if kubectl binary is available in PATH
+      ansible.builtin.command:
+        cmd: which kubectl
+      register: result
+      failed_when: result.rc != 0
+
+    - name: Check if helm binary is available in PATH
+      ansible.builtin.command:
+        cmd: which helm
+      register: result
+      failed_when: result.rc != 0
+
 - name: Install K3s on External Control Plane (VPS)
   hosts: control_plane_external
   become: true
@@ -34,7 +50,8 @@
           --cluster-init \
           --write-kubeconfig-mode=644 \
           --tls-san={{ ansible_host }} \
-          --node-name={{ inventory_hostname }}
+          --node-name={{ inventory_hostname }} \
+          --disable=traefik
       args:
         creates: /usr/local/bin/k3s
 
@@ -95,7 +112,7 @@
       ansible.builtin.copy:
         content: '{{ kubeconfig_content.content | b64decode |
           regex_replace(''127.0.0.1'', hostvars[groups[''control_plane_external''][0]][''ansible_host'']) }}'
-        dest: '{{ playbook_dir }}/../.kubeconfig-external'
+        dest: '{{ playbook_dir }}/../../.kubeconfig-external'
         mode: '0600'
 
     - name: Display success message
@@ -103,5 +120,5 @@
         msg:
           - K3s cluster is ready!
           - 'Control plane: {{ ansible_host }}'
-          - 'Kubeconfig saved to: {{ playbook_dir }}/../.kubeconfig-external'
-          - 'Use: export KUBECONFIG={{ playbook_dir }}/../.kubeconfig-external'
+          - 'Kubeconfig saved to: {{ playbook_dir }}/../../.kubeconfig-external'
+          - 'Use: export KUBECONFIG={{ playbook_dir }}/../../.kubeconfig-external'

@@ -1,0 +1,18 @@
+netbird:
+  <service-name>:
+    service:
+      port: <service-port>
+    ingress:
+      enabled: true
+      annotations:
+        traefik.ingress.kubernetes.io/service.serversscheme: h2c
+      className: traefik-cert-manager
+      tls:
+        - hosts:
+            - vpn.example.com
+          secretName: vpn.example.com
+      hosts:
+        - host: vpn.example.com
+          paths:
+            - path: <ingress-path>
+              pathType: ImplementationSpecific

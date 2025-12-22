@@ -1,0 +1,5 @@
+---
+collections:
+  - name: kubernetes.core
+    version: 6.2.0 # still not yet fully compatible with Helm v4
+

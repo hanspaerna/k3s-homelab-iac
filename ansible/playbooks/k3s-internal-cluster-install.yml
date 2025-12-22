@@ -1,4 +1,20 @@
 ---
+- name: Ensure binary is installed on the local machine
+  hosts: localhost
+  become: false
+  tasks:
+    - name: Check if kubectl binary is available in PATH
+      ansible.builtin.command:
+        cmd: which kubectl
+      register: result
+      failed_when: result.rc != 0
+
+    - name: Check if helm binary is available in PATH
+      ansible.builtin.command:
+        cmd: which helm
+      register: result
+      failed_when: result.rc != 0
+
 - name: Install K3s on Control Plane
   hosts: control_plane
   become: true
@@ -136,7 +152,7 @@
       ansible.builtin.copy:
         content: '{{ kubeconfig_content.content | b64decode |
           regex_replace(''127.0.0.1'', hostvars[groups[''control_plane''][0]][''ansible_host'']) }}'
-        dest: '{{ playbook_dir }}/../.kubeconfig-internal'
+        dest: '{{ playbook_dir }}/../../.kubeconfig-internal'
         mode: '0600'
 
     - name: Display success message
@@ -145,5 +161,5 @@
           - K3s cluster is ready!
           - 'Control plane: {{ ansible_host }}'
           - 'Workers: {{ groups[''workers''] | map(''extract'', hostvars, ''ansible_host'') | list }}'
-          - 'Kubeconfig saved to: {{ playbook_dir }}/../.kubeconfig-internal'
-          - 'Use: export KUBECONFIG={{ playbook_dir }}/../.kubeconfig-internal'
+          - 'Kubeconfig saved to: {{ playbook_dir }}/../../.kubeconfig-internal'
+          - 'Use: export KUBECONFIG={{ playbook_dir }}/../../.kubeconfig-internal'
