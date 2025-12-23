@@ -218,6 +218,10 @@ resource "hcloud_primary_ip" "primary_ip_k3s_ext" {
   assignee_type = "server"
   datacenter = "nbg1-dc3"
   auto_delete = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "hcloud_server" "k3s_control_plane_external" {
