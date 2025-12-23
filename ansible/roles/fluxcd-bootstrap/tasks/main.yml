@@ -1,0 +1,62 @@
+---
+# tasks file for bootstrap
+
+- name: Test before continue
+  delegate_to: 'localhost'
+  become: false
+  ansible.builtin.shell: |
+    export KUBECONFIG="{{ fluxcd_kubernetes.config_path }}"
+    flux check --pre
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Bootstrap K8S to gitlab
+  delegate_to: 'localhost'
+  become: false
+  ansible.builtin.shell: |
+    export KUBECONFIG="{{ fluxcd_kubernetes.config_path }}"
+    export GITLAB_TOKEN="{{ fluxcd_bootstrap.gitlab_token }}"
+    flux bootstrap gitlab \
+    --owner={{ fluxcd_bootstrap.repo_owner }} \
+    --repository={{ fluxcd_bootstrap.repo_name }} \
+    --hostname={{ fluxcd_bootstrap.repo_hostname }} \
+    --branch={{ fluxcd_bootstrap.repo_branch }} \
+    --token-auth \
+    --components-extra={{ fluxcd_bootstrap.components_extra | default("", true) }} \
+    --interval="{{ fluxcd_bootstrap.interval | default("1m0s", false) }}" \
+    --path=./clusters/{{ fluxcd_bootstrap.k8s_cluster_name }}
+  args:
+    executable: /bin/bash
+  when: "fluxcd_bootstrap.repository_type == 'gitlab'"
+  changed_when: true
+
+- name: Bootstrap k8s to github
+  delegate_to: 'localhost'
+  become: false
+  ansible.builtin.shell: |
+    export KUBECONFIG="{{ fluxcd_kubernetes.config_path }}"
+    export GITHUB_USER="{{ fluxcd_bootstrap.github_user }}"
+    export GITHUB_TOKEN="{{ fluxcd_bootstrap.github_token }}"
+    flux bootstrap github \
+    --owner={{ fluxcd_bootstrap.repo_owner }} \
+    --repository={{ fluxcd_bootstrap.repo_name }} \
+    --branch={{ fluxcd_bootstrap.repo_branch }} \
+    --personal \
+    --components-extra={{ fluxcd_bootstrap.components_extra | default("", true) }} \
+    --interval="{{ fluxcd_bootstrap.interval | default("1m0s", false) }}" \
+    --path=./clusters/{{ fluxcd_bootstrap.k8s_cluster_name }}
+  args:
+    executable: /bin/bash
+  when: "fluxcd_bootstrap.repository_type == 'github'"
+  changed_when: true
+
+- name: Check bootstrap
+  delegate_to: 'localhost'
+  become: false
+  ansible.builtin.shell: |
+    export KUBECONFIG="{{ fluxcd_kubernetes.config_path }}"
+    flux check
+  args:
+    executable: /bin/bash
+  changed_when: false

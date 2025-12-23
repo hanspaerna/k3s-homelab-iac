@@ -1,0 +1,14 @@
+galaxy_info:
+  author: Michael Jones
+  description: Sysadmin
+  company: mikejonesey
+  license: GPL-2.0-or-later
+  min_ansible_version: 2.14.3
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm
+  galaxy_tags:
+    - uninstall
+    - fluxcd
+dependencies: []

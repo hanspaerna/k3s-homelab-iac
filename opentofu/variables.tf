@@ -182,3 +182,13 @@ variable "hcloud_token" {
   description = "A token for Hetzner Cloud"
   sensitive = true
 }
+
+variable "github_username" {
+  description = "A username for Github"
+  sensitive = false
+}
+
+variable "github_token" {
+  description = "A read-write token for GitHub"
+  sensitive = true
+}

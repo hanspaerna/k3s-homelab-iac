@@ -1,0 +1,22 @@
+---
+# tasks file for uninstall
+
+- name: Test before continue
+  delegate_to: 'localhost'
+  become: false
+  ansible.builtin.shell: |
+    export KUBECONFIG="{{ fluxcd_kubernetes.config_path }}"
+    flux check --pre
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Uninstall FluxCD
+  delegate_to: 'localhost'
+  become: false
+  ansible.builtin.shell: |
+    export KUBECONFIG="{{ fluxcd_kubernetes.config_path }}"
+    flux uninstall --namespace=flux-system --silent
+  args:
+    executable: /bin/bash
+  changed_when: true

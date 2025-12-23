@@ -247,6 +247,8 @@ resource "local_file" "ansible_inventory" {
     {
       k3s_version = var.k3s_version
       k3s_token = local.k3s_token
+      github_username = var.github_username
+      github_token = var.github_token
       cloud_init_username = var.cloud_init_username
       control_plane_hostnames = [for vm in proxmox_vm_qemu.k3s_control_plane : vm.name]
       control_plane_ips = [for i in range(var.control_plane_count) : cidrhost(var.subnet, var.control_plane_first_num + i)]

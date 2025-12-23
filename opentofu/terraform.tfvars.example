@@ -42,3 +42,7 @@ k3s_version = "v1.34.1+k3s1"
 
 # Hetzner Cloud Configuration
 hcloud_token = ""
+
+# GitHub credentials (read + write access is required by FluxCD)
+github_username = ""
+github_token = ""

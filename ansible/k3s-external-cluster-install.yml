@@ -9,8 +9,8 @@
       register: result
       failed_when: result.rc != 0
 
-- name: Install K3s on Control Plane
-  hosts: control_plane
+- name: Install K3s on External Control Plane (VPS)
+  hosts: control_plane_external
   become: true
   tasks:
     - name: check K3S_TOKEN is not empty
@@ -44,7 +44,8 @@
           --cluster-init \
           --write-kubeconfig-mode=644 \
           --tls-san={{ ansible_host }} \
-          --node-name={{ inventory_hostname }}
+          --node-name={{ inventory_hostname }} \
+          --disable=traefik
       args:
         creates: /usr/local/bin/k3s
 
@@ -72,49 +73,8 @@
       ansible.builtin.debug:
         var: nodes_status.stdout_lines
 
-- name: Install K3s on Workers
-  hosts: workers
-  become: true
-  vars:
-    k3s_url: https://{{ hostvars[groups['control_plane'][0]]['ansible_host'] }}:6443
-    k3s_token: '{{ hostvars[groups[''control_plane''][0]][''k3s_node_token''] }}'
-  tasks:
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 3600
-
-    - name: Install required packages
-      ansible.builtin.apt:
-        name:
-          - curl
-          - apt-transport-https
-          - ca-certificates
-        state: present
-
-    - name: Download K3s install script
-      ansible.builtin.get_url:
-        url: https://get.k3s.io
-        dest: /tmp/k3s-install.sh
-        mode: '0755'
-
-    - name: Install K3s agent
-      ansible.builtin.shell: |
-        INSTALL_K3S_VERSION={{ k3s_version }} \
-        K3S_URL={{ k3s_url }} \
-        K3S_TOKEN={{ k3s_token }} \
-        sh /tmp/k3s-install.sh agent \
-          --node-name={{ inventory_hostname }}
-      args:
-        creates: /usr/local/bin/k3s-agent
-
-    - name: Wait for K3s agent to be ready
-      ansible.builtin.wait_for:
-        path: /var/lib/rancher/k3s/agent/kubelet.kubeconfig
-        timeout: 300
-
 - name: Verify Cluster
-  hosts: control_plane
+  hosts: control_plane_external
   become: true
   tasks:
     - name: Wait for all nodes to be ready
@@ -145,15 +105,15 @@
       become: false
       ansible.builtin.copy:
         content: '{{ kubeconfig_content.content | b64decode |
-          regex_replace(''127.0.0.1'', hostvars[groups[''control_plane''][0]][''ansible_host'']) }}'
-        dest: '{{ playbook_dir }}/../../.kubeconfig-internal'
+          regex_replace(''127.0.0.1'', hostvars[groups[''control_plane_external''][0]][''ansible_host'']) }}'
+        dest: '{{ playbook_dir }}/../.kubeconfig-external'
         mode: '0600'
 
     - name: Install Gateway API's CRDs
       delegate_to: localhost
       become: false
       environment:
-        - KUBECONFIG: '{{ playbook_dir }}/../../.kubeconfig-internal'
+        - KUBECONFIG: '{{ playbook_dir }}/../.kubeconfig-external'
       ansible.builtin.command:
         cmd: kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/standard-install.yaml --force-conflicts
 
@@ -162,6 +122,25 @@
         msg:
           - K3s cluster is ready!
           - 'Control plane: {{ ansible_host }}'
-          - 'Workers: {{ groups[''workers''] | map(''extract'', hostvars, ''ansible_host'') | list }}'
-          - 'Kubeconfig saved to: {{ playbook_dir }}/../../.kubeconfig-internal'
-          - 'Use: export KUBECONFIG={{ playbook_dir }}/../../.kubeconfig-internal'
+          - 'Kubeconfig saved to: {{ playbook_dir }}/../.kubeconfig-external'
+          - 'Use: export KUBECONFIG={{ playbook_dir }}/../.kubeconfig-external'
+
+- name: Flux CD setup new cluster
+  hosts: control_plane_external
+  become: false
+  vars:
+    fluxcd_kubernetes:
+      config_path: "{{ playbook_dir }}/../.kubeconfig-external"
+    fluxcd_bootstrap:
+      repository_type: "github"
+      github_user: "{{ github_username }}"
+      github_token: "{{ github_token }}"
+      repo_owner: "{{ github_username }}"
+      repo_name: "k3s-homelab-iac"
+      repo_branch: "main"
+      k8s_cluster_name: "ext"
+  roles:
+    - name: Flux Bootstrap
+      role: fluxcd-bootstrap
+      run_once: true
+  tags: fluxcd

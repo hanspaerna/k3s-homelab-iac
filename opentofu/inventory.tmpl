@@ -4,6 +4,8 @@ all:
     ansible_ssh_common_args: -o StrictHostKeyChecking=no
     k3s_version: ${k3s_version}
     k3s_token: ${k3s_token}
+    github_username: ${github_username}
+    github_token: ${github_token}
 
 k3s:
   children:
