@@ -12,9 +12,6 @@ spec:
       labels:
         app: linkding
     spec:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
       volumes:
         - name: linkding-data-pvc
           persistentVolumeClaim:
