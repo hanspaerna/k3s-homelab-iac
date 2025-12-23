@@ -139,6 +139,7 @@
       repo_name: "k3s-homelab-iac"
       repo_branch: "main"
       k8s_cluster_name: "ext"
+      cluster_conf_path: "./flux/clusters/ext"
   roles:
     - name: Flux Bootstrap
       role: fluxcd-bootstrap

@@ -25,7 +25,7 @@
     --token-auth \
     --components-extra={{ fluxcd_bootstrap.components_extra | default("", true) }} \
     --interval="{{ fluxcd_bootstrap.interval | default("1m0s", false) }}" \
-    --path=./clusters/{{ fluxcd_bootstrap.k8s_cluster_name }}
+    --path={{ fluxcd_bootstrap.cluster_conf_path }}
   args:
     executable: /bin/bash
   when: "fluxcd_bootstrap.repository_type == 'gitlab'"
@@ -45,7 +45,7 @@
     --personal \
     --components-extra={{ fluxcd_bootstrap.components_extra | default("", true) }} \
     --interval="{{ fluxcd_bootstrap.interval | default("1m0s", false) }}" \
-    --path=./clusters/{{ fluxcd_bootstrap.k8s_cluster_name }}
+    --path={{ fluxcd_bootstrap.cluster_conf_path }}
   args:
     executable: /bin/bash
   when: "fluxcd_bootstrap.repository_type == 'github'"
