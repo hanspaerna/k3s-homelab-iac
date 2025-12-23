@@ -1,4 +1,4 @@
 
 ## CLI tools to install
 
-Brew: kubectl, opentofu, ansible, age, sops
+Brew: kubectl, opentofu, ansible, FluxCD CLI, age, sops

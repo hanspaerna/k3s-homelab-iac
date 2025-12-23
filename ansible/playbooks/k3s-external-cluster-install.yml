@@ -9,12 +9,6 @@
       register: result
       failed_when: result.rc != 0
 
-    - name: Check if helm binary is available in PATH
-      ansible.builtin.command:
-        cmd: which helm
-      register: result
-      failed_when: result.rc != 0
-
 - name: Install K3s on External Control Plane (VPS)
   hosts: control_plane_external
   become: true
@@ -114,6 +108,14 @@
           regex_replace(''127.0.0.1'', hostvars[groups[''control_plane_external''][0]][''ansible_host'']) }}'
         dest: '{{ playbook_dir }}/../../.kubeconfig-external'
         mode: '0600'
+
+    - name: Install Gateway API's CRDs
+      delegate_to: localhost
+      become: false
+      environment:
+        - KUBECONFIG: '{{ playbook_dir }}/../../.kubeconfig-external'
+      ansible.builtin.command:
+        cmd: kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/standard-install.yaml --force-conflicts
 
     - name: Display success message
       ansible.builtin.debug:
