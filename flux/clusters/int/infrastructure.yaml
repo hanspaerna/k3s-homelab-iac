@@ -11,4 +11,3 @@ spec:
   path: ./flux/infrastructure
   prune: true
   wait: true
-EOF
