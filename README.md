@@ -18,6 +18,14 @@ Test fully customized manifest before deployment:
 
 kustomize build <path_to_kustomization.yaml>
 
+Check flux logs during/after deployment:
+
+- flux get kustomizations -A
+- flux logs
+
+In case of failures, get more information from Kubernetes directly:
+
+kubectl -n traefik-ext describe deployment traefik
 
 ## TODOs
 
