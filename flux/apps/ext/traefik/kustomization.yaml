@@ -3,6 +3,9 @@ kind: Kustomization
 namespace: traefik-ext
 resources:
   - namespace.yaml
+  - httproute.yaml
+  - gateway.yaml
+  - gatewayclass.yaml
   - rbac.yaml
   - ../../base/traefik/
 
@@ -19,8 +22,8 @@ patches:
             containers:
               - name: traefik
                 args:
-                  - "--entryPoints.web.address=:8000/tcp"
-                  - "--entryPoints.websecure.address=:8443/tcp"
+                  - "--entryPoints.web.address=:80/tcp"
+                  - "--entryPoints.websecure.address=:443/tcp"
                   - "--entryPoints.traefik.address=:8080/tcp"
                   - "--api=true"
                   - "--api.dashboard=true"
@@ -32,4 +35,3 @@ patches:
                   - "--certificatesresolvers.myresolver.acme.email=jakub.hajek+webinar@traefik.io"
                   - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
                   - "--providers.kubernetesgateway=true"
-                  - "--providers.kubernetesgateway.endpoint=http://localhost:8080"
