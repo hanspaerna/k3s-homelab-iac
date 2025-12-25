@@ -25,6 +25,7 @@ metadata:
 spec:
   entryPoints:
     - web
+    - websecure
   routes:
     - match: Host(`traefik.fingol.pro`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       kind: Rule

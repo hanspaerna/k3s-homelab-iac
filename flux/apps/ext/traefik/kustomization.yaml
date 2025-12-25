@@ -7,6 +7,7 @@ resources:
   - gatewayclass.yaml
   - rbac.yaml
   - dashboard.yaml
+  - pvc.yaml
   - ../../base/traefik/
 
 patches:
@@ -32,6 +33,10 @@ patches:
                   - "--providers.kubernetescrd.allowCrossNamespace=true"
                   - "--certificatesresolvers.myresolver.acme.storage=/data/acme.json"
                   - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-                  - "--certificatesresolvers.myresolver.acme.email=jakub.hajek+webinar@traefik.io"
+                  - "--certificatesresolvers.myresolver.acme.email=admin@tsal.al"
                   - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
                   - "--providers.kubernetesgateway=true"
+            volumes:
+              - name: data
+                persistentVolumeClaim:
+                  claimName: local-path-pvc

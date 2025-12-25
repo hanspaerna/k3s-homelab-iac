@@ -9,6 +9,6 @@ spec:
     - name: web
       port: 80
       protocol: HTTP
-#    - name: https
-#      port: 443
-#      protocol: HTTPS
+    - name: websecure
+      port: 443
+      protocol: HTTPS
