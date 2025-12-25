@@ -27,6 +27,14 @@ In case of failures, get more information from Kubernetes directly:
 
 kubectl -n traefik-ext describe deployment traefik
 
+## Traefik
+
+### Gateway API
+
+Check that GatewayClass (a cluster-wide resource) points to Traefik: kubectl get gatewayclass
+kubectl get gateway -n traefik-ext
+kubectl get httproute -n traefik-ext
+
 ## TODOs
 
 - Connect renovate or dependabot to Github repo for getting update PRs
