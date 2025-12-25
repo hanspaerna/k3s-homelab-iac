@@ -5,7 +5,7 @@ metadata:
   namespace: traefik-ext
 spec:
   entryPoints:
-    - traefik
+    - web
   routes:
     - match: Host(`traefik.fingol.pro`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       kind: Rule
