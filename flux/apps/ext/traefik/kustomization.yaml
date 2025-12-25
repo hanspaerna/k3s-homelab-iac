@@ -3,10 +3,11 @@ kind: Kustomization
 namespace: traefik-ext
 resources:
   - namespace.yaml
-  - httproute.yaml
   - gateway.yaml
   - gatewayclass.yaml
   - rbac.yaml
+  - dashboard-service.yaml
+  - dashboard-httproute.yaml
   - ../../base/traefik/
 
 patches:

@@ -35,6 +35,8 @@ Check that GatewayClass (a cluster-wide resource) points to Traefik: kubectl get
 kubectl get gateway -n traefik-ext
 kubectl get httproute -n traefik-ext
 
+Traefik service logs: kubectl logs svc/traefik -n traefik-ext
+
 ## TODOs
 
 - Connect renovate or dependabot to Github repo for getting update PRs
