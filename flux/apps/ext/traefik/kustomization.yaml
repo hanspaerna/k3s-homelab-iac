@@ -6,7 +6,7 @@ resources:
   - gateway.yaml
   - gatewayclass.yaml
   - rbac.yaml
-  - dashboard-ingress.yaml
+  - dashboard.yaml
   - ../../base/traefik/
 
 patches:
@@ -35,5 +35,3 @@ patches:
                   - "--certificatesresolvers.myresolver.acme.email=jakub.hajek+webinar@traefik.io"
                   - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
                   - "--providers.kubernetesgateway=true"
-                  - "--accesslog=true"
-                  - "--accesslog.format=json"

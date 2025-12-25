@@ -6,7 +6,7 @@ metadata:
 type: Opaque
 stringData:
   users: |
-    tsalal:$apr1$zfSIPsot$nuHYdSydGwiFkW/9GUTfn1
+    tsalal:$apr1$slEJDKC8$rE5SDWgC2HCmhUZUvInK90
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
