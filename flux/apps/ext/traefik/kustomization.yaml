@@ -36,7 +36,19 @@ patches:
                   - "--certificatesresolvers.myresolver.acme.email=admin@tsal.al"
                   - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
                   - "--providers.kubernetesgateway=true"
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
+        namespace: traefik
+      spec:
+        template:
+          spec:
             volumes:
-              - name: data
-                persistentVolumeClaim:
-                  claimName: local-path-pvc
+            - $patch: replace
+            - name: data
+              persistentVolumeClaim:
+                claimName: local-path-pvc
+            - name: tmp
+              emptyDir: {}
