@@ -6,8 +6,7 @@ resources:
   - gateway.yaml
   - gatewayclass.yaml
   - rbac.yaml
-  - dashboard-service.yaml
-  - dashboard-httproute.yaml
+  - dashboard-ingress.yaml
   - ../../base/traefik/
 
 patches:
