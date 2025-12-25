@@ -9,7 +9,7 @@ spec:
     - name: web
       namespace: traefik-ext
   hostnames:
-    - fingol.pro
+    - traefik.fingol.pro
   rules:
     - matches:
         - path:
