@@ -28,7 +28,6 @@ patches:
                   - "--entryPoints.traefik.address=:8080/tcp"
                   - "--api=true"
                   - "--api.dashboard=true"
-                  - "--api.insecure=true"
                   - "--ping=true"
                   - "--providers.kubernetescrd"
                   - "--providers.kubernetescrd.allowCrossNamespace=true"

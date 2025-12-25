@@ -15,7 +15,10 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /
+            value: /dashboard
+        - path:
+            type: PathPrefix
+            value: /api
       backendRefs:
         - name: traefik-dashboard
           port: 8080
