@@ -9,7 +9,7 @@ resources:
   - secret.yaml
   - dashboard.yaml
   - pvc.yaml
-  - ../../base/traefik/
+  - ../../base/traefik3/
 
 patches:
   - patch: |-
