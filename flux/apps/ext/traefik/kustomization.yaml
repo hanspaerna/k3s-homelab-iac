@@ -30,7 +30,7 @@ patches:
                   - "--api=true"
                   - "--api.dashboard=true"
                   - "--ping=true"
-                  - "--providers.kubernetescrd=false"
+                  - "--providers.kubernetescrd"
                   - "--providers.kubernetescrd.allowCrossNamespace=true"
                   - "--certificatesresolvers.myresolver.acme.storage=/data/acme.json"
                   - "--providers.kubernetesgateway=true"
