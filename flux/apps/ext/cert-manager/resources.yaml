@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: hetzner-secret
+    namespace: cert-manager
+type: Opaque
+stringData:
+    api-token: ENC[AES256_GCM,data:WoGd8PAgbVLVwU+5as85p8TVmzSJLpu1ouesNZNAiDAAvvJb3hMrTRMSnHYV35pegP3kQxIJlnkOqHmXNGtbFgA=,iv:OtYHkvFK53b8h3W5M+kNOaSphA0rwxNJbOtYn9NvfRE=,tag:bfF+2RmaHsvEcUUWhvlFRg==,type:str]
+sops:
+    age:
+        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtUFZnd2lUZm5paUFwUGFV
+            NzBLcUhsRGJhMHVCYlN6WDdvTkk3K1ZnbFZBCjNaejJKQTJ5dXR0N2hCWUcrZWZj
+            U3A4Q2NKb0prUUJJdWFMbFg0bE9jdDgKLS0tIE11UTFJR0Z0V29XblhJTW5HamVS
+            V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
+            0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-12-26T17:36:48Z"
+    mac: ENC[AES256_GCM,data:1+fzotZK5/V9h0HQNcAGzsVJg7+c/N9WNsN9+DfqI0lHmvPJLGVqTZJjvPEv72H25VQhWC4fWBLmhGsOh4tIMwA2MIUniufbkDAlp/A482V8njPSMB77CGcWq9Q9EwgF/0P2KlY0izitWA5u7gOKTPyqo8OwStYfv2UDOlMaV4E=,iv:WaQrVsAjjfx3xX9RT5929zBOH1cjTXIsA9qG2HJ7Z+0=,tag:U0JgddZ5pi2GExbC7lbG6Q==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+    name: cluster-issuer
+spec:
+    acme:
+        solvers:
+            - dns01:
+                webhook:
+                    solverName: hetzner
+                    groupName: acme.hetzner.com
+                    config:
+                        tokenSecretKeyRef:
+                            name: hetzner
+                            key: token
+sops:
+    age:
+        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtUFZnd2lUZm5paUFwUGFV
+            NzBLcUhsRGJhMHVCYlN6WDdvTkk3K1ZnbFZBCjNaejJKQTJ5dXR0N2hCWUcrZWZj
+            U3A4Q2NKb0prUUJJdWFMbFg0bE9jdDgKLS0tIE11UTFJR0Z0V29XblhJTW5HamVS
+            V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
+            0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-12-26T17:36:48Z"
+    mac: ENC[AES256_GCM,data:1+fzotZK5/V9h0HQNcAGzsVJg7+c/N9WNsN9+DfqI0lHmvPJLGVqTZJjvPEv72H25VQhWC4fWBLmhGsOh4tIMwA2MIUniufbkDAlp/A482V8njPSMB77CGcWq9Q9EwgF/0P2KlY0izitWA5u7gOKTPyqo8OwStYfv2UDOlMaV4E=,iv:WaQrVsAjjfx3xX9RT5929zBOH1cjTXIsA9qG2HJ7Z+0=,tag:U0JgddZ5pi2GExbC7lbG6Q==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+    name: wildcard-example-com
+    namespace: traefik-ext
+spec:
+    secretName: wildcard-cert-tls
+    dnsNames:
+        - '*.fingol.pro'
+    issuerRef:
+        name: cluster-issuer
+        kind: ClusterIssuer
+sops:
+    age:
+        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtUFZnd2lUZm5paUFwUGFV
+            NzBLcUhsRGJhMHVCYlN6WDdvTkk3K1ZnbFZBCjNaejJKQTJ5dXR0N2hCWUcrZWZj
+            U3A4Q2NKb0prUUJJdWFMbFg0bE9jdDgKLS0tIE11UTFJR0Z0V29XblhJTW5HamVS
+            V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
+            0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-12-26T17:36:48Z"
+    mac: ENC[AES256_GCM,data:1+fzotZK5/V9h0HQNcAGzsVJg7+c/N9WNsN9+DfqI0lHmvPJLGVqTZJjvPEv72H25VQhWC4fWBLmhGsOh4tIMwA2MIUniufbkDAlp/A482V8njPSMB77CGcWq9Q9EwgF/0P2KlY0izitWA5u7gOKTPyqo8OwStYfv2UDOlMaV4E=,iv:WaQrVsAjjfx3xX9RT5929zBOH1cjTXIsA9qG2HJ7Z+0=,tag:U0JgddZ5pi2GExbC7lbG6Q==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0

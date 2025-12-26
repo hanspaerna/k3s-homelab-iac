@@ -121,3 +121,19 @@ fi
 
 echo "[DONE] Manifest rendered (read-only, CRDs excluded)"
 
+echo "Writing source and version data into the manifest's header..."
+
+DATE_NOW=$(date "+%Y-%m-%dT%H:%M:%S%z")
+TEMP_FILE=$(mktemp)
+
+{
+  printf '# Generated with Renderer.sh at %s\n' "$DATE_NOW"
+  printf '# Chart version: %s\n' "$CHART_VERSION"
+  printf '# Repo: %s\n' "$CHART_REPO"
+  printf '# Chart name: %s\n' "$CHART_NAME"
+  printf '# Release name: %s\n' "$RELEASE_NAME"
+  cat "$OUTPUT_FILE"
+} > "$TEMP_FILE" && mv "$TEMP_FILE" "$OUTPUT_FILE"
+
+echo "[DONE] Saved."
+

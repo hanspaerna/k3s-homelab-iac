@@ -186,3 +186,11 @@
       role: fluxcd-bootstrap
       run_once: true
   tags: fluxcd
+
+- name: Install Age-SOPS secret into cluster
+  delegate_to: localhost
+  become: false
+  environment:
+    - KUBECONFIG: '{{ playbook_dir }}/../.kubeconfig-internal'
+  ansible.builtin.command:
+    cmd: cat age.agekey | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin
