@@ -17,17 +17,17 @@ spec:
             config:
               tokenSecretKeyRef:
                 name: hetzner-secret
-                  key: token
+                key: token
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-    name: wildcard-fingol-pro
-    namespace: traefik-ext
+  name: wildcard-fingol-pro
+  namespace: traefik-ext
 spec:
-    secretName: hetzner-secret
-    dnsNames:
-        - '*.fingol.pro'
-    issuerRef:
-        name: cluster-issuer
-        kind: ClusterIssuer
+  secretName: hetzner-secret
+  dnsNames:
+    - '*.fingol.pro'
+  issuerRef:
+    name: cluster-issuer
+    kind: ClusterIssuer
