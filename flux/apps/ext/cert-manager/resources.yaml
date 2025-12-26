@@ -12,7 +12,7 @@ spec:
                     groupName: acme.hetzner.com
                     config:
                         tokenSecretKeyRef:
-                            name: hetzner
+                            name: hetzner-secret
                             key: token
 ---
 apiVersion: cert-manager.io/v1
