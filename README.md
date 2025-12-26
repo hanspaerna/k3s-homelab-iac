@@ -27,9 +27,13 @@ In case of failures, get more information from Kubernetes directly:
 
 kubectl -n traefik-ext describe deployment traefik
 
-# Force recreate deleted resources
+### Force recreate deleted resources
 
 flux reconcile kustomization apps --with-source
+
+### Reconciliation log
+
+kubectl -n flux-system logs deploy/kustomize-controller
 
 ## Traefik
 
