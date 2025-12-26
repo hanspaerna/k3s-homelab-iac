@@ -17,8 +17,8 @@ sops:
             V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
             0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T17:36:48Z"
-    mac: ENC[AES256_GCM,data:1+fzotZK5/V9h0HQNcAGzsVJg7+c/N9WNsN9+DfqI0lHmvPJLGVqTZJjvPEv72H25VQhWC4fWBLmhGsOh4tIMwA2MIUniufbkDAlp/A482V8njPSMB77CGcWq9Q9EwgF/0P2KlY0izitWA5u7gOKTPyqo8OwStYfv2UDOlMaV4E=,iv:WaQrVsAjjfx3xX9RT5929zBOH1cjTXIsA9qG2HJ7Z+0=,tag:U0JgddZ5pi2GExbC7lbG6Q==,type:str]
+    lastmodified: "2025-12-26T18:15:39Z"
+    mac: ENC[AES256_GCM,data:0YTPgALCNUw1uGHPac9WK5tzfWLEwVnAo55t6w2JxLF0ZczKnnDfkSk8sTtFu0WJQF7TVVsUvK702RRTQJ/vq5JADQrT6bffCNpp48Gdsmqal384IXdAuKkgyXjZ92Z/z18blpbveRbq+96SuZxtwZ3K5jYcNwIf89wSMf8ZIcU=,iv:59Jud9dFXzJyI5cMH8Y3zHiQCoD33JI/jyfGBbVsGIc=,tag:Q06Pc8THLdA/SxiuaFLwgg==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.11.0
 ---
@@ -48,18 +48,18 @@ sops:
             V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
             0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T17:36:48Z"
-    mac: ENC[AES256_GCM,data:1+fzotZK5/V9h0HQNcAGzsVJg7+c/N9WNsN9+DfqI0lHmvPJLGVqTZJjvPEv72H25VQhWC4fWBLmhGsOh4tIMwA2MIUniufbkDAlp/A482V8njPSMB77CGcWq9Q9EwgF/0P2KlY0izitWA5u7gOKTPyqo8OwStYfv2UDOlMaV4E=,iv:WaQrVsAjjfx3xX9RT5929zBOH1cjTXIsA9qG2HJ7Z+0=,tag:U0JgddZ5pi2GExbC7lbG6Q==,type:str]
+    lastmodified: "2025-12-26T18:15:39Z"
+    mac: ENC[AES256_GCM,data:0YTPgALCNUw1uGHPac9WK5tzfWLEwVnAo55t6w2JxLF0ZczKnnDfkSk8sTtFu0WJQF7TVVsUvK702RRTQJ/vq5JADQrT6bffCNpp48Gdsmqal384IXdAuKkgyXjZ92Z/z18blpbveRbq+96SuZxtwZ3K5jYcNwIf89wSMf8ZIcU=,iv:59Jud9dFXzJyI5cMH8Y3zHiQCoD33JI/jyfGBbVsGIc=,tag:Q06Pc8THLdA/SxiuaFLwgg==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.11.0
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-    name: wildcard-example-com
+    name: wildcard-fingol-pro
     namespace: traefik-ext
 spec:
-    secretName: wildcard-cert-tls
+    secretName: hetzner-secret
     dnsNames:
         - '*.fingol.pro'
     issuerRef:
@@ -76,7 +76,7 @@ sops:
             V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
             0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T17:36:48Z"
-    mac: ENC[AES256_GCM,data:1+fzotZK5/V9h0HQNcAGzsVJg7+c/N9WNsN9+DfqI0lHmvPJLGVqTZJjvPEv72H25VQhWC4fWBLmhGsOh4tIMwA2MIUniufbkDAlp/A482V8njPSMB77CGcWq9Q9EwgF/0P2KlY0izitWA5u7gOKTPyqo8OwStYfv2UDOlMaV4E=,iv:WaQrVsAjjfx3xX9RT5929zBOH1cjTXIsA9qG2HJ7Z+0=,tag:U0JgddZ5pi2GExbC7lbG6Q==,type:str]
+    lastmodified: "2025-12-26T18:15:39Z"
+    mac: ENC[AES256_GCM,data:0YTPgALCNUw1uGHPac9WK5tzfWLEwVnAo55t6w2JxLF0ZczKnnDfkSk8sTtFu0WJQF7TVVsUvK702RRTQJ/vq5JADQrT6bffCNpp48Gdsmqal384IXdAuKkgyXjZ92Z/z18blpbveRbq+96SuZxtwZ3K5jYcNwIf89wSMf8ZIcU=,iv:59Jud9dFXzJyI5cMH8Y3zHiQCoD33JI/jyfGBbVsGIc=,tag:Q06Pc8THLdA/SxiuaFLwgg==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.11.0
