@@ -37,6 +37,8 @@ patches:
                   - "--certificatesresolvers.myresolver.acme.email=admin@tsal.al"
                   - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
                   - "--providers.kubernetesgateway=true"
+                  - "--accesslog=true"
+                  - "--accesslog.format=json"
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
