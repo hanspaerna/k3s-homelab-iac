@@ -1,26 +1,3 @@
-apiVersion: v1
-kind: Secret
-metadata:
-    name: hetzner-secret
-    namespace: cert-manager
-type: Opaque
-stringData:
-    api-token: ENC[AES256_GCM,data:WoGd8PAgbVLVwU+5as85p8TVmzSJLpu1ouesNZNAiDAAvvJb3hMrTRMSnHYV35pegP3kQxIJlnkOqHmXNGtbFgA=,iv:OtYHkvFK53b8h3W5M+kNOaSphA0rwxNJbOtYn9NvfRE=,tag:bfF+2RmaHsvEcUUWhvlFRg==,type:str]
-sops:
-    age:
-        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtUFZnd2lUZm5paUFwUGFV
-            NzBLcUhsRGJhMHVCYlN6WDdvTkk3K1ZnbFZBCjNaejJKQTJ5dXR0N2hCWUcrZWZj
-            U3A4Q2NKb0prUUJJdWFMbFg0bE9jdDgKLS0tIE11UTFJR0Z0V29XblhJTW5HamVS
-            V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
-            0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T18:15:39Z"
-    mac: ENC[AES256_GCM,data:0YTPgALCNUw1uGHPac9WK5tzfWLEwVnAo55t6w2JxLF0ZczKnnDfkSk8sTtFu0WJQF7TVVsUvK702RRTQJ/vq5JADQrT6bffCNpp48Gdsmqal384IXdAuKkgyXjZ92Z/z18blpbveRbq+96SuZxtwZ3K5jYcNwIf89wSMf8ZIcU=,iv:59Jud9dFXzJyI5cMH8Y3zHiQCoD33JI/jyfGBbVsGIc=,tag:Q06Pc8THLdA/SxiuaFLwgg==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -37,21 +14,6 @@ spec:
                         tokenSecretKeyRef:
                             name: hetzner
                             key: token
-sops:
-    age:
-        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtUFZnd2lUZm5paUFwUGFV
-            NzBLcUhsRGJhMHVCYlN6WDdvTkk3K1ZnbFZBCjNaejJKQTJ5dXR0N2hCWUcrZWZj
-            U3A4Q2NKb0prUUJJdWFMbFg0bE9jdDgKLS0tIE11UTFJR0Z0V29XblhJTW5HamVS
-            V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
-            0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T18:15:39Z"
-    mac: ENC[AES256_GCM,data:0YTPgALCNUw1uGHPac9WK5tzfWLEwVnAo55t6w2JxLF0ZczKnnDfkSk8sTtFu0WJQF7TVVsUvK702RRTQJ/vq5JADQrT6bffCNpp48Gdsmqal384IXdAuKkgyXjZ92Z/z18blpbveRbq+96SuZxtwZ3K5jYcNwIf89wSMf8ZIcU=,iv:59Jud9dFXzJyI5cMH8Y3zHiQCoD33JI/jyfGBbVsGIc=,tag:Q06Pc8THLdA/SxiuaFLwgg==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -65,18 +27,3 @@ spec:
     issuerRef:
         name: cluster-issuer
         kind: ClusterIssuer
-sops:
-    age:
-        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtUFZnd2lUZm5paUFwUGFV
-            NzBLcUhsRGJhMHVCYlN6WDdvTkk3K1ZnbFZBCjNaejJKQTJ5dXR0N2hCWUcrZWZj
-            U3A4Q2NKb0prUUJJdWFMbFg0bE9jdDgKLS0tIE11UTFJR0Z0V29XblhJTW5HamVS
-            V2tQNXZvT0dubzZ5SUhDdVp2Q3FSc3MKNMbpaXhG7PKkwxrBqG6H/n/tesCT7xuz
-            0EpQDcVbKe7SIGlUuLrlfCZ7oABnTNSpErXUt1iqk16Ahq1oDGGB8w==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T18:15:39Z"
-    mac: ENC[AES256_GCM,data:0YTPgALCNUw1uGHPac9WK5tzfWLEwVnAo55t6w2JxLF0ZczKnnDfkSk8sTtFu0WJQF7TVVsUvK702RRTQJ/vq5JADQrT6bffCNpp48Gdsmqal384IXdAuKkgyXjZ92Z/z18blpbveRbq+96SuZxtwZ3K5jYcNwIf89wSMf8ZIcU=,iv:59Jud9dFXzJyI5cMH8Y3zHiQCoD33JI/jyfGBbVsGIc=,tag:Q06Pc8THLdA/SxiuaFLwgg==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
