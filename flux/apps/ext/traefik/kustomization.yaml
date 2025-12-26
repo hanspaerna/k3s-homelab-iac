@@ -6,6 +6,7 @@ resources:
   - gateway.yaml
   - gatewayclass.yaml
   - rbac.yaml
+  - secret.yaml
   - dashboard.yaml
   - pvc.yaml
   - ../../base/traefik/

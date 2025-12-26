@@ -1,26 +1,3 @@
-apiVersion: v1
-kind: Secret
-metadata:
-    name: traefik-dashboard-auth
-    namespace: traefik-ext
-type: Opaque
-stringData:
-    users: ENC[AES256_GCM,data:QAdK2xXjBKrZ2bn36b5+ypFhte65VTEypAc2M9Mxy3NEsWg9kfmHpTkzt+Lw,iv:wP+/8/a1CI92pfN6Kdag2K0mwV0OUMWT0lw11C8j98E=,tag:9Ai39H7HMXHua+WmPQJGzw==,type:str]
-sops:
-    age:
-        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQYnFuZjRqRks0cHY3dHFD
-            N2xKTE5YNzNWRm5rb01xbUdBNEUvWk5GNXk0CnNPa3E1cG9QM2x2Z0NCYkVqcDBm
-            OXpNM2ptQzQxcmN2QjFyNzBwRVpqK28KLS0tIGlEVC9KT2VGWU1kZHlhU29vcmdk
-            eHg0cWVCd0hWTmo5bWVVcGlyZmJKNjAKlycNdo7GwWyY7EjPJh4yisXeXMSqS6T/
-            Z4TIBHn4W5MB6GYiyTRTQ4HDJqJM1dTgZGEK674KA445v+E0UMbEKQ==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T19:03:20Z"
-    mac: ENC[AES256_GCM,data:/8B4sVfGiwcTV1wuBJc8T/7rHoUtxnrr7ZqgcL5wRvXqqKhdcwbAeRUNoF8DuUt7BMWZ4Y27GY8vAgr6Kd0gmz9053Bm1jK8gOd2oa4To+ji1+EGQ6N88OmcYCVT3QaEIkaG9lKT53rXp97631pSxcjC8mHbHSv1TYehcIpAjHA=,iv:0OJFUJQX32GPRAwpBA5knso0o9lN53vF5dktzKA49Mg=,tag:14qEMHWwkbsLTrcpUVVlSg==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
@@ -30,21 +7,6 @@ metadata:
 spec:
     basicAuth:
         secret: traefik-dashboard-auth
-sops:
-    age:
-        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQYnFuZjRqRks0cHY3dHFD
-            N2xKTE5YNzNWRm5rb01xbUdBNEUvWk5GNXk0CnNPa3E1cG9QM2x2Z0NCYkVqcDBm
-            OXpNM2ptQzQxcmN2QjFyNzBwRVpqK28KLS0tIGlEVC9KT2VGWU1kZHlhU29vcmdk
-            eHg0cWVCd0hWTmo5bWVVcGlyZmJKNjAKlycNdo7GwWyY7EjPJh4yisXeXMSqS6T/
-            Z4TIBHn4W5MB6GYiyTRTQ4HDJqJM1dTgZGEK674KA445v+E0UMbEKQ==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T19:03:20Z"
-    mac: ENC[AES256_GCM,data:/8B4sVfGiwcTV1wuBJc8T/7rHoUtxnrr7ZqgcL5wRvXqqKhdcwbAeRUNoF8DuUt7BMWZ4Y27GY8vAgr6Kd0gmz9053Bm1jK8gOd2oa4To+ji1+EGQ6N88OmcYCVT3QaEIkaG9lKT53rXp97631pSxcjC8mHbHSv1TYehcIpAjHA=,iv:0OJFUJQX32GPRAwpBA5knso0o9lN53vF5dktzKA49Mg=,tag:14qEMHWwkbsLTrcpUVVlSg==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -63,18 +25,3 @@ spec:
           services:
             - name: api@internal
               kind: TraefikService
-sops:
-    age:
-        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQYnFuZjRqRks0cHY3dHFD
-            N2xKTE5YNzNWRm5rb01xbUdBNEUvWk5GNXk0CnNPa3E1cG9QM2x2Z0NCYkVqcDBm
-            OXpNM2ptQzQxcmN2QjFyNzBwRVpqK28KLS0tIGlEVC9KT2VGWU1kZHlhU29vcmdk
-            eHg0cWVCd0hWTmo5bWVVcGlyZmJKNjAKlycNdo7GwWyY7EjPJh4yisXeXMSqS6T/
-            Z4TIBHn4W5MB6GYiyTRTQ4HDJqJM1dTgZGEK674KA445v+E0UMbEKQ==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-26T19:03:20Z"
-    mac: ENC[AES256_GCM,data:/8B4sVfGiwcTV1wuBJc8T/7rHoUtxnrr7ZqgcL5wRvXqqKhdcwbAeRUNoF8DuUt7BMWZ4Y27GY8vAgr6Kd0gmz9053Bm1jK8gOd2oa4To+ji1+EGQ6N88OmcYCVT3QaEIkaG9lKT53rXp97631pSxcjC8mHbHSv1TYehcIpAjHA=,iv:0OJFUJQX32GPRAwpBA5knso0o9lN53vF5dktzKA49Mg=,tag:14qEMHWwkbsLTrcpUVVlSg==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
