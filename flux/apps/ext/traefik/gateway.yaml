@@ -12,7 +12,7 @@ spec:
     - name: websecure
       port: 8443
       protocol: HTTPS
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: wildcard-cert-tls
+#      tls:
+#        mode: Terminate
+#        certificateRefs:
+#          - name: wildcard-cert-tls
