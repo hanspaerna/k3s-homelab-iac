@@ -9,7 +9,7 @@ resources:
   - secret.yaml
   - dashboard.yaml
   - pvc.yaml
-  - ../../base/traefik3/
+  - ../../base/traefik/
 
 patches:
   - patch: |-
@@ -30,7 +30,7 @@ patches:
                   - "--api=true"
                   - "--api.dashboard=true"
                   - "--ping=true"
-                  - "--providers.kubernetescrd"
+                  - "--providers.kubernetescrd=false"
                   - "--providers.kubernetescrd.allowCrossNamespace=true"
                   - "--certificatesresolvers.myresolver.acme.storage=/data/acme.json"
                   - "--providers.kubernetesgateway=true"
