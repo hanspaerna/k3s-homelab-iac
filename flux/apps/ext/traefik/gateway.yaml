@@ -18,7 +18,7 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: letsencrypt-dns-wildcard-certA
+          - name: letsencrypt-dns-wildcard-cert
       allowedRoutes:
         namespaces:
           from: All
