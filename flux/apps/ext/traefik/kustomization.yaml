@@ -30,7 +30,7 @@ patches:
                   - "--entryPoints.web.http.redirections.entrypoint.to=websecure"
                   - "--entryPoints.web.http.redirections.entrypoint.scheme=https" 
                   - "--entryPoints.web.http.redirections.entrypoint.permanent=true"
-                  - "--entryPoints.websecure.forwardedHeaders.trustedIPs=*"
+                  - "--entryPoints.websecure.forwardedHeaders.trustedIPs=0.0.0.0/0"
                   - "--entryPoints.websecure.http.redirections.entryPoint.to=websecure"
                   - "--api=true"
                   - "--api.dashboard=true"
