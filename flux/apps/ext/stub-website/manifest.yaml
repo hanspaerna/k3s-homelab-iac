@@ -30,7 +30,7 @@ spec:
       volumes:
         - name: stub-website-volume
           persistentVolumeClaim:
-            claimName: site-website-pvc
+            claimName: stub-website-pvc
         - name: git-sync-volume
           emptyDir: {} # temporary workspace for git-sync
       initContainers:
