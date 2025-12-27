@@ -24,3 +24,5 @@ spec:
       services:
       - name: api@internal
         kind: TraefikService
+  tls:
+    secretName: letsencrypt-dns-wildcard-cert

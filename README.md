@@ -31,6 +31,12 @@ kubectl -n traefik-ext describe deployment traefik
 
 flux reconcile kustomization apps --with-source
 
+### Edit resource in-place for debugging
+
+kubectl edit ingressroute/traefik-dashboard -o yaml -n traefik-ext 
+
+Delete related pods if configuration is not reloaded automatically. They will be restarted.
+
 ### Reconciliation log
 
 kubectl -n flux-system logs deploy/kustomize-controller
