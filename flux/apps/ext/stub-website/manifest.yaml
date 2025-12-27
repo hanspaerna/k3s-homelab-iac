@@ -59,14 +59,14 @@ spec:
                   key: password
           volumeMounts:
             - name: git-sync-volume
-              mountPath: /source
+              mountPath: /git
             - name: stub-website-volume
               mountPath: /destination
           command:
             - /bin/sh
           args:
             - -c
-            - cp -r /source/git/k3s-homelab-iac/container-data/ext/stub-website/* /destination
+            - cp -r /git/k3s-homelab-iac/container-data/ext/stub-website/* /destination
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
