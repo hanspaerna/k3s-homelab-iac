@@ -51,6 +51,14 @@ kubectl get httproute -n traefik-ext
 
 Traefik service logs: kubectl logs svc/traefik -n traefik-ext
 
+## Shared resources
+
+Some resources like Kubernetes Secrets are not accessible from another namespace, and using the "default" namespace is a bad practice. 
+But many applications require initContainers with git-sync to populate them with static data like configuration, webpages, etc. from the private repo.
+To avoid duplication of same resources for each namespace where they're needed, there is a flux/shared-resources/ directory. 
+Each shared resource has its separate directory and can be included in Kustomization.yaml of any app/infrastructure where it is needed.
+A copy will be created in the clusterfor each namespace on the reconciliation step.
+
 ## TODOs
 
 - Connect renovate or dependabot to Github repo for getting update PRs

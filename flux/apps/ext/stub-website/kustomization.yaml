@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: stub-website
+namespace: stub-website # a default namespace for all resources that don’t already have a namespace defined
 resources:
   - manifest.yaml
+  - ../../../shared-resources/git-secret # mandatory for all deployments that use initContainer with git-sync to read the private repo
