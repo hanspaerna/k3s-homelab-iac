@@ -108,6 +108,7 @@ metadata:
 spec:
   parentRefs:
     - name: traefik-gateway
+      namespace: traefik-ext
   hostnames:
     - "fingol.pro"
   rules:
