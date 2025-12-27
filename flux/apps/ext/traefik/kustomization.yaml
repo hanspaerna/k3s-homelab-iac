@@ -38,6 +38,7 @@ patches:
                   - "--providers.kubernetesgateway=true"
                   - "--accesslog=true"
                   - "--accesslog.format=json"
+                  - "--log.level=DEBUG"
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
