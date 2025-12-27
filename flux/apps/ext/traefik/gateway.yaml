@@ -15,4 +15,4 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: wildcard-fingol-pro
+          - name: letsencrypt-dns-wildcard-cert

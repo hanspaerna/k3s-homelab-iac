@@ -32,7 +32,6 @@ patches:
                   - "--ping=true"
                   - "--providers.kubernetescrd"
                   - "--providers.kubernetescrd.allowCrossNamespace=true"
-                  - "--certificatesresolvers.myresolver.acme.storage=/data/acme.json"
                   - "--providers.kubernetesgateway=true"
                   - "--accesslog=true"
                   - "--accesslog.format=json"
