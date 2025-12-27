@@ -15,10 +15,9 @@ metadata:
   namespace: traefik-ext
 spec:
   entryPoints:
-    - web
     - websecure
   routes:
-    - match: Host(`traefik.fingol.pro`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+    - match: Host(`traefik.fingol.pro`)
       kind: Rule
       middlewares:
       - name: dashboard-auth
