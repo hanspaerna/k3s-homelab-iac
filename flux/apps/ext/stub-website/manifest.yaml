@@ -36,23 +36,26 @@ spec:
       initContainers:
         - name: git-sync
           image: registry.k8s.io/git-sync/git-sync:v4.1.0
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - |
+              /git-sync --repo=https://github.com/hanspaerna/k3s-homelab-iac.git \
+                       --branch=main \
+                       --root=/git \
+                       --link=k3s-homelab-iac \
+                       --one-time \
+                       --username=$(GIT_USERNAME) \
+                       --password=$(GIT_PASSWORD) && \
+              cp -r /git/k3s-homelab-iac/container-data/ext/stub-website/* /destination
           env:
-            - name: GITSYNC_REPO
-              value: https://github.com/hanspaerna/k3s-homelab-iac
-            - name: GITSYNC_BRANCH
-              value: main
-            - name: GITSYNC_ROOT
-              value: /git
-            - name: GITSYNC_LINK
-              value: k3s-homelab-iac
-            - name: GITSYNC_ONE_TIME
-              value: "true"
-            - name: GITSYNC_USERNAME
+            - name: GIT_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: git-secret
                   key: username
-            - name: GITSYNC_PASSWORD
+            - name: GIT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: git-secret
@@ -62,11 +65,16 @@ spec:
               mountPath: /git
             - name: stub-website-volume
               mountPath: /destination
-          command:
-            - /bin/sh
-          args:
-            - -c
-            - cp -r /git/k3s-homelab-iac/container-data/ext/stub-website/* /destination
+#          command:
+#            - /bin/sh
+#          args:
+#            - -c
+#            - |
+#              set -eux
+#              ls -lah /
+#              ls -lah /git/
+#            - -c
+#            - cp -r /git/k3s-homelab-iac/container-data/ext/stub-website/* /destination
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
