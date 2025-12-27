@@ -1,8 +1,14 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stub-website
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: stub-website
+  namespace: stub-website
 spec:
   replicas: 1
   selector:
@@ -23,6 +29,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: stub-website
+  namespace: stub-website
 spec:
   selector:
     app: stub-website
@@ -34,6 +41,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: stub-website-route
+  namespace: stub-website
 spec:
   parentRefs:
     - name: traefik-gateway
