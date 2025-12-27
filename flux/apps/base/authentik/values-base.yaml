@@ -1,0 +1,42 @@
+authentik:
+  secret_key: PATCH_SECRET_KEY
+  # This sends anonymous usage-data, stack traces on errors and
+  # performance data to sentry.io, and is fully opt-in
+  error_reporting:
+    enabled: false
+  postgresql:
+    password: PATCH_POSTGRESQL_PASSWORD
+
+postgresql:
+  enabled: true
+  auth:
+    password: PATCH_POSTGRESQL_PASSWORD
+
+server:
+  route:
+    main:
+      # -- enable an HTTPRoute resource for the authentik server.
+      # Be aware that this is an early beta of this feature. We don't guarantee this works and is subject to change.
+      enabled: true
+      # -- Set the route apiVersion
+      apiVersion: gateway.networking.k8s.io/v1
+      # -- Set the route kind
+      kind: HTTPRoute
+
+      # -- Route annotations
+      annotations: {}
+      # -- Route labels
+      labels: {}
+
+      # -- Route hostnames
+      hostnames: ['auth.fingol.pro']
+      # -- Reference to parent gateways
+      parentRefs: ['traefik-gateway']
+
+      # -- Create http route for redirect (https://gateway-api.sigs.k8s.io/guides/http-redirect-rewrite/#http-to-https-redirects).
+      # Take care that you only enable this on the http listener of the gateway to avoid an infinite redirect.
+      # Matches, filters and additionalRules will be ignored if this is set to true
+      httpsRedirect: true
+
+      # -- uses `server.service.servicePortHttps` instead of `server.service.servicePortHttp`
+      https: true
