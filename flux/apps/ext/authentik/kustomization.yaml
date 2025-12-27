@@ -6,13 +6,14 @@ resources:
   - ../../base/authentik/
 
 patches:
-  - path: secret-patch.yaml
-    target:
+  - target:
       kind: Secret
       name: authentik
-      namespace: "authentik"
-  - path: secret-pgsql-patch.yaml
-    target:
+      namespace: authentik
+    path: secret-patch.yaml
+
+  - target:
       kind: Secret
       name: authentik-postgresql
       namespace: authentik
+    path: secret-pgsql-patch.yaml
