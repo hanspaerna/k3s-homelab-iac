@@ -29,6 +29,8 @@ patches:
                   - "--entryPoints.traefik.address=:8080/tcp"
                   - "--entryPoints.web.http.redirections.entrypoint.to=websecure"
                   - "--entryPoints.web.http.redirections.entrypoint.scheme=https" 
+                  - "--entryPoints.web.http.redirections.entrypoint.permanent=true"
+                  - "--entrypoints.web.http.redirections.entrypoint.priority=10"
                   - "--api=true"
                   - "--api.dashboard=true"
                   - "--ping=true"
