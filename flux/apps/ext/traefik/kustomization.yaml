@@ -54,3 +54,30 @@ patches:
                 claimName: local-path-pvc
             - name: tmp
               emptyDir: {}
+
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
+        namespace: traefik
+      spec:
+        template:
+          spec:
+            containers:
+              - name: traefik
+                ports:
+                - $patch: replace
+                - name: web
+                  containerPort: 80
+                  protocol: TCP
+                - name: websecure
+                  containerPort: 443
+                  protocol: TCP
+                - name: metrics
+                  containerPort: 9100
+                  protocol: TCP
+                - name: traefik
+                  containerPort: 8080
+                  protocol: TCP
+
