@@ -54,7 +54,7 @@ data:
       id: default-authentication-password
       model: authentik_stages_password.passwordstage
     - attrs:
-        required: true
+        not_configured_action: enroll
       identifiers:
         name: default-authentication-mfa-validation
       id: default-authentication-mfa-validation
@@ -71,7 +71,9 @@ data:
         name: default-authentication-login
       id: default-authentication-login
       model: authentik_stages_user_login.userloginstage
-    - identifiers:
+    - attrs:
+        re_evaluate_policies: true
+      identifiers:
         order: 10
         stage: !KeyOf default-authentication-identification
         target: !KeyOf flow
