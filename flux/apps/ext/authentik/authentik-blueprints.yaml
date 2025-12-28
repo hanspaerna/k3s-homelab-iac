@@ -9,10 +9,10 @@ data:
     version: 1
     metadata:
       name: bootstrap
-    entries:
-      - model: authentik_core.user
-        identifiers:
-          username: fingol
-        attrs:
-          username: fingol
-          name: Admin
+    entries: []
+#      - model: authentik_core.user
+#        identifiers:
+#          username: admin
+#        attrs:
+#          username: admin
+#          name: Admin

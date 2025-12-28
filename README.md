@@ -41,6 +41,10 @@ Delete related pods if configuration is not reloaded automatically. They will be
 
 kubectl -n flux-system logs deploy/kustomize-controller
 
+### Delete whole application resources by namespace
+
+kubectl delete namespace authentik
+
 ## Traefik
 
 ### Gateway API
