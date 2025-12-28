@@ -9,7 +9,7 @@ data:
     version: 1
     metadata:
       name: Notifications
-    entries: []
+    entries:
        - model: authentik_events.notificationtransport
          attrs:
            email_subject_prefix: 'authentik Notification: '
@@ -21,7 +21,6 @@ data:
          identifiers:
            name: ntfy
          state: present
-
 ---
 apiVersion: v1
 kind: ConfigMap
