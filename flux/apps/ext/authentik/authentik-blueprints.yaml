@@ -5,17 +5,23 @@ metadata:
   name: authentik-blueprints
   namespace: authentik
 data:
-  00-bootstrap.yaml: |
+  notifications.yaml: |
     version: 1
     metadata:
-      name: bootstrap
+      name: Notifications
     entries: []
-#      - model: authentik_core.user
-#        identifiers:
-#          username: admin
-#        attrs:
-#          username: admin
-#          name: Admin
+       - model: authentik_events.notificationtransport
+         attrs:
+           email_subject_prefix: 'authentik Notification: '
+           email_template: email/event_notification.html
+           mode: webhook
+           name: ntfy
+           send_once: true
+           webhook_url: https://ntfy.vpn.fingol.pro/fF93fvAeoKe-auth
+         identifiers:
+           name: ntfy
+         state: present
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -53,12 +59,12 @@ data:
         name: default-authentication-password
       id: default-authentication-password
       model: authentik_stages_password.passwordstage
-    - attrs:
-        not_configured_action: enroll
-      identifiers:
+    - identifiers:
         name: default-authentication-mfa-validation
       id: default-authentication-mfa-validation
       model: authentik_stages_authenticator_validate.authenticatorvalidatestage
+      attrs:
+        not_configured_action: enroll
     - attrs:
         user_fields:
         - email
@@ -71,9 +77,7 @@ data:
         name: default-authentication-login
       id: default-authentication-login
       model: authentik_stages_user_login.userloginstage
-    - attrs:
-        re_evaluate_policies: true
-      identifiers:
+    - identifiers:
         order: 10
         stage: !KeyOf default-authentication-identification
         target: !KeyOf flow
