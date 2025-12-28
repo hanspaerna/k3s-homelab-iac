@@ -31,7 +31,9 @@ server:
       # -- Route hostnames
       hostnames: ['auth.fingol.pro']
       # -- Reference to parent gateways
-      parentRefs: ['traefik-gateway']
+      parentRefs:
+        - name: traefik-gateway
+          namespace: traefik-ext
 
       # -- Create http route for redirect (https://gateway-api.sigs.k8s.io/guides/http-redirect-rewrite/#http-to-https-redirects).
       # Take care that you only enable this on the http listener of the gateway to avoid an infinite redirect.
