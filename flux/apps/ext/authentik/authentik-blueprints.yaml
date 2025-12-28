@@ -23,7 +23,7 @@ metadata:
   name: authentic-blueprint-default-authentication-flow
   namespace: authentik
 data:
-  default-authentication-flow.yaml: | 
+  flow-default-authentication-flow.yaml: | 
     version: 1
     metadata:
       name: Default - Authentication flow
