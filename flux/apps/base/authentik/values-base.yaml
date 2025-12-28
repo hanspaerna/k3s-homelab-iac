@@ -38,7 +38,7 @@ server:
       # -- Create http route for redirect (https://gateway-api.sigs.k8s.io/guides/http-redirect-rewrite/#http-to-https-redirects).
       # Take care that you only enable this on the http listener of the gateway to avoid an infinite redirect.
       # Matches, filters and additionalRules will be ignored if this is set to true
-      httpsRedirect: true
+      httpsRedirect: false 
 
       # -- uses `server.service.servicePortHttps` instead of `server.service.servicePortHttp`
       https: true

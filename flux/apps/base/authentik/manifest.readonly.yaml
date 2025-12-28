@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2025-12-28T01:13:28+0100
+# Generated with Renderer.sh at 2025-12-28T01:32:58+0100
 # Chart version: 2025.10.3
 # Repo: https://charts.goauthentik.io/
 # Chart name: authentik
@@ -95,7 +95,7 @@ metadata:
     helm.sh/chart: postgresql-16.7.27
 type: Opaque
 data:
-  postgres-password: "REdZSDdPRW4zaw=="
+  postgres-password: "SkRkbU5hTmVsZw=="
   password: "UEFUQ0hfUE9TVEdSRVNRTF9QQVNTV09SRA=="
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -852,8 +852,10 @@ spec:
   hostnames:
     - auth.fingol.pro
   rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            statusCode: 301
+    - backendRefs:
+        - name: authentik-server
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: '/'
