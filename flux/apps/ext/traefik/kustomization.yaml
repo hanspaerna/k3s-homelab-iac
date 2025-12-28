@@ -9,6 +9,7 @@ resources:
   - secret.yaml
   - dashboard.yaml
   - pvc.yaml
+#  - auth.yaml
   - ../../base/traefik/
 
 patches:

@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authentik-blueprints
+  namespace: authentik
+data:
+  00-bootstrap.yaml: |
+    version: 1
+    metadata:
+      name: bootstrap
+    entries:
+      - model: authentik_core.user
+        identifiers:
+          username: fingol
+        attrs:
+          username: fingol
+          name: Admin
