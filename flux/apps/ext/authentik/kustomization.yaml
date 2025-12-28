@@ -4,7 +4,7 @@ namespace: authentik
 resources:
   - namespace.yaml
   - ../../base/authentik/
-#  - authentik-blueprints.yaml
+  - authentik-blueprints.yaml
 
 patches:
   - target:
@@ -19,23 +19,23 @@ patches:
       namespace: authentik
     path: secret-pgsql-patch.yaml
 
-#  - patch: |-
-#      apiVersion: apps/v1
-#      kind: Deployment
-#      metadata:
-#        name: authentik-worker
-#        namespace: authentik
-#      spec:
-#        template:
-#          spec:
-#            volumes:
-#              - name: blueprints
-#                configMap:
-#                  name: authentik-blueprints
-#            containers:
-#              - name: worker
-#                volumeMounts:
-#                  - name: blueprints
-#                    mountPath: /blueprints
-#                    readOnly: true
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: authentik-worker
+        namespace: authentik
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: blueprints
+                configMap:
+                  name: authentik-blueprints
+            containers:
+              - name: worker
+                volumeMounts:
+                  - name: blueprints
+                    mountPath: /blueprints/custom
+                    readOnly: true
 
