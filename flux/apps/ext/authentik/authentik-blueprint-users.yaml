@@ -1,0 +1,41 @@
+# An example of admin user that overwrites the default akadmin and is required to set up MFA:
+#
+#  users.yaml: |
+#     version: 1
+#      metadata:
+#        name: Create admin user with forced MFA
+#      entries:
+#        - model: authentik_users.user
+#          identifiers:
+#            username: admin
+#          attrs:
+#            username: admin
+#            email: admin@admin.com
+#            password: "some_password"
+#            is_superuser: true
+#            is_staff: true
+#            is_active: true
+#
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: authentik-blueprint-users
+    namespace: authentik
+data:
+    users.yaml: ENC[AES256_GCM,data:MiWGgolWpLhnyQRISNwYS3aRHBowFCItelb++cLskDaJVRdVBuIn9FeFuGE/YRDJXKpd+bk9QFKfwMeAbWB3oEcQ2hCeGnTRSCk8EW07uBO4XBzBS7DW2xD/U4o1elhGKNZqbVOtZZit+07UsesBobi6o5pLmpY3Ye1IgBatsQdCLWLNnTth8VSMQPhJmzcSwZ5NqlW3TKV4jHcsUNmXJppXUspVtk2eF4TYNULH+oVSiS8odmKi+BseIqP3SwJqKPj28xDwBqaWpDSyvxCjsKduHgoK8YRDVYE5NaRZmQr15ySsQJvAs0c/lpy84flMwW0B+JOk79abY/tG+pUZPPiErCeCJxUbzdqopywogOxZjFgMsKF7ujaWK5nV21RdgKfkmGBdL/7VRfoKB2qXuHldCztVySPfLdlLJT3DKNNdHvgZ1+Wu5E3sA1RGT5X0VA==,iv:W/AyYT1nSHiateD/N97yWgew8gefDHpw5mNtO9xhoEc=,tag:7YWrmFmDc5DhIQVKFPXGAg==,type:str]
+sops:
+    age:
+        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBOSTV0bHJMTWxIMUdzdk9l
+            dUtNMnpabFd6L2xaWlRydU5DK2d4cGNLeWdBCmJINERha1kwTyt1UjN0dlczS3ZY
+            cWlLRDhBSUJFTE4vdms1Nm90dWFMYWMKLS0tIFl1dEdpNEE0NWViK3RZNk4yd1Nr
+            YVhBcTJiVWp0UVNmWkxqQUtROTMvNU0KlMgqWQGGPXB2H2mn2vsmmX+C1p4nraQ6
+            ICQaWelD76AlgoSlGYjbP+KBR36mkZWfslhNO7xe2jLc3swQ/MRPiA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-12-29T15:43:25Z"
+    mac: ENC[AES256_GCM,data:od3cVByYascA+4b2J2qP94U/BVO5sZyp0pT04MEaV+OZmkMR/KyWRBEKfDDjTr3G7fPpgztu7cl7Bf5mQGyhTjT2xApzDcALeeqF04+dVu3j0GbHCk7igwUGocrz/QSvkLbx36qK0N/DyrJLwBlf80EMfVoLd9+wll0p9dVsRCE=,iv:KQc7gOwYXREECHyxXI57p5+QKNzBpPXe9cIUcW3K8fw=,tag:5v1d4Xf2GDOq0zJ7+EImFw==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0

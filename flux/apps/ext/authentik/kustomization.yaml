@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - ../../base/authentik/
   - authentik-blueprints.yaml
+  - authentik-blueprint-users.yaml
 
 patches:
   - target:
@@ -32,6 +33,9 @@ patches:
               - name: blueprints-custom
                 configMap:
                   name: authentik-blueprints
+              - name: blueprint-custom-users
+                configMap:
+                  name: authentik-blueprint-users
               - name: blueprints-override-default-auth-flow
                 configMap:
                   name: authentic-blueprint-default-authentication-flow 
@@ -43,6 +47,9 @@ patches:
                 volumeMounts:
                   - name: blueprints-custom
                     mountPath: /blueprints/custom
+                    readOnly: true
+                  - name: blueprint-custom-users
+                    mountPath: /blueprints/custom-users
                     readOnly: true
                   - name: blueprints-override-default-auth-flow
                     mountPath: /blueprints/default/flow-default-authentication-flow.yaml
