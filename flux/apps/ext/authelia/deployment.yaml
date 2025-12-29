@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authelia
+  namespace: authelia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authelia
+  template:
+    metadata:
+      labels:
+        app: authelia
+    spec:
+      containers:
+        - name: authelia
+          image: authelia/authelia:4
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          ports:
+            - containerPort: 9091
+      volumes:
+        - name: config
+          configMap:
+            name: authelia-config

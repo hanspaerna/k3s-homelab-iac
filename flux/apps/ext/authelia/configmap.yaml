@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: authelia-config
+    namespace: authelia
+data:
+    configuration.yml: ENC[AES256_GCM,data:l8aNAO3eM3AqORPGMQ4Xj1GciVRAck/Fx/oqk++lVGl5XBz9VHo6xQBL75LuJWixW1GrNTj2uDkzbJZkP1oVFkxPuwyKQI2XS9p/X3ikJ1sXWkqmp2SuVcJwHmQJXfZQIYx+AnA5Cj20LOOYIX94iMkyUxILhoAffbHK2Kq7BhnKkK0xI/BCn+0aDtUyJY51t4BqftNrFYldvoCpUx3U3oQlNmFcDR+O1Cvu03iAcGA1onKk846f1TNdKlxeQxsdOPEDypJv2q2bSkHIFEpMhqIt8jL201de0O1PKP1+EnTxffHPoAh99r0P++31NM/0SzSrJpDxN+Ek3PlU6DiH07fe46jr47dRWp/WCewFqFKlz3u2gkyb+Hb9UwIBSPH29peIrQx3ScElzhr2WS4s4Ery1a7AVWDOUNMwaNYE9LF1T3GWR0jYUUMKnm1L62lGKpA4YmY8iTBk53pleTo0elWbLtIdemwusLtctHDIXlmH3g7Rs13dGQaXQfKdbwGexoF0oL+pjSU1jzVn/iEQnjWsSwUZ3Q4hWj5aO5pMNFSmARveYv6PEbGPvDR5WeU5eIFDfYEtk2kWRThq2QZZLX/GVXFIg1f3r0SUgrp6yCebbltcli7PeogM9+z8x9Qj06vMCdrmS8dsinJxYnWh/Dxs2UW+tt+/7LNE6Zey1wWtM+Qn+WKmsdFCLkn/e6NNERkkXITggs9J54LylVou6AcgAmDZ1HHOuP0amiN9gzdHg3q1UJ6E4mYviSxIyEOHRO0x5knKK9AkjF0yuTIz4LY=,iv:tv7TMD/8J7iXgEY/fD9IYM2nDXSN+sRuIaRoDqMDoiI=,tag:2CHRL+qzoVakPk7ypt9VLA==,type:str]
+sops:
+    age:
+        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3Z1F3NEZHS0I1V1lBQndN
+            Tk9IWmJxc1NoeXhLSVpqa0c3TFJETzRiSkRJCjNXUnFWRnNwUGZQbW81ZlB3U25K
+            YXVkS256M284cHlSbm1sdmVaK3Y5TjQKLS0tIFVvcUNPU2ZxSUUydjlXSi9DS1R6
+            RWdTNWpqUXpMcmhwT2dldnRtb01EV0kKGo4MOGcV0pEi82t00uVjG/7oT4/GZeZs
+            n2lJMuebQqTvM/jqMrtilFhBZbj4ld4eHs4fefXBbekiewyJ0Vai0g==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-12-29T17:40:51Z"
+    mac: ENC[AES256_GCM,data:yKRS29MocRBmAd5TiNySHiVNxtMFH6s5O8qOfMqu4gfS0yzPTBAqxWDEA4ombWRMoGThD4aCyf942iZXanvgqQ9E4jZJOs4yw1d4YDLwyX/EUCyFYoc0YAVpGUPU4cW3bykH+so1MYDOyhdr23TDtMCVj4dYvA/1/xo5BJyr+FE=,iv:XzkiZdR6Vo6/w335SS5VhDgNLyhRwZG4cGCCfDRdjLo=,tag:yBIsUn5iN7TgmsH42KRU1Q==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0
