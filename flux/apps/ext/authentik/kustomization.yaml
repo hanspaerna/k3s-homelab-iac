@@ -37,6 +37,9 @@ patches:
                   name: authentic-blueprint-default-authentication-flow 
             containers:
               - name: worker
+                env:
+                  - name: AUTHENTIK_LOG_LEVEL
+                    value: debug
                 volumeMounts:
                   - name: blueprints-custom
                     mountPath: /blueprints/custom
