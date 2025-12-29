@@ -21,6 +21,29 @@ spec:
               mountPath: /config
           ports:
             - containerPort: 9091
+          env:
+            # remove some weird variables
+            - name: AUTHELIA_PORT_80_TCP
+              valueFrom:
+                configMapKeyRef: null
+            - name: AUTHELIA_PORT_80_TCP_ADDR
+              valueFrom:
+                configMapKeyRef: null
+            - name: AUTHELIA_PORT_80_PORT
+              valueFrom:
+                configMapKeyRef: null
+            - name: AUTHELIA_PORT_80_PROTO
+              valueFrom:
+                configMapKeyRef: null
+            - name: AUTHELIA_SERVICE_HOST
+              valueFrom:
+                configMapKeyRef: null
+            - name: AUTHELIA_SERVICE_PORT
+              valueFrom:
+                configMapKeyRef: null
+            - name: AUTHELIA_SERVICE_PORT_HTTP
+              valueFrom:
+                configMapKeyRef: null
       volumes:
         - name: config
           configMap:
