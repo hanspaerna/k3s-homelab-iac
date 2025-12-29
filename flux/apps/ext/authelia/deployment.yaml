@@ -21,12 +21,10 @@ spec:
             - name: authelia-databases
               mountPath: /databases
             - name: configuration
-              mountPath: /config/configuration.yaml
-              subPath: configuration.yaml
-              readOnly: true
+              mountPath: /config/configuration.yml
+              subPath: configuration.yml
             - name: authelia-users
               mountPath: /usersdata
-              readOnly: true
           ports:
             - containerPort: 9091
       volumes:
