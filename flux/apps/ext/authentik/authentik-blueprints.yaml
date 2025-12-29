@@ -104,7 +104,7 @@ data:
       id: default-authentication-password
       model: authentik_stages_password.passwordstage
     - attrs:
-        not_configured_action: enroll
+        not_configured_action: configure
       identifiers:
         name: default-authentication-mfa-validation
       id: default-authentication-mfa-validation
