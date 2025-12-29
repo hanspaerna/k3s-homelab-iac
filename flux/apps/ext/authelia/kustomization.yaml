@@ -1,7 +1,6 @@
 resources:
   - ../../base/authelia
   - namespace.yaml
-  - deployment.yaml
   - httproute.yaml
   - users-database.yaml
  
@@ -12,3 +11,29 @@ patches:
       namespace: authelia
     path: configuration-patch.yaml
 
+  - target:
+      kind: DaemonSet
+      name: authelia
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: authelia
+        namespace: authelia
+      spec:
+        template:
+          spec:
+            containers:
+              - name: authelia
+                volumeMounts:
+                  - name: authelia-users
+                    mountPath: /config/users-database.yml
+                    subPath: users-database.yml
+                    readOnly: true
+            volumes:
+              - name: authelia-users
+                configMap:
+                  name: authelia-users
+                  items:
+                    - key: users-database.yml
+                      path: users-database.yml
