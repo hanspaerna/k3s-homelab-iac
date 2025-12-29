@@ -1,5 +1,6 @@
 resources:
   - ../../base/authelia
+  - namespace.yaml
   - deployment.yaml
   - configmap.yaml
   - httproute.yaml
