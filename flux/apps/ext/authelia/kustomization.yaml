@@ -27,13 +27,13 @@ patches:
               - name: authelia
                 volumeMounts:
                   - name: authelia-users
-                    mountPath: /config/users-database.yml
-                    subPath: users-database.yml
+                    mountPath: /config/users-database.yaml
+                    subPath: users-database.yaml
                     readOnly: true
             volumes:
               - name: authelia-users
                 configMap:
                   name: authelia-users
                   items:
-                    - key: users-database.yml
-                      path: users-database.yml
+                    - key: users-database.yaml
+                      path: users-database.yaml
