@@ -103,7 +103,9 @@ data:
         name: default-authentication-password
       id: default-authentication-password
       model: authentik_stages_password.passwordstage
-    - identifiers:
+    - attrs:
+        not_configured_action: enroll
+      identifiers:
         name: default-authentication-mfa-validation
       id: default-authentication-mfa-validation
       model: authentik_stages_authenticator_validate.authenticatorvalidatestage
@@ -131,7 +133,7 @@ data:
       attrs:
         re_evaluate_policies: true
       id: default-authentication-flow-password-binding
-      model: authentik_flows.flowstagebding
+      model: authentik_flows.flowstagebinding
     - identifiers:
         order: 30
         stage: !KeyOf default-authentication-mfa-validation
