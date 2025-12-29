@@ -32,6 +32,9 @@ patches:
               - name: blueprints-custom
                 configMap:
                   name: authentik-blueprints
+              - name: blueprints-override-default-auth-flow
+                configMap:
+                  name: authentic-blueprint-default-authentication-flow 
             containers:
               - name: worker
                 env:
@@ -40,4 +43,8 @@ patches:
                 volumeMounts:
                   - name: blueprints-custom
                     mountPath: /blueprints/custom
+                    readOnly: true
+                  - name: blueprints-override-default-auth-flow
+                    mountPath: /blueprints/default/flow-default-authentication-flow.yaml
+                    subPath: flow-default-authentication-flow.yaml
                     readOnly: true
