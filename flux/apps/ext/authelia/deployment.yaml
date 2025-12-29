@@ -20,7 +20,7 @@ spec:
           volumeMounts:
             - name: authelia-databases
               mountPath: /databases
-            - name: configuration-file
+            - name: configuration
               mountPath: /config/configuration.yaml
               subPath: configuration.yaml
               readOnly: true
