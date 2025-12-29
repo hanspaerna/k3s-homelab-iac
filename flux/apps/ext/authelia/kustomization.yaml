@@ -2,5 +2,13 @@ resources:
   - ../../base/authelia
   - namespace.yaml
   - deployment.yaml
-  - configmap.yaml
   - httproute.yaml
+  - users-database.yaml
+ 
+patches:
+  - target:
+      kind: ConfigMap
+      name: authelia
+      namespace: authelia
+    path: configuration-patch.yaml
+

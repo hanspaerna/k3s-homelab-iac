@@ -18,24 +18,23 @@ spec:
         - name: authelia
           image: authelia/authelia:4
           volumeMounts:
-            - name: authelia-data
-              mountPath: /config
+            - name: authelia-databases
+              mountPath: /databases
             - name: configuration-file
-              mountPath: /config/configuration.yml
-              subPath: configuration.yml
+              mountPath: /config/configuration.yaml
+              subPath: configuration.yaml
               readOnly: true
             - name: authelia-users
-              mountPath: /config/users_database.yml
-              subPath: users_database.yml
+              mountPath: /usersdata
               readOnly: true
           ports:
             - containerPort: 9091
       volumes:
-        - name: configuration-file
+        - name: configuration
           configMap:
-            name: authelia-config
+            name: authelia
         - name: authelia-users
           configMap:
             name: authelia-users
-        - name: authelia-data
+        - name: authelia-databases
           emptyDir: {}
