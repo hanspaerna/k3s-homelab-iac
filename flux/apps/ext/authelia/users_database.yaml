@@ -1,11 +1,10 @@
-users:
-    admin:
-        displayname: ENC[AES256_GCM,data:Wag=,iv:4IBjC8EnCfse2fpH3ltfSVkEe6f/nh/yzqlzX5Z3V0k=,tag:A3mE8Nj10OaW+ystckvWCQ==,type:str]
-        password: ENC[AES256_GCM,data:5ONDTqsXhWJ8W+TUkTxqzu1CFpsWyfZ6MZx0UBFLl2cwwoH8qUbtf9IvB9SRyAZKYASk6gORVq4clwQAmQ==,iv:0LA0iKWN7op3YNKfBt4b7/pxQLFpXjWLYYP6F7C9qas=,tag:pIEJ3ZWlwsyDs027n9izsA==,type:str]
-        email: ENC[AES256_GCM,data:Jml0CDeJycdCxPkTJPYYkRL+8w==,iv:sYzPJJXEVtU1521WFRDI4EZ3/DHoKizs2JgH+6+lZ/U=,tag:q7rpQDRhvDI8xqZETDncCw==,type:str]
-        groups:
-            - ENC[AES256_GCM,data:/tWE5nPN,iv:eZALl9Al7Ll3fxC6ArgsiRNJninBeido9T2zaDhf0RY=,tag:eAXKegFtcya9cx3/u2PIDQ==,type:str]
-        totp_secret: ""
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: authelia-users
+    namespace: authelia
+data:
+    users_database.yml: ENC[AES256_GCM,data:68HYh4ViqfNR4131VuGNtnYtgp+hhoWlASihfVx/lHxZu+sMO/04vRoP0M5OJsQGn2pJoldYWx1nL/0jGJTXFBKRbCSyzJLMIUUuQXiQsseq0wnjsh764DRunZbRodarq1Te+r/sj0OvBNUt7l8qTRL/NOJwlvR3qS22HXAFqHDqmPNOnUGoghNNk9uVT7bipTsQJhj0+ZmVenAkE6pr1Nn7W4vVXky7fgwgD3JEpbv7rLX5gfQWQ/BKOGrEgg==,iv:UgK3kPY551+Z056uY9CpmY3ln5dGsspTMwuWvlXMsqY=,tag:aIJD4DKN1LDQeNIrrIXcpQ==,type:str]
 sops:
     age:
         - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
@@ -17,7 +16,7 @@ sops:
             SS9kdFg5Y3ljNjZDOWtkZnNnNnY4Z3cK+Y5dIVxVkjBB+xXmCVz2uuTh0yy4M43D
             naqv0N/1/N73+ib3k+AtJ6m+sfNLFToHv3/zYnCPH71IjLpUAt462g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-29T18:10:02Z"
-    mac: ENC[AES256_GCM,data:+keDjE+xJovdY27nZjN6JTWd8MsHs+3D6vBSXIeuWkC1N4t3v8rGEfTp+Ot4OjZVotx3VQz5miSbT36QVtCRlNheS0V7u0sMNfzsxK3urYfET55y+XrHFCXqbQ11iAzvSVFPU8unNqGcxE/H7D5Y9D2dn6Im5boDmHGB+dBJV7A=,iv:61xZxCa7ttNvpPnGwEhuP1G2t7U27gRTnPQDmmbUmRk=,tag:jkCm48sYm7Z+tyAaGnpjVQ==,type:str]
+    lastmodified: "2025-12-29T19:31:16Z"
+    mac: ENC[AES256_GCM,data:ScnYYNzQeaOKLDtxTGaEdZCKjgwHZjgaWVDcRkc3QYxnhNzJWxG46w3N0WtKwjoBQ7V7plBYk4YFr8031mDJmpGBdfxhRirzW4Xl4wXC/NpacBjmGVyArbuRkGXACbrSCcmgyzHDnFTTootcCRBOn3w/60e9x8fJMfZlXuPZpME=,iv:e8kzzt72DYRdp4LjhwFxB5eVG5MYyxXXKg4tSvvQI2c=,tag:r0DMHw3QJjy4zooXYmgmOg==,type:str]
     encrypted_regex: ^(data|stringData|users)$
     version: 3.11.0

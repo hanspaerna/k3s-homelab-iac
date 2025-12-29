@@ -24,11 +24,18 @@ spec:
               mountPath: /config/configuration.yml
               subPath: configuration.yml
               readOnly: true
+            - name: authelia-users
+              mountPath: /config/users_database.yml
+              subPath: users_database.yml
+              readOnly: true
           ports:
             - containerPort: 9091
       volumes:
         - name: configuration-file
           configMap:
             name: authelia-config
+        - name: authelia-users
+          configMap:
+            name: authelia-users
         - name: authelia-data
           emptyDir: {}
