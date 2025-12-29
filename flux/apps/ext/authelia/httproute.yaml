@@ -5,17 +5,16 @@ metadata:
   namespace: authelia
 spec:
   parentRefs:
-    - name: traefik
+    - name: traefik-gateway
+      kind: Gateway
+      namespace: traefik-ext
+  hostnames:
+    - "auth.fingol.pro"
   rules:
     - matches:
         - path:
             type: Prefix
-            value: /authelia
-      filters:
-        - type: RequestHeaderModifier
-          requestHeaderModifier:
-            set:
-              X-Forwarded-Proto: "https"
+            value: "/"   # Matches all requests to auth.test.com
       backendRefs:
         - name: authelia
           port: 9091

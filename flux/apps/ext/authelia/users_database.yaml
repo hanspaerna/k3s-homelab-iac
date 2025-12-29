@@ -1,8 +1,8 @@
 users:
     admin:
-        displayname: ENC[AES256_GCM,data:T2ON9Y8=,iv:7wdkU5ZwvuuEN0SaWoV3xjTL8Ue6bJYHGkO1X75mw/Q=,tag:6/VvMe/ZVjzzJL2RFwwmng==,type:str]
-        password: ENC[AES256_GCM,data:3Lcdgfrkc5Ov4Qc8H7dkcvshgMc=,iv:5yD/3yBM62rGrCj4LfrPvJXURtYmMDQLEvkr2lPBAsw=,tag:rbCZoMUGmq01Ogg040GDlA==,type:str]
-        email: ENC[AES256_GCM,data:mS2mCbmN45jZPUn/JVaBzmCLaC0=,iv:gY28Sc8Bn+vMSIXw2WcE68zk1qVHvFUIghY19kxkRX4=,tag:fDlwCfCSCWcxnQBMoaydnw==,type:str]
+        displayname: ENC[AES256_GCM,data:Wag=,iv:4IBjC8EnCfse2fpH3ltfSVkEe6f/nh/yzqlzX5Z3V0k=,tag:A3mE8Nj10OaW+ystckvWCQ==,type:str]
+        password: ENC[AES256_GCM,data:5ONDTqsXhWJ8W+TUkTxqzu1CFpsWyfZ6MZx0UBFLl2cwwoH8qUbtf9IvB9SRyAZKYASk6gORVq4clwQAmQ==,iv:0LA0iKWN7op3YNKfBt4b7/pxQLFpXjWLYYP6F7C9qas=,tag:pIEJ3ZWlwsyDs027n9izsA==,type:str]
+        email: ENC[AES256_GCM,data:Jml0CDeJycdCxPkTJPYYkRL+8w==,iv:sYzPJJXEVtU1521WFRDI4EZ3/DHoKizs2JgH+6+lZ/U=,tag:q7rpQDRhvDI8xqZETDncCw==,type:str]
         groups:
             - ENC[AES256_GCM,data:/tWE5nPN,iv:eZALl9Al7Ll3fxC6ArgsiRNJninBeido9T2zaDhf0RY=,tag:eAXKegFtcya9cx3/u2PIDQ==,type:str]
         totp_secret: ""
@@ -17,7 +17,7 @@ sops:
             SS9kdFg5Y3ljNjZDOWtkZnNnNnY4Z3cK+Y5dIVxVkjBB+xXmCVz2uuTh0yy4M43D
             naqv0N/1/N73+ib3k+AtJ6m+sfNLFToHv3/zYnCPH71IjLpUAt462g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-29T17:50:37Z"
-    mac: ENC[AES256_GCM,data:Jg2iq4wm3rvwVPdeeH+KPvcOe0iAKRzcNm4lGBZO1OPtYNdSbjjJrq3/RNtenR6sYULbN0yErBlN4yUwNd53XCHDWkdHuA/gQ1qti2TVNfxwfhuxa/R+QWbt+ikwOO2Ho4CYzEeVXOTpIfyLfC8DiQKUL35OQpIp5Hu/T5CgwM8=,iv:lxmKZHk1m47H5F2Y1sMPVQc+svagFrtJPD/71e7tt0c=,tag:pSBA41xhywRSyT4+sa1vZg==,type:str]
+    lastmodified: "2025-12-29T18:10:02Z"
+    mac: ENC[AES256_GCM,data:+keDjE+xJovdY27nZjN6JTWd8MsHs+3D6vBSXIeuWkC1N4t3v8rGEfTp+Ot4OjZVotx3VQz5miSbT36QVtCRlNheS0V7u0sMNfzsxK3urYfET55y+XrHFCXqbQ11iAzvSVFPU8unNqGcxE/H7D5Y9D2dn6Im5boDmHGB+dBJV7A=,iv:61xZxCa7ttNvpPnGwEhuP1G2t7U27gRTnPQDmmbUmRk=,tag:jkCm48sYm7Z+tyAaGnpjVQ==,type:str]
     encrypted_regex: ^(data|stringData|users)$
     version: 3.11.0
