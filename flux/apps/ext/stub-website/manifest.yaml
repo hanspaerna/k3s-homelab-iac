@@ -65,16 +65,6 @@ spec:
               mountPath: /git
             - name: stub-website-volume
               mountPath: /destination
-#          command:
-#            - /bin/sh
-#          args:
-#            - -c
-#            - |
-#              set -eux
-#              ls -lah /
-#              ls -lah /git/
-#            - -c
-#            - cp -r /git/k3s-homelab-iac/container-data/ext/stub-website/* /destination
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -100,6 +90,22 @@ spec:
     - port: 80
       targetPort: 80
 ---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-authelia
+  namespace: stub-website
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: stub-website-route
+  to:
+    - group: traefik.io
+      kind: Middleware
+      namespace: traefik-ext
+      name: authelia-auth
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -117,8 +123,10 @@ spec:
             type: PathPrefix
             value: /
       filters:
-        - type: Middleware
-          middleware:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
             name: authelia-auth
       backendRefs:
         - name: stub-website

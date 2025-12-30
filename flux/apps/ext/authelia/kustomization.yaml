@@ -4,6 +4,8 @@ resources:
   - httproute.yaml
   - users-database.yaml
   - configuration.yaml
+  - secrets.yaml
+  - pvc.yaml
 
 patches:
   - target:
@@ -35,4 +37,5 @@ patches:
                     - key: users-database.yaml
                       path: users-database.yaml
               - name: authelia-data
-                emptyDir: {}
+                persistentVolumeClaim:
+                  claimName: authelia-data-pvc

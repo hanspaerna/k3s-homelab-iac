@@ -12,3 +12,11 @@ patches:
       metadata:
         name: authelia
         namespace: authelia
+
+  - patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: authelia
+        namespace: authelia
