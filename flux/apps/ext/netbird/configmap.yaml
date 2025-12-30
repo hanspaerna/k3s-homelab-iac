@@ -43,35 +43,32 @@ data:
         "Datadir": "",
         "HttpConfig": {
             "Address": "0.0.0.0:80",
-            "AuthAudience": "${NETBIRD_AUTH_AUDIENCE}",
-            "AuthUserIDClaim": "${NETBIRD_AUTH_USER_ID_CLAIM:-sub}",
-            "CertFile": "${NETBIRD_MGMT_API_CERT_FILE}",
-            "CertKey": "${NETBIRD_MGMT_API_CERT_KEY_FILE}",
+            "AuthIssuer": "${CUSTOM_NETBIRD_AUTH_ISSUER}"
+            "AuthAudience": "netbird",
+            "AuthKeysLocation": "${CUSTOM_NETBIRD_AUTH_KEYS_LOCATION}",
+            "AuthUserIDClaim": "",
+            "CertFile": "",
+            "CertKey": "",
+            "IdpSignKeyRefreshEnabled": false,
             "OIDCConfigEndpoint": "${NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT}"
         },
         "IdpManagerConfig": {
-            "ManagerType": "${NETBIRD_IDP_MANAGER_TYPE}",
-            "${NETBIRD_IDP_MANAGER_TYPE^}ClientCredentials": {
-                "ClientID": "${NETBIRD_IDP_CLIENT_ID}",
-                "ClientSecret": "${NETBIRD_IDP_CLIENT_SECRET}",
-                "GrantType": "${NETBIRD_IDP_GRANT_TYPE}",
-                "Audience": "${NETBIRD_IDP_AUTH0_AUDIENCE}",
-                "AuthIssuer": "${NETBIRD_IDP_AUTH0_AUTH_ISSUER}",
-                "AdminEndpoint": "${NETBIRD_IDP_KEYCLOAK_ADMIN_ENDPOINT}",
-                "TokenEndpoint": "${NETBIRD_IDP_KEYCLOAK_TOKEN_ENDPOINT}"
-            }
         },
         "DeviceAuthorizationFlow": {
-            "Provider": "${NETBIRD_AUTH_DEVICE_AUTH_PROVIDER}",
+        },
+        "PKCEAuthorizationFlow": {
             "ProviderConfig": {
-                "Audience": "${NETBIRD_AUTH_DEVICE_AUTH_AUDIENCE}",
-                "ClientID": "${NETBIRD_AUTH_DEVICE_AUTH_CLIENT_ID}",
-                "DeviceAuthEndpoint": "${NETBIRD_AUTH_DEVICE_AUTH_DEVICE_AUTHORIZATION_ENDPOINT}",
-                "Domain": "${NETBIRD_AUTH_DEVICE_AUTH_AUTHORITY}",
-                "TokenEndpoint": "${NETBIRD_AUTH_DEVICE_AUTH_TOKEN_ENDPOINT}",
-                "Scope": "${NETBIRD_AUTH_DEVICE_AUTH_SCOPE}",
-                "UseIDToken": ${NETBIRD_AUTH_DEVICE_AUTH_USE_ID_TOKEN:-false},
-                "RedirectURLs": ["${NETBIRD_AUTH_DEVICE_REDIRECT_URL}"]
+                "Audience": "",
+                "ClientID": "netbird",
+                "ClientSecret": "${CUSTOM_NETBIRD_PKCE_CLIENT_SECRET}",
+                "Domain": "",
+                "AuthorizationEndpoint": "${CUSTOM_NETBIRD_PKCE_AUTH_ENDPOINT}",
+                "TokenEndpoint": "${CUSTOM_NETBIRD_PKCE_TOKEN_ENDPOINT}",
+                "Scope": "openid profile email",
+                "RedirectURLs": [
+                    "http://localhost:53000"
+                ],
+                "UseIDToken": true
             }
         }
     }

@@ -13,6 +13,6 @@
     - name: NB_AUTH_SECRET
       valueFrom:
         secretKeyRef:
-          name: netbird-relay-secret
+          name: netbird-secret
           key: netbird-relay-secret-key
 
