@@ -18,6 +18,9 @@ spec:
     - websecure
   routes:
     - match: Host(`traefik.fingol.pro`)
+      middlewares:
+      - name: authelia-auth
+        namespace: traefik-auth
       kind: Rule
       middlewares:
       - name: dashboard-auth
