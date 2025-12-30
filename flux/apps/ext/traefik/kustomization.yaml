@@ -10,6 +10,7 @@ resources:
   - dashboard.yaml
   - pvc.yaml
   - middlewares.yaml
+  - grants.yaml
   - ../../base/traefik/
 
 patches:
