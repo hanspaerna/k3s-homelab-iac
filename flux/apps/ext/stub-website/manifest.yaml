@@ -90,22 +90,6 @@ spec:
     - port: 80
       targetPort: 80
 ---
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: ReferenceGrant
-metadata:
-  name: allow-authelia
-  namespace: stub-website
-spec:
-  from:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: stub-website-route
-  to:
-    - group: traefik.io
-      kind: Middleware
-      namespace: traefik-ext
-      name: authelia-auth
----
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
