@@ -7,7 +7,6 @@ spec:
   from:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: stub-website-route
       namespace: stub-website
   to:
     - group: traefik.io
