@@ -2,6 +2,7 @@ namespace: netbird-dashboard
 
 resources:
   - ../../base/netbird-dashboard/
+  - namespace.yaml
 
 patches:
   - target:

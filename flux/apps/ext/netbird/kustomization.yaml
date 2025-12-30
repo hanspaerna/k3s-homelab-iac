@@ -2,6 +2,7 @@ namespace: netbird-management
 
 resources:
   - ../../base/netbird/
+  - namespace.yaml
   - configmap.yaml
   - secrets.yaml
 
