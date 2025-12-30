@@ -116,6 +116,10 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      filters:
+        - type: Middleware
+          middleware:
+            name: authelia-auth
       backendRefs:
         - name: stub-website
           port: 80
