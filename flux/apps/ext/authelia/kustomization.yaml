@@ -3,14 +3,9 @@ resources:
   - namespace.yaml
   - httproute.yaml
   - users-database.yaml
- 
-patches:
-  - target:
-      kind: ConfigMap
-      name: authelia
-      namespace: authelia
-    path: configuration-patch.yaml
+  - configuration.yaml
 
+patches:
   - target:
       kind: DaemonSet
       name: authelia

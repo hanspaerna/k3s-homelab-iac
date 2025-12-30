@@ -1,4 +1,3 @@
-$patch: replace
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -17,7 +16,7 @@ sops:
             RWdTNWpqUXpMcmhwT2dldnRtb01EV0kKGo4MOGcV0pEi82t00uVjG/7oT4/GZeZs
             n2lJMuebQqTvM/jqMrtilFhBZbj4ld4eHs4fefXBbekiewyJ0Vai0g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-29T23:40:48Z"
-    mac: ENC[AES256_GCM,data:VIo+7o7F/OlFCjCKXQ7lKLsItInJpBQnikfX2p/N+IKINwiutIzUbdUkxyZ3HEtvGitaYE1l73pFSmwLeG6fSHg9UYxIiX3gmxNFpCG4St0efYNmTLcfCerM6yWzQ6rc536fIVIt8XroOUpmVuFxRGpM1kvssdebXM/M48iAIH0=,iv:MnEIJpaVAVgUHPOHXFb//g4+K91kICfhZxud9qFV0I0=,tag:Wfs6d7u2FuCJXtyLTTusSQ==,type:str]
+    lastmodified: "2025-12-30T00:18:22Z"
+    mac: ENC[AES256_GCM,data:ePg1oBTwOWTjlZF60tvB1h++3BssYNSxh1HBxO4Nl+6hXW51HJr/akTl2jVk6jkHD2hretgtLuxZD4xbmBjRUPbTRLqw9gsDSsykdMQRQ876FKGF3sbrJwuvr8YnJg098xX6Zey4cSbzxgoUYeQyT1bLExM+Pcl2EmNiBIP8A2M=,iv:EipKCMRa18JzQiCx1JgTE9iwUQy7m4MSIonUeiBuuRA=,tag:lR9gYafi6nCxRyQwNwKmaw==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.11.0
