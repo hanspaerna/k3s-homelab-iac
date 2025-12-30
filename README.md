@@ -45,6 +45,14 @@ kubectl -n flux-system logs deploy/kustomize-controller
 
 kubectl delete namespace authentik
 
+### Test connectivity between pods/services
+
+kubectl run -i --rm curl-test \
+  --image=curlimages/curl:8.2.1 \
+  --restart=Never \
+  --namespace=traefik \
+  -- sh -c "nslookup authelia.authelia.svc.cluster.local && curl -v http://authelia.authelia.svc.cluster.local:80/api/verify"
+
 ## Traefik
 
 ### Gateway API
@@ -54,6 +62,8 @@ kubectl get gateway -n traefik-ext
 kubectl get httproute -n traefik-ext
 
 Traefik service logs: kubectl logs svc/traefik -n traefik-ext
+
+NB! Each namespace requires a Middleware chain to use Authelia auth middleware, this is the only cross-namespace workaround right now that allows to prevent duplication.
 
 ## Shared resources
 

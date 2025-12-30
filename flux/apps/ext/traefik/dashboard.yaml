@@ -9,9 +9,9 @@ spec:
     - websecure
   routes:
     - match: Host(`traefik.fingol.pro`)
-#      middlewares:
-#      - name: authelia-auth
-#        namespace: traefik-auth
+      middlewares:
+      - name: authelia-auth
+        namespace: traefik-ext
       kind: Rule
       services:
       - name: api@internal
