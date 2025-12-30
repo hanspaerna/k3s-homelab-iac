@@ -32,7 +32,7 @@ data:
             "Secret": "${NETBIRD_RELAY_AUTH_SECRET}"
         },
         "StoreConfig": {
-            "Engine": "${NETBIRD_STORE_CONFIG_ENGINE:-sqlite}"
+            "Engine": "${NETBIRD_STORE_CONFIG_ENGINE}"
         },
         "Signal": {
             "Proto": "${NETBIRD_SIGNAL_PROTOCOL}",
@@ -43,14 +43,14 @@ data:
         "Datadir": "",
         "HttpConfig": {
             "Address": "0.0.0.0:80",
-            "AuthIssuer": "${CUSTOM_NETBIRD_AUTH_ISSUER:-}",
+            "AuthIssuer": "${CUSTOM_NETBIRD_AUTH_ISSUER}",
             "AuthAudience": "netbird",
-            "AuthKeysLocation": "${CUSTOM_NETBIRD_AUTH_KEYS_LOCATION:-}",
-            "AuthUserIDClaim": "${NETBIRD_AUTH_USER_ID_CLAIM:-}",
+            "AuthKeysLocation": "${CUSTOM_NETBIRD_AUTH_KEYS_LOCATION}",
+            "AuthUserIDClaim": "${NETBIRD_AUTH_USER_ID_CLAIM}",
             "CertFile": "",
             "CertKey": "",
             "IdpSignKeyRefreshEnabled": false,
-            "OIDCConfigEndpoint": "${NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT:-}"
+            "OIDCConfigEndpoint": "${NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT}"
         },
         "IdpManagerConfig": {
         },
@@ -60,10 +60,10 @@ data:
             "ProviderConfig": {
                 "Audience": "",
                 "ClientID": "netbird",
-                "ClientSecret": "${CUSTOM_NETBIRD_PKCE_CLIENT_SECRET:-}",
+                "ClientSecret": "${CUSTOM_NETBIRD_PKCE_CLIENT_SECRET}",
                 "Domain": "",
-                "AuthorizationEndpoint": "${CUSTOM_NETBIRD_PKCE_AUTH_ENDPOINT:-}",
-                "TokenEndpoint": "${CUSTOM_NETBIRD_PKCE_TOKEN_ENDPOINT:-}",
+                "AuthorizationEndpoint": "${CUSTOM_NETBIRD_PKCE_AUTH_ENDPOINT}",
+                "TokenEndpoint": "${CUSTOM_NETBIRD_PKCE_TOKEN_ENDPOINT}",
                 "Scope": "openid profile email",
                 "RedirectURLs": [
                     "http://localhost:53000"
