@@ -11,7 +11,7 @@ patches:
       name: authelia
     patch: |-
       apiVersion: apps/v1
-      kind: Deployment
+      kind: DaemonSet
       metadata:
         name: authelia
         namespace: authelia
@@ -22,9 +22,11 @@ patches:
               - name: authelia
                 volumeMounts:
                   - name: authelia-users
-                    mountPath: /config/users-database.yaml
+                    mountPath: /usersdata/users-database.yaml
                     subPath: users-database.yaml
                     readOnly: true
+                  - name: authelia-data
+                    mountPath: /databases
             volumes:
               - name: authelia-users
                 configMap:
@@ -32,3 +34,5 @@ patches:
                   items:
                     - key: users-database.yaml
                       path: users-database.yaml
+              - name: authelia-data
+                emptyDir: {}

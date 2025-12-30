@@ -4,19 +4,135 @@ metadata:
     name: authelia
     namespace: authelia
 data:
-    configuration.yaml: ENC[AES256_GCM,data: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,iv:X8GRHwW3j5satahfkHXAK+RmCeREvgz5kouJoP3QnZs=,tag:btCHgn4s+wv/OmH7j1xUUw==,type:str]
-sops:
-    age:
-        - recipient: age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3Z1F3NEZHS0I1V1lBQndN
-            Tk9IWmJxc1NoeXhLSVpqa0c3TFJETzRiSkRJCjNXUnFWRnNwUGZQbW81ZlB3U25K
-            YXVkS256M284cHlSbm1sdmVaK3Y5TjQKLS0tIFVvcUNPU2ZxSUUydjlXSi9DS1R6
-            RWdTNWpqUXpMcmhwT2dldnRtb01EV0kKGo4MOGcV0pEi82t00uVjG/7oT4/GZeZs
-            n2lJMuebQqTvM/jqMrtilFhBZbj4ld4eHs4fefXBbekiewyJ0Vai0g==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-12-30T00:18:22Z"
-    mac: ENC[AES256_GCM,data:ePg1oBTwOWTjlZF60tvB1h++3BssYNSxh1HBxO4Nl+6hXW51HJr/akTl2jVk6jkHD2hretgtLuxZD4xbmBjRUPbTRLqw9gsDSsykdMQRQ876FKGF3sbrJwuvr8YnJg098xX6Zey4cSbzxgoUYeQyT1bLExM+Pcl2EmNiBIP8A2M=,iv:EipKCMRa18JzQiCx1JgTE9iwUQy7m4MSIonUeiBuuRA=,tag:lR9gYafi6nCxRyQwNwKmaw==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
+    configuration.yaml: |
+        theme: 'light'
+        default_2fa_method: ''
+        server:
+          address: 'tcp://0.0.0.0:9091/'
+          asset_path: ''
+          headers:
+            csp_template: ""
+          buffers:
+            read: 4096
+            write: 4096
+          timeouts:
+            read: '6 seconds'
+            write: '6 seconds'
+            idle: '30 seconds'
+          endpoints:
+            enable_pprof: false
+            enable_expvars: false
+            authz:
+              auth-request:
+                implementation: 'AuthRequest'
+              ext-authz:
+                implementation: 'ExtAuthz'
+              forward-auth:
+                implementation: 'ForwardAuth'
+        log:
+          level: 'info'
+          format: 'text'
+          file_path: ''
+          keep_stdout: true
+        telemetry:
+          metrics:
+            enabled: false
+        identity_validation:
+          elevated_session:
+            code_lifespan: '5 minutes'
+            elevation_lifespan: '10 minutes'
+            characters: 8
+            require_second_factor: false
+            skip_second_factor: false
+          reset_password:
+            jwt_lifespan: '5 minutes'
+            jwt_algorithm: 'HS256'
+        totp:
+          disable: false
+          issuer: 'Authelia'
+          skew: 1
+          secret_size: 32
+          algorithm: 'SHA1'
+          digits: 6
+          period: 30
+          allowed_algorithms:
+            - 'SHA1'
+          allowed_digits:
+            - 6
+          allowed_periods:
+            - 30
+        webauthn:
+          disable: false
+          enable_passkey_login: false
+          display_name: 'Authelia'
+          attestation_conveyance_preference: 'indirect'
+          timeout: '60 seconds'
+          filtering:
+            permitted_aaguids: []
+            prohibited_aaguids: []
+            prohibit_backup_eligibility: false
+          selection_criteria:
+            attachment: ''
+            discoverability: 'preferred'
+            user_verification: 'preferred'
+          metadata:
+            enabled: false
+            cache_policy: 'strict'
+            validate_trust_anchor: true
+            validate_entry: true
+            validate_entry_permit_zero_aaguid: false
+            validate_status: true
+            validate_status_permitted: []
+            validate_status_prohibited: []
+        ntp:
+          address: 'udp://time.cloudflare.com:123'
+          version: 4
+          max_desync: '3 seconds'
+          disable_startup_check: false
+          disable_failure: false
+        authentication_backend:
+          file:
+            path: /usersdata/users-database.yaml
+          password_reset:
+            disable: false
+            custom_url: ''
+          password_change:
+            disable: false
+          refresh_interval: '5 minutes'
+        password_policy:
+          standard:
+            enabled: false
+            min_length: 8
+            max_length: 0
+            require_uppercase: false
+            require_lowercase: false
+            require_number: false
+            require_special: false
+          zxcvbn:
+            enabled: false
+            min_score: 0
+        session:
+          name: 'authelia_session'
+          same_site: 'lax'
+          inactivity: '5 minutes'
+          expiration: '1 hour'
+          remember_me: '1 month'
+          cookies:
+            - name: authelia_session
+              domain: fingol.pro
+              authelia_url: https://auth.fingol.pro
+        regulation:
+          modes:
+          - 'user'
+          max_retries: 3
+          find_time: '2 minutes'
+          ban_time: '5 minutes'
+        storage:
+          local:
+            path: /databases/db.sqlite3
+        notifier:
+          disable_startup_check: false
+          filesystem:
+            filename: '/config/notification.txt'
+        access_control:
+          default_policy: 'two_factor'
