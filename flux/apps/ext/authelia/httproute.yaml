@@ -14,7 +14,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: "/"   # Matches all requests to auth.test.com
-      backendRefs:
-        - name: authelia
-          port: 9091
+            value: "/"
+      forwardTo:
+        - serviceName: authelia
+          port: 80
