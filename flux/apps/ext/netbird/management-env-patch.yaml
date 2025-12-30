@@ -9,6 +9,8 @@
       value: "https"
     - name: NETBIRD_STUN_URI
       value: "stun:netbird.fingol.pro:3478"
+    - name: NETBIRD_TURN_URI
+      value: "stun:netbird.fingol.pro:3478"
     - name: NETBIRD_IDP_MANAGER_TYPE
       value: "oidc"
     - name: NETBIRD_RELAY_DOMAIN
