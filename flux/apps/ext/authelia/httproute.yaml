@@ -15,6 +15,6 @@ spec:
         - path:
             type: PathPrefix
             value: "/"
-      forwardTo:
-        - serviceName: authelia
+      backendRefs:
+        - name: authelia
           port: 80

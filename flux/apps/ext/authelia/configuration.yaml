@@ -5,8 +5,8 @@ metadata:
     namespace: authelia
 data:
     configuration.yaml: |
-        theme: 'light'
-        default_2fa_method: ''
+        theme: 'dark'
+        default_2fa_method: 'totp'
         server:
           address: 'tcp://0.0.0.0:9091/'
           asset_path: ''
@@ -62,7 +62,7 @@ data:
           allowed_periods:
             - 30
         webauthn:
-          disable: false
+          disable: true
           enable_passkey_login: false
           display_name: 'Authelia'
           attestation_conveyance_preference: 'indirect'
