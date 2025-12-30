@@ -43,7 +43,7 @@ data:
         "Datadir": "",
         "HttpConfig": {
             "Address": "0.0.0.0:80",
-            "AuthIssuer": "${CUSTOM_NETBIRD_AUTH_ISSUER}"
+            "AuthIssuer": "${CUSTOM_NETBIRD_AUTH_ISSUER}",
             "AuthAudience": "netbird",
             "AuthKeysLocation": "${CUSTOM_NETBIRD_AUTH_KEYS_LOCATION}",
             "AuthUserIDClaim": "",
