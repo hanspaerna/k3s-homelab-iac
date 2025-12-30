@@ -1,0 +1,112 @@
+# Generated with Renderer.sh at 2025-12-30T18:57:16+0100
+# Chart version: 1.2.0
+# Repo: https://charts.jaconi.io
+# Chart name: netbird-dashboard
+# Release name: netbird-dashboard
+---
+# Source: netbird-dashboard/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: netbird-dashboard
+  labels:
+    helm.sh/chart: netbird-dashboard-1.2.0
+    
+    app.kubernetes.io/name: netbird-dashboard
+    app.kubernetes.io/instance: netbird-dashboard
+    app.kubernetes.io/version: "v2.12.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: netbird-dashboard/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: netbird-dashboard
+  labels:
+    helm.sh/chart: netbird-dashboard-1.2.0
+    
+    app.kubernetes.io/name: netbird-dashboard
+    app.kubernetes.io/instance: netbird-dashboard
+    app.kubernetes.io/version: "v2.12.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: netbird-dashboard
+    app.kubernetes.io/instance: netbird-dashboard
+---
+# Source: netbird-dashboard/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbird-dashboard
+  labels:
+    helm.sh/chart: netbird-dashboard-1.2.0
+    
+    app.kubernetes.io/name: netbird-dashboard
+    app.kubernetes.io/instance: netbird-dashboard
+    app.kubernetes.io/version: "v2.12.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: netbird-dashboard
+      app.kubernetes.io/instance: netbird-dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: netbird-dashboard
+        app.kubernetes.io/instance: netbird-dashboard
+    spec:
+      serviceAccountName: netbird-dashboard
+      securityContext:
+        {}
+      containers:
+        - name: netbird-dashboard
+          
+          command: ["/bin/sh", "-c"]
+          args:
+          - >
+            sed -i 's/listen \[\:\:\]\:80 default_server\;//g' /etc/nginx/http.d/default.conf &&
+            /usr/bin/supervisord -c /etc/supervisord.conf
+          securityContext:
+            {}
+          image: "netbirdio/dashboard:v2.12.0"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: AUTH_AUDIENCE
+              value: netbird-dashboard
+            - name: AUTH_AUTHORITY
+              value: http://keycloak.localtest.me:9000/realms/helm-charts
+            - name: AUTH_CLIENT_ID
+              value: netbird-dashboard
+            - name: AUTH_SUPPORTED_SCOPES
+              value: openid profile email offline_access api
+            - name: USE_AUTH0
+              value: "false"
+            - name: NETBIRD_MGMT_API_ENDPOINT
+              value: http://localhost:8081
+            - name: NETBIRD_MGMT_GRPC_API_ENDPOINT
+              value: http://localhost:8081
+            - name: NGINX_SSL_PORT
+              value: "443"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}

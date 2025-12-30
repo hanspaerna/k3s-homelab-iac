@@ -1,0 +1,482 @@
+# Generated with Renderer.sh at 2025-12-30T18:57:25+0100
+# Chart version: 0.15.0
+# Repo: https://charts.jaconi.io
+# Chart name: netbird
+# Release name: netbird
+---
+# Source: netbird/templates/management-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: netbird-management
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-management
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: netbird/templates/relay-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: netbird-relay
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-relay
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: netbird/templates/signal-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: netbird-signal
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-signal
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: netbird/templates/management-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: netbird-management
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-management
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+data:
+  management.tmpl.json: |-
+    {
+        "Stuns": [
+            {
+                "Proto": "udp",
+                "URI": "${NETBIRD_STUN_URI}",
+                "Username": "",
+                "Password": null
+            }
+        ],
+        "TURNConfig": {
+            "Turns": [
+                {
+                    "Proto": "udp",
+                    "URI": "${NETBIRD_TURN_URI}",
+                    "Username": "${NETBIRD_TURN_USER}",
+                    "Password": "${NETBIRD_TURN_PASSWORD}"
+                }
+            ],
+            "CredentialsTTL": "12h",
+            "Secret": "secret",
+            "TimeBasedCredentials": false
+        },
+        "Relay": {
+            "Addresses": ["${NETBIRD_RELAY_DOMAIN}:${NETBIRD_RELAY_PORT}"],
+            "CredentialsTTL": "24h",
+            "Secret": "${NETBIRD_RELAY_AUTH_SECRET}"
+        },
+        "StoreConfig": {
+            "Engine": "${NETBIRD_STORE_CONFIG_ENGINE:-sqlite}"
+        },
+        "Signal": {
+            "Proto": "${NETBIRD_SIGNAL_PROTOCOL}",
+            "URI": "${NETBIRD_SIGNAL_URI}",
+            "Username": "",
+            "Password": null
+        },
+        "Datadir": "",
+        "HttpConfig": {
+            "Address": "0.0.0.0:80",
+            "AuthAudience": "${NETBIRD_AUTH_AUDIENCE}",
+            "AuthUserIDClaim": "${NETBIRD_AUTH_USER_ID_CLAIM:-sub}",
+            "CertFile": "${NETBIRD_MGMT_API_CERT_FILE}",
+            "CertKey": "${NETBIRD_MGMT_API_CERT_KEY_FILE}",
+            "OIDCConfigEndpoint": "${NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT}"
+        },
+        "IdpManagerConfig": {
+            "ManagerType": "${NETBIRD_IDP_MANAGER_TYPE}",
+            "${NETBIRD_IDP_MANAGER_TYPE^}ClientCredentials": {
+                "ClientID": "${NETBIRD_IDP_CLIENT_ID}",
+                "ClientSecret": "${NETBIRD_IDP_CLIENT_SECRET}",
+                "GrantType": "${NETBIRD_IDP_GRANT_TYPE}",
+                "Audience": "${NETBIRD_IDP_AUTH0_AUDIENCE}",
+                "AuthIssuer": "${NETBIRD_IDP_AUTH0_AUTH_ISSUER}",
+                "AdminEndpoint": "${NETBIRD_IDP_KEYCLOAK_ADMIN_ENDPOINT}",
+                "TokenEndpoint": "${NETBIRD_IDP_KEYCLOAK_TOKEN_ENDPOINT}"
+            }
+        },
+        "DeviceAuthorizationFlow": {
+            "Provider": "${NETBIRD_AUTH_DEVICE_AUTH_PROVIDER}",
+            "ProviderConfig": {
+                "Audience": "${NETBIRD_AUTH_DEVICE_AUTH_AUDIENCE}",
+                "ClientID": "${NETBIRD_AUTH_DEVICE_AUTH_CLIENT_ID}",
+                "DeviceAuthEndpoint": "${NETBIRD_AUTH_DEVICE_AUTH_DEVICE_AUTHORIZATION_ENDPOINT}",
+                "Domain": "${NETBIRD_AUTH_DEVICE_AUTH_AUTHORITY}",
+                "TokenEndpoint": "${NETBIRD_AUTH_DEVICE_AUTH_TOKEN_ENDPOINT}",
+                "Scope": "${NETBIRD_AUTH_DEVICE_AUTH_SCOPE}",
+                "UseIDToken": ${NETBIRD_AUTH_DEVICE_AUTH_USE_ID_TOKEN:-false},
+                "RedirectURLs": ["${NETBIRD_AUTH_DEVICE_REDIRECT_URL}"]
+            }
+        }
+    }
+---
+# Source: netbird/templates/management-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: netbird-management
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-management
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "100Mi"
+---
+# Source: netbird/templates/signal-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: netbird-signal
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-signal
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "100Mi"
+---
+# Source: netbird/templates/management-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: netbird-management
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-management
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9090
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: netbird-management
+    app.kubernetes.io/instance: netbird
+---
+# Source: netbird/templates/relay-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: netbird-relay
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-relay
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 33080
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9090
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: netbird-relay
+    app.kubernetes.io/instance: netbird
+---
+# Source: netbird/templates/signal-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: netbird-signal
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-signal
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: https
+      protocol: TCP
+      name: https
+    - port: 9090
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: netbird-signal
+    app.kubernetes.io/instance: netbird
+---
+# Source: netbird/templates/management-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbird-management
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-management
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: netbird-management
+      app.kubernetes.io/instance: netbird
+  template:
+    metadata:
+      annotations:
+        checksum/config: 184039ae4ad7f6f4c1db439c7bafae2cde13b0e84d201038a06d103b5cd5015a
+      labels:
+        app.kubernetes.io/name: netbird-management
+        app.kubernetes.io/instance: netbird
+    spec:
+      serviceAccountName: netbird-management
+      securityContext:
+        {}
+      initContainers:
+        - name: configure
+          image: golang:latest
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c"]
+          args:
+            - >
+              go install github.com/drone/envsubst/cmd/envsubst@latest &&
+              envsubst < /tmp/netbird/management.tmpl.json > /etc/netbird/management.json &&
+              cat /etc/netbird/management.json
+          env:
+            - name: NETBIRD_SIGNAL_URI
+              value: localhost:10000
+            - name: NETBIRD_SIGNAL_PROTOCOL
+              value: https
+            - name: NETBIRD_STUN_URI
+              value: stun:localhost:3478
+            - name: NETBIRD_TURN_URI
+              value: turn:localhost:3478
+
+            # Device auth configuration.
+
+            # IDP configuration.
+            - name: NETBIRD_IDP_MANAGER_TYPE
+              value: "none"
+            
+            # Database Configuration
+              
+            # Relay Configuration
+            - name: NETBIRD_RELAY_DOMAIN
+              value: relay.example.com
+            - name: NETBIRD_RELAY_PORT
+              value: "33080"
+            - name: NETBIRD_RELAY_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: netbird-relay-secret
+                  key: netbird-relay-secret-key
+
+          volumeMounts:
+            - mountPath: /etc/netbird
+              name: config
+            - mountPath: /tmp/netbird
+              name: config-template
+      containers:
+        - name: netbird-management
+          securityContext:
+            {}
+          image: "netbirdio/management:0.45.1"
+          imagePullPolicy: IfNotPresent
+          args:
+            - --log-level
+            - info
+            - --log-file
+            - console
+            - --dns-domain
+            - netbird.selfhosted
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          resources:
+            {}
+          volumeMounts:
+            - mountPath: /etc/netbird
+              name: config
+            - mountPath: /var/lib/netbird
+              name: management
+      volumes:
+        - name: config
+          emptyDir:
+            medium: Memory
+        - name: config-template
+          configMap:
+            name: netbird-management
+        - name: management
+          persistentVolumeClaim:
+            claimName: netbird-management
+---
+# Source: netbird/templates/relay-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbird-relay
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-relay
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: netbird-relay
+      app.kubernetes.io/instance: netbird
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: netbird-relay
+        app.kubernetes.io/instance: netbird
+    spec:
+      serviceAccountName: netbird-relay
+      securityContext:
+        null
+      containers:
+        - name: netbird-relay
+          securityContext:
+            null
+          image: "netbirdio/relay:0.45.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NB_LOG_LEVEL
+              value: info
+            - name: NB_LISTEN_ADDRESS
+              value: ":33080"
+            - name: NB_EXPOSED_ADDRESS
+              value: "relay.example.com:33080"
+            - name: NB_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: netbird-relay-secret
+                  key: netbird-relay-secret-key
+          args: ["--log-file", "console"]
+          ports:
+            - name: quic
+              containerPort: 33080
+              protocol: UDP
+            - name: websocket
+              containerPort: 33080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 33080
+          readinessProbe:
+            tcpSocket:
+              port: 33080
+          resources:
+            {}
+---
+# Source: netbird/templates/signal-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbird-signal
+  labels:
+    helm.sh/chart: netbird-0.15.0
+    
+    app.kubernetes.io/name: netbird-signal
+    app.kubernetes.io/instance: netbird
+    app.kubernetes.io/version: "0.45.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: netbird-signal
+      app.kubernetes.io/instance: netbird
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: netbird-signal
+        app.kubernetes.io/instance: netbird
+    spec:
+      serviceAccountName: netbird-signal
+      securityContext:
+        null
+      containers:
+        - name: netbird-signal
+          securityContext:
+            null
+          image: "netbirdio/signal:0.45.1"
+          imagePullPolicy: IfNotPresent
+          args: ["--port", "80", "--log-level", "info", "--log-file", "console"]
+          ports:
+            - name: https
+              containerPort: 80
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: https
+          readinessProbe:
+            tcpSocket:
+              port: https
+          resources:
+            {}
+          volumeMounts:
+            - mountPath: /var/lib/netbird
+              name: signal
+      volumes:
+        - name: signal
+          persistentVolumeClaim:
+            claimName: netbird-signal

@@ -1,0 +1,17 @@
+- op: replace
+  path: /spec/template/spec/initContainers/0/env
+  value:
+    - name: NETBIRD_SIGNAL_URI
+      value: signal.example.com:443
+    - name: NETBIRD_SIGNAL_PROTOCOL
+      value: https
+    - name: NETBIRD_STUN_URI
+      value: stun:stun.example.com:3478
+    - name: NETBIRD_TURN_URI31
+      value: turn:turn.example.com:3478
+    - name: NETBIRD_IDP_MANAGER_TYPE
+      value: oidc
+    - name: NETBIRD_RELAY_DOMAIN
+      value: relay.example.com
+    - name: NETBIRD_RELAY_PORT
+      value: "33080"

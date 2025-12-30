@@ -1,0 +1,18 @@
+- op: replace
+  path: /spec/template/spec/containers/0/env
+  value:
+    - name: NB_LOG_LEVEL
+      value: warn
+
+    - name: NB_LISTEN_ADDRESS
+      value: ":443"
+
+    - name: NB_EXPOSED_ADDRESS
+      value: "relay.example.com:443"
+
+    - name: NB_AUTH_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: netbird-relay-secret
+          key: netbird-relay-secret-key
+
