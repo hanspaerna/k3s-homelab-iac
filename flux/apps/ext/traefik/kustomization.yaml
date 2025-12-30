@@ -37,7 +37,6 @@ patches:
                   - "--ping=true"
                   - "--global.sendAnonymousUsage=false"
                   - "--global.checkNewVersion=false"
-                  - "--pilot.dashboard=false"
                   - "--providers.kubernetescrd"
                   - "--providers.kubernetescrd.allowCrossNamespace=true"
                   - "--providers.kubernetesgateway=true"
