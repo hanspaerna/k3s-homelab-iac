@@ -2,17 +2,17 @@
   path: /spec/template/spec/initContainers/0/env
   value:
     - name: NETBIRD_SIGNAL_URI
-      value: netbird.fingol.pro:9443
+      value: "netbird.fingol.pro:9443"
     - name: NETBIRD_SIGNAL_PROTOCOL
-      value: https
+      value: "https"
     - name: NETBIRD_STUN_URI
-      value: stun:netbird.fingol.pro:3478
+      value: "stun:netbird.fingol.pro:3478"
     - name: NETBIRD_TURN_URI31
-      value: turn:netbird.fingol.pro:3478
+      value: "turn:netbird.fingol.pro:3478"
     - name: NETBIRD_IDP_MANAGER_TYPE
-      value: oidc
+      value: "oidc"
     - name: NETBIRD_RELAY_DOMAIN
-      value: netbird.fingol.pro
+      value: "netbird.fingol.pro"
     - name: NETBIRD_RELAY_PORT
       value: "33080"
 

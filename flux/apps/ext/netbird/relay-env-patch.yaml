@@ -2,7 +2,7 @@
   path: /spec/template/spec/containers/0/env
   value:
     - name: NB_LOG_LEVEL
-      value: warn
+      value: "warn"
 
     - name: NB_LISTEN_ADDRESS
       value: ":443"
