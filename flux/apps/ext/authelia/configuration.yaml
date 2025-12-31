@@ -136,32 +136,31 @@ data:
             filename: '/config/notification.txt'
         identity_providers:
           oidc:
-            enabled: true
             hmac_secret: {{ secret "/config/secrets/identity_provider.oidc.hmac_secret.key" | msquote }}
             jwks:
               - key_id: default
                 algorithm: 'RS256'
                 use: 'sig'
-                key: {{ secret "/config/secrets/identity_providers.oidc.jwks.key" | mindent 8 "|" | msquote }}
-                certificate_chain: {{ secret "/config/secrets/identity_providers.oidc.jwks.cert" | mindent 8 "|" | msquote }}
-          cors:
-            allowed_origins_from_client_redirect_uris: true
-            endpoints: [ userinfo, authorization, token, revocation, introspection ]
-          clients:
-            - client_id: netbird
-              client_secret: {{ secret "/config/secrets/identity_providers.clients.netbird.client_secret.key" | msquote }}
-              client_name: NetBird
-              public: false
-              authorization_policy: two_factor
-              pre_configured_consent_duration: 1 month
-              require_pkce: true
-              pkce_challenge_method: S256
-              audience: [ netbird ]
-              redirect_uris:
-                - http://localhost:53000
-                - https://netbird.fingol.pro/callback
-                - https://netbird.fingol.pro/silent-callback
-              scopes: [ openid, profile, email, offline_access ]
-              token_endpoint_auth_method: client_secret_post
+                key: {{ secret "/config/secrets/identity_providers.oidc.jwks.key" | mindent 10 "|" }}
+                certificate_chain: {{ secret "/config/secrets/identity_providers.oidc.jwks.cert" | mindent 10 "|" }}
+            cors:
+              allowed_origins_from_client_redirect_uris: true
+              endpoints: [ userinfo, authorization, token, revocation, introspection ]
+            clients:
+              - client_id: netbird
+                client_secret: {{ secret "/config/secrets/identity_providers.clients.netbird.client_secret.key" | msquote }}
+                client_name: NetBird
+                public: false
+                authorization_policy: two_factor
+                pre_configured_consent_duration: 1 month
+                require_pkce: true
+                pkce_challenge_method: S256
+                audience: [ netbird ]
+                redirect_uris:
+                  - http://localhost:53000
+                  - https://netbird.fingol.pro/callback
+                  - https://netbird.fingol.pro/silent-callback
+                scopes: [ openid, profile, email, offline_access ]
+                token_endpoint_auth_method: client_secret_post
         access_control:
           default_policy: 'two_factor'
