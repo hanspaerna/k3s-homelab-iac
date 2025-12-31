@@ -27,12 +27,12 @@ patches:
                     valueFrom:
                       secretKeyRef:
                         name: authelia
-                        key: oidc_hmac_secret_key
+                        key: identity_validation.reset_password.jwt.hmac.key
                   - name: OIDC_CLIENT_SECRET
                     valueFrom:
                       secretKeyRef:
                         name: authelia
-                        key: oidc_client_secret_key
+                        key: identity_providers.clients.netbird.client_secret.key
                 volumeMounts:
                   - name: authelia-users
                     mountPath: /usersdata/users-database.yaml
