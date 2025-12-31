@@ -137,19 +137,19 @@ data:
         identity_providers:
           oidc:
             enabled: true
-            hmac_secret: {{ env "OIDC_HMAC_SECRET" }}
+            hmac_secret: '{{ env "OIDC_HMAC_SECRET" }}'
             jwks:
               - key_id: default
                 algorithm: 'RS256'
                 use: 'sig'
-                key: {{ env "OIDC_JWKS_PRIVATE_KEY" }}
-                certificate_chain: {{ env "OIDC_JWKS_CERT" }}
+                key: '{{ env "OIDC_JWKS_PRIVATE_KEY" }}'
+                certificate_chain: '{{ env "OIDC_JWKS_CERT" }}'
           cors:
             allowed_origins_from_client_redirect_uris: true
             endpoints: [ userinfo, authorization, token, revocation, introspection ]
           clients:
             - client_id: netbird
-              client_secret: {{ env "OIDC_CLIENT_SECRET" }}
+              client_secret: '{{ env "OIDC_CLIENT_SECRET" }}'
               client_name: NetBird
               public: false
               authorization_policy: two_factor
