@@ -22,6 +22,17 @@ patches:
           spec:
             containers:
               - name: authelia
+                env:
+                  - name: OIDC_HMAC_SECRET
+                    valueFrom:
+                      secretKeyRef:
+                        name: authelia
+                        key: oidc_hmac_secret_key
+                  - name: OIDC_CLIENT_SECRET
+                    valueFrom:
+                      secretKeyRef:
+                        name: authelia
+                        key: oidc_client_secret_key
                 volumeMounts:
                   - name: authelia-users
                     mountPath: /usersdata/users-database.yaml
