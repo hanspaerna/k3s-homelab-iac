@@ -1,0 +1,36 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: auth-middleware-chain
+  namespace: netbird-dashboard
+spec:
+  chain:
+    middlewares:
+      - name: authelia-auth
+        namespace: traefik-ext
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: netbird-dashboard
+  namespace: netbird-dashboard
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-ext
+  hostnames:
+    - "netbird.fingol.pro"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: auth-middleware-chain
+      backendRefs:
+        - name: netbird-dashboard
+          port: 80
