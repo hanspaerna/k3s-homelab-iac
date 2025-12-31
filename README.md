@@ -53,6 +53,10 @@ kubectl run -i --rm curl-test \
   --namespace=traefik \
   -- sh -c "nslookup authelia.authelia.svc.cluster.local && curl -v http://authelia.authelia.svc.cluster.local:80/api/verify"
 
+### Suspend Flux during debugging with kubectl apply
+
+You may run flux suspend kustomizations --all to avert Flux from reconciling during an incident or other times.
+
 ## Traefik
 
 ### Gateway API
