@@ -22,27 +22,6 @@ patches:
           spec:
             containers:
               - name: authelia
-                env:
-                  - name: OIDC_HMAC_SECRET
-                    valueFrom:
-                      secretKeyRef:
-                        name: authelia
-                        key: identity_validation.reset_password.jwt.hmac.key
-                  - name: OIDC_CLIENT_SECRET
-                    valueFrom:
-                      secretKeyRef:
-                        name: authelia
-                        key: identity_providers.clients.netbird.client_secret.key
-                  - name: OIDC_JWKS_PRIVATE_KEY
-                    valueFrom:
-                      secretKeyRef:
-                        name: authelia
-                        key: identity_providers.oidc.jwks.key
-                  - name: OIDC_JWKS_CERT
-                    valueFrom:
-                      secretKeyRef:
-                        name: authelia
-                        key: identity_providers.oidc.jwks.cert
                 volumeMounts:
                   - name: authelia-users
                     mountPath: /usersdata/users-database.yaml
@@ -50,6 +29,9 @@ patches:
                     readOnly: true
                   - name: authelia-data
                     mountPath: /databases
+                  - name: authelia-secrets
+                    mountPath: /config/secrets
+                    readOnly: true
             volumes:
               - name: authelia-users
                 configMap:
@@ -60,3 +42,6 @@ patches:
               - name: authelia-data
                 persistentVolumeClaim:
                   claimName: authelia-data-pvc
+              - name: authelia-secrets
+                secret:
+                  secretName: authelia
