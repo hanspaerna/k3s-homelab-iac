@@ -33,6 +33,16 @@ patches:
                       secretKeyRef:
                         name: authelia
                         key: identity_providers.clients.netbird.client_secret.key
+                  - name: OIDC_JWKS_PRIVATE_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        name: authelia
+                        key: identity_providers.oidc.jwks.key
+                  - name: OIDC_JWKS_CERT
+                    valueFrom:
+                      secretKeyRef:
+                        name: authelia
+                        key: identity_providers.oidc.jwks.cert
                 volumeMounts:
                   - name: authelia-users
                     mountPath: /usersdata/users-database.yaml

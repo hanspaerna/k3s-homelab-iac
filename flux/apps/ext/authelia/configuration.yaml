@@ -139,6 +139,11 @@ data:
             enabled: true
             hmac_secret: {{ env "OIDC_HMAC_SECRET" }}
             jwks:
+              - key_id: default
+                algorithm: 'RS256'
+                use: 'sig'
+                key: {{ env "OIDC_JWKS_PRIVATE_KEY" }}
+                certificate_chain: {{ env "OIDC_JWKS_CERT" }}
           cors:
             allowed_origins_from_client_redirect_uris: true
             endpoints: [ userinfo, authorization, token, revocation, introspection ]
