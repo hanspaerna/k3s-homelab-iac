@@ -137,19 +137,19 @@ data:
         identity_providers:
           oidc:
             enabled: true
-            hmac_secret: {{ secret "/config/secrets/identity_provider.oidc.hmac_secret.key" | mindent 10 "|" | msquote }}
+            hmac_secret: {{ secret "/config/secrets/identity_provider.oidc.hmac_secret.key" | msquote }}
             jwks:
               - key_id: default
                 algorithm: 'RS256'
                 use: 'sig'
-                key: {{ secret "/config/secrets/identity_providers.oidc.jwks.key" | mindent 10 "|" | msquote }}
-                certificate_chain: {{ secret "/config/secrets/identity_providers.oidc.jwks.cert" | mindent 10 "|" | msquote }}
+                key: {{ secret "/config/secrets/identity_providers.oidc.jwks.key" | mindent 8 "|" | msquote }}
+                certificate_chain: {{ secret "/config/secrets/identity_providers.oidc.jwks.cert" | mindent 8 "|" | msquote }}
           cors:
             allowed_origins_from_client_redirect_uris: true
             endpoints: [ userinfo, authorization, token, revocation, introspection ]
           clients:
             - client_id: netbird
-              client_secret: {{ secret "/config/secrets/identity_providers.clients.netbird.client_secret.key" | mindent 10 "|" | msquote }}
+              client_secret: {{ secret "/config/secrets/identity_providers.clients.netbird.client_secret.key" | msquote }}
               client_name: NetBird
               public: false
               authorization_policy: two_factor
