@@ -11,13 +11,15 @@ spec:
     - "netbird.fingol.pro"
   rules:
     - matches:
-        - headers: [ { name: Content-Type, value: application/grpc } ]
+        - method:
+            service: management.ManagementService
       backendRefs:
         - name: netbird-management
           port: 80
 
     - matches:
-        - headers: [ { name: Content-Type, value: application/grpc } ]
+        - method:
+            service: signalexchange.SignalExchange
       backendRefs:
         - name: netbird-signal
           port: 80
