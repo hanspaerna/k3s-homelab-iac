@@ -43,6 +43,10 @@ patches:
                   - "--accesslog.format=json"
                   - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
                   - "--experimental.plugins.bouncer.version=v1.4.6"
+                volumeMounts:
+                  - name: plugins-storage
+                    mountPath: /plugins-storage
+
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
@@ -59,6 +63,9 @@ patches:
                 claimName: local-path-pvc
             - name: tmp
               emptyDir: {}
+            - name: plugins-storage
+              persistentVolumeClaim:
+                claimName: plugins-storage-pvc
 
   - patch: |-
       apiVersion: apps/v1
@@ -86,3 +93,4 @@ patches:
                   containerPort: 8080
                   protocol: TCP
 
+ 
