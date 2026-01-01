@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - configmap.yaml
   - secrets.yaml
+  - grpcroute.yaml
 
 patches:
   - target:
