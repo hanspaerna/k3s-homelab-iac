@@ -23,6 +23,7 @@ patches:
       spec:
         template:
           spec:
+            hostNetwork: true
             containers:
               - name: traefik
                 args:
