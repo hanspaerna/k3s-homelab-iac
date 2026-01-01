@@ -65,7 +65,7 @@ patches:
                   - |
                     set -e
                     BNAME="traefik-bouncer"
-                    API_HOST="http://crowdsec-service.crowdsec:8080"
+                    API_HOST="http://crowdsec-service.crowdsec.svc.cluster.local:8080"
                     EXISTING_KEY=$(curl -s "$API_HOST/v1/bouncers" \
                       -H "Registration-Token: $REGISTRATION_TOKEN" \
                       | sed -n 's/.*"name":"'"$BNAME"'","api_key":"\([^"]*\)".*/\1/p')
