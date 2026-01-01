@@ -21,6 +21,6 @@ spec:
     bouncer:
       enabled: true
       crowdsecMode: none
-      crowdsecLapiScheme: https
+      crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKey: cIuxGh4GJY49kXY+JZAzWjYbHBS9QKWTZL9qw/N2Fk0
