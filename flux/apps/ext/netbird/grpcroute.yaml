@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: grpc-route
+  namespace: netbird
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-ext
+  hostnames:
+    - "netbird.fingol.pro"
+  rules:
+    - matches:
+        - headers: [ { name: Content-Type, value: application/grpc } ]
+      backendRefs:
+        - name: netbird-management
+          port: 80
+
+    - matches:
+        - headers: [ { name: Content-Type, value: application/grpc } ]
+      backendRefs:
+        - name: netbird-signal
+          port: 80

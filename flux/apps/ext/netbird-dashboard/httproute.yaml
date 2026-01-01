@@ -33,22 +33,3 @@ spec:
       backendRefs:
         - name: netbird-relay
           port: 33080
-   
-    # for gRPC calls          
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /management.ManagementService/
-      backendRefs:
-        - name: netbird-management
-          port: 80
-   
-    # for gRPC calls
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /signalexchange.SignalExchange/
-      backendRefs:
-        - name: netbird-signal
-          port: 80
-
