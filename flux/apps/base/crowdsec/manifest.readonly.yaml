@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-01T16:30:09+0100
+# Generated with Renderer.sh at 2026-01-01T17:37:54+0100
 # Chart version: 0.21.1
 # Repo: https://crowdsecurity.github.io/helm-charts
 # Chart name: crowdsec
@@ -15,8 +15,8 @@ metadata:
     version: v1
 type: Opaque
 data:
-  csLapiSecret: YjFYNmBFdDUheiUvY3k0U2R+JCk3cG4meyMpOnAuYlNScicsTzktfGBiYSBEREVuPU9RSUlTWDNDSnxYWFo1TA==
-  registrationToken: N0VqcVpNOUZnYngyZk1udjV1eTBRZ3R5NU5pb3o1ZjBpRXlzb2V1akh4ZE54ZUZG
+  csLapiSecret: MFYiQjFjSnkoXFt5KyE1ciU0KXA7OVE8bWxKPVlWKnI5ZXljKHxyKk1JenR4P09KflhQT3gzfiRxMF1NUVYqLA==
+  registrationToken: WVVnWExSemo0OHU3WnVqSEZLdVZ2bjNJQ1RmdnRsVkNvRlZPOXRFMUNSdGVQcWpt
 ---
 # Source: crowdsec/templates/acquis-configmap.yaml
 apiVersion: v1
@@ -688,7 +688,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/lapi-secret: 81a95ba06c4c0cd5fcae89b4e14f37f28924d24a63f9910054846d52289c05e0
+        checksum/lapi-secret: cfe2a15b066545ab68f2f187a3dddcb4f79ce747153ddc1dfcea65247bb590cb
         checksum/lapi-configmap: 5f81bdc08f32bc76fdb8210fa8afd96c741d1bb334f2cbf5d3a76cd7cd8e4ba7
       labels:
         k8s-app: crowdsec
