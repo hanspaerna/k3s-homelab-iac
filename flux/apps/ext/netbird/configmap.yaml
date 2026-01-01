@@ -66,7 +66,7 @@ data:
                 "TokenEndpoint": "${CUSTOM_NETBIRD_PKCE_TOKEN_ENDPOINT}",
                 "Scope": "openid profile email",
                 "RedirectURLs": [
-                    "http://localhost:53000",
+                    "http://localhost:53000"
                 ],
                 "UseIDToken": true
             }
