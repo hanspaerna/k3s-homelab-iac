@@ -25,12 +25,6 @@ spec:
         - path:
             type: PathPrefix
             value: /
-      filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: traefik.io
-            kind: Middleware
-            name: auth-middleware-chain
       backendRefs:
         - name: netbird-dashboard
           port: 80

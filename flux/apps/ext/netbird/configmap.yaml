@@ -49,7 +49,7 @@ data:
             "AuthUserIDClaim": "${NETBIRD_AUTH_USER_ID_CLAIM}",
             "CertFile": "",
             "CertKey": "",
-            "IdpSignKeyRefreshEnabled": false,
+            "IdpSignKeyRefreshEnabled": true,
             "OIDCConfigEndpoint": "${NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT}"
         },
         "IdpManagerConfig": {
@@ -58,17 +58,15 @@ data:
         },
         "PKCEAuthorizationFlow": {
             "ProviderConfig": {
-                "Audience": "",
+                "Audience": "netbird",
                 "ClientID": "netbird",
                 "ClientSecret": "${CUSTOM_NETBIRD_PKCE_CLIENT_SECRET}",
                 "Domain": "",
                 "AuthorizationEndpoint": "${CUSTOM_NETBIRD_PKCE_AUTH_ENDPOINT}",
                 "TokenEndpoint": "${CUSTOM_NETBIRD_PKCE_TOKEN_ENDPOINT}",
-                "Scope": "openid profile email",
+                "Scope": "openid profile email offline_access netbird-api",
                 "RedirectURLs": [
                     "http://localhost:53000",
-                    "https://netbird.fingol.pro/callback",
-                    "https://netbird.fingol.pro/silent-callback"
                 ],
                 "UseIDToken": true
             }
