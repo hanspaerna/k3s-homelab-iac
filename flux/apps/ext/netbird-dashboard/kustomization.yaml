@@ -3,6 +3,7 @@ namespace: netbird
 resources:
   - ../../base/netbird-dashboard/
   - secrets.yaml
+  - httproute.yaml
 
 patches:
   - target:

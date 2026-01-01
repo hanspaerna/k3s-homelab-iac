@@ -15,9 +15,9 @@
     - name: AUTH_SUPPORTED_SCOPES
       value: "openid profile email"
     - name: AUTH_REDIRECT_URI
-      value: "/auth"
+      value: "/callback"
     - name: AUTH_SILENT_REDIRECT_URI
-      value: "/silent-auth"
+      value: "/silent-callback"
     - name: NETBIRD_TOKEN_SOURCE
       value: "idToken"
     - name: USE_AUTH0
