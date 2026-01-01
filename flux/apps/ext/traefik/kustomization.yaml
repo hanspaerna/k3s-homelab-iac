@@ -47,49 +47,6 @@ patches:
                 volumeMounts:
                   - name: plugins-storage
                     mountPath: /plugins-storage
-            initContainers:
-              - name: fetch-crowdsec-key
-                image: curlimages/curl:8.1.2
-                env:
-                  - name: REGISTRATION_TOKEN
-                    valueFrom:
-                      secretKeyRef:
-                        name: crowdsec-lapi-secrets
-                        key: registrationToken
-                volumeMounts:
-                  - name: tmp
-                    mountPath: /tmp
-                command:
-                  - sh
-                  - -c
-                  - |
-                    set -e
-                    BNAME="traefik-bouncer"
-                    API_HOST="http://crowdsec-service.crowdsec.svc.cluster.local:8080"
-                    EXISTING_KEY=$(curl -s "$API_HOST/v1/bouncers" \
-                      -H "Registration-Token: $REGISTRATION_TOKEN" \
-                      | sed -n 's/.*"name":"'"$BNAME"'","api_key":"\([^"]*\)".*/\1/p')
-
-                    if [ -n "$EXISTING_KEY" ]; then
-                      echo "Bouncer already exists, using existing key"
-                      echo "$EXISTING_KEY" > /tmp/crowdsec.key
-                    else
-                      echo "Bouncer does not exist, registering new one..."
-                      NEW_KEY=$(curl -s -X POST "$API_HOST/v1/bouncers/register" \
-                        -H "Registration-Token: $REGISTRATION_TOKEN" \
-                        -d "{\"name\":\"$BNAME\"}" \
-                        | sed -n 's/.*"api_key":"\([^"]*\)".*/\1/p')
-
-                      if [ -z "$NEW_KEY" ]; then
-                        echo "Failed to obtain CrowdSec API key!" >&2
-                        exit 1
-                      fi
-
-                      echo "$NEW_KEY" > /tmp/crowdsec.key
-                    fi
-
-                    chmod 600 /tmp/crowdsec.key
-                    echo "CrowdSec API key successfully written to /tmp/crowdsec.key"
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
