@@ -44,8 +44,6 @@ patches:
                   - "--accesslog.format=json"
                   - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
                   - "--experimental.plugins.bouncer.version=v1.4.6"
-                  - "--experimental.plugins.bouncer.crowdsecLapiHost=crowdsec-lapi:8080"
-                  - "--experimental.plugins.bouncer.crowdsecLapiKey=/tmp/crowdsec.key"
                 volumeMounts:
                   - name: plugins-storage
                     mountPath: /plugins-storage
