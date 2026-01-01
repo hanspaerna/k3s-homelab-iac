@@ -44,13 +44,6 @@ patches:
                   - "--accesslog.format=json"
                   - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
                   - "--experimental.plugins.bouncer.version=v1.4.6"
-                  - "--experimental.plugins.bouncer.crowdseclapikey=$(CROWDSEC_LAPI_KEY)"
-                env:
-                  - name: CROWDSEC_LAPI_KEY
-                    valueFrom:
-                      secretKeyRef:
-                        name: bouncer-lapi-secret
-                        key: key
                 volumeMounts:
                   - name: plugins-storage
                     mountPath: /plugins-storage
