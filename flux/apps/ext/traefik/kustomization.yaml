@@ -47,9 +47,8 @@ patches:
                 volumeMounts:
                   - name: plugins-storage
                     mountPath: /plugins-storage
-                volumeMounts:
                   - name: bouncer-lapi-secret
-                    mountPath: /bouncer-lapi-secret
+                    mountPath: /lapisecret
                     readOnly: true
   - patch: |-
       apiVersion: apps/v1
