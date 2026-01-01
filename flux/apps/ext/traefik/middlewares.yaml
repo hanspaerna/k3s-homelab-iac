@@ -20,7 +20,8 @@ spec:
   plugin:
     bouncer:
       enabled: true
-      crowdsecMode: none
+      crowdsecMode: stream
+      logLevel: DEBUG
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKeyFile: /lapisecret/key
