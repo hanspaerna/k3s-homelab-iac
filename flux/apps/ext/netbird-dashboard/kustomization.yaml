@@ -5,6 +5,10 @@ resources:
   - secrets.yaml
   - httproute.yaml
 
+images:
+  - name: netbirdio/dashboard
+    newTag: 2.25.0
+
 patches:
   - target:
       group: apps

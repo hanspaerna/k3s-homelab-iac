@@ -7,6 +7,14 @@ resources:
   - secrets.yaml
   - grpcroute.yaml
 
+images:
+  - name: netbirdio/management
+    newTag: 0.61.0
+  - name: netbirdio/relay
+    newTag: 0.61.0
+  - name: netbirdio/signal
+    newTag: 0.61.0
+
 patches:
   - target:
       group: apps
