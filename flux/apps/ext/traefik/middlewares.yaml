@@ -23,4 +23,3 @@ spec:
       crowdsecMode: none
       crowdsecLapiScheme: https
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
-      crowdsecLapiKey: "/tmp/crowdsec.key"
