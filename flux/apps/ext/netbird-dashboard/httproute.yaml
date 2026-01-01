@@ -1,14 +1,3 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: auth-middleware-chain
-  namespace: netbird
-spec:
-  chain:
-    middlewares:
-      - name: authelia-auth
-        namespace: traefik-ext
----
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -28,27 +17,38 @@ spec:
       backendRefs:
         - name: netbird-dashboard
           port: 80
-    - backendRefs:
-        - name: netbird-relay
-          port: 33080
-      matches:
-        - path:
-            type: PathPrefix
-            value: /relay
-    - backendRefs:
-        - name: netbird-management
-          port: 80
-      matches:
+    
+    - matches:
         - path:
             type: PathPrefix
             value: /api
+      backendRefs:
+        - name: netbird-management
+          port: 80
+     
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /relay   
+      backendRefs:
+        - name: netbird-relay
+          port: 33080
+   
+    # for gRPC calls          
+    - matches:
         - path:
             type: PathPrefix
             value: /management.ManagementService/
-    - backendRefs:
-        - name: netbird-signal
+      backendRefs:
+        - name: netbird-management
           port: 80
-      matches:
+   
+    # for gRPC calls
+    - matches:
         - path:
             type: PathPrefix
             value: /signalexchange.SignalExchange/
+      backendRefs:
+        - name: netbird-signal
+          port: 80
+
