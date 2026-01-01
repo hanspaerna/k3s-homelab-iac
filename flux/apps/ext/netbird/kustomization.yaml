@@ -1,4 +1,4 @@
-namespace: netbird-management
+namespace: netbird
 
 resources:
   - ../../base/netbird/

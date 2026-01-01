@@ -13,11 +13,11 @@
           name: netbird-dashboard-secret
           key: netbird-auth-client-secret-key
     - name: AUTH_SUPPORTED_SCOPES
-      value: "openid profile email offline_access netbird-api"
+      value: "openid profile email"
     - name: AUTH_REDIRECT_URI
-      value: "/callback"
+      value: "/peers"
     - name: AUTH_SILENT_REDIRECT_URI
-      value: "/silent-callback"
+      value: "/add-peers"
     - name: NETBIRD_TOKEN_SOURCE
       value: "idToken"
     - name: USE_AUTH0

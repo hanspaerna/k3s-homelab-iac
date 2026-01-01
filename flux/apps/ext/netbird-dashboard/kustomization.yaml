@@ -1,4 +1,4 @@
-namespace: netbird-dashboard
+namespace: netbird
 
 resources:
   - ../../base/netbird-dashboard/
