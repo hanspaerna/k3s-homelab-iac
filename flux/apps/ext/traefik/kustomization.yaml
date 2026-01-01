@@ -63,9 +63,12 @@ patches:
                   - sh
                   - -c
                   - |
-                    EXISTING_KEY=$(curl -s "http://crowdsec-lapi:8080/v1/bouncers" \
+                    set -e
+                    BNAME="traefik-bouncer"
+                    API_HOST="http://crowdsec-lapi:8080"
+                    EXISTING_KEY=$(curl -s "$API_HOST/v1/bouncers" \
                       -H "Registration-Token: $REGISTRATION_TOKEN" \
-                      | grep -oP '"name":"'"$BNAME"'","api_key":"\K[^"]+')
+                      | sed -n 's/.*"name":"'"$BNAME"'","api_key":"\([^"]*\)".*/\1/p')
 
                     if [ -n "$EXISTING_KEY" ]; then
                       echo "Bouncer already exists, using existing key"
@@ -74,11 +77,19 @@ patches:
                       echo "Bouncer does not exist, registering new one..."
                       NEW_KEY=$(curl -s -X POST "$API_HOST/v1/bouncers/register" \
                         -H "Registration-Token: $REGISTRATION_TOKEN" \
-                        -d "{\"name\":\"traefik-bouncer\"}" \
-                        | grep -oP '"api_key":"\K[^"]+')
+                        -d "{\"name\":\"$BNAME\"}" \
+                        | sed -n 's/.*"api_key":"\([^"]*\)".*/\1/p')
+
+                      if [ -z "$NEW_KEY" ]; then
+                        echo "Failed to obtain CrowdSec API key!" >&2
+                        exit 1
+                      fi
+
                       echo "$NEW_KEY" > /tmp/crowdsec.key
                     fi
+
                     chmod 600 /tmp/crowdsec.key
+                    echo "CrowdSec API key successfully written to /tmp/crowdsec.key"
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
