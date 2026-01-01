@@ -10,6 +10,7 @@ resources:
   - pvc.yaml
   - middlewares.yaml
   - grants.yaml
+  - secrets.yaml
   - ../../base/traefik/
 
 patches:
@@ -43,10 +44,43 @@ patches:
                   - "--accesslog.format=json"
                   - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
                   - "--experimental.plugins.bouncer.version=v1.4.6"
+                  - "--experimental.plugins.bouncer.crowdsecLapiHost=crowdsec-lapi:8080"
+                  - "--experimental.plugins.bouncer.crowdsecLapiKey=/tmp/crowdsec.key"
                 volumeMounts:
                   - name: plugins-storage
                     mountPath: /plugins-storage
+            initContainers:
+              - name: fetch-crowdsec-key
+                image: curlimages/curl:8.1.2
+                env:
+                  - name: REGISTRATION_TOKEN
+                    valueFrom:
+                      secretKeyRef:
+                        name: crowdsec-lapi-secrets
+                        key: registrationToken
+                volumeMounts:
+                  - name: tmp
+                    mountPath: /tmp
+                command:
+                  - sh
+                  - -c
+                  - |
+                    EXISTING_KEY=$(curl -s "http://crowdsec-lapi:8080/v1/bouncers" \
+                      -H "Registration-Token: $REGISTRATION_TOKEN" \
+                      | grep -oP '"name":"'"$BNAME"'","api_key":"\K[^"]+')
 
+                    if [ -n "$EXISTING_KEY" ]; then
+                      echo "Bouncer already exists, using existing key"
+                      echo "$EXISTING_KEY" > /tmp/crowdsec.key
+                    else
+                      echo "Bouncer does not exist, registering new one..."
+                      NEW_KEY=$(curl -s -X POST "$API_HOST/v1/bouncers/register" \
+                        -H "Registration-Token: $REGISTRATION_TOKEN" \
+                        -d "{\"name\":\"traefik-bouncer\"}" \
+                        | grep -oP '"api_key":"\K[^"]+')
+                      echo "$NEW_KEY" > /tmp/crowdsec.key
+                    fi
+                    chmod 600 /tmp/crowdsec.key
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
