@@ -2,7 +2,6 @@ namespace: netbird
 
 resources:
   - ../../base/netbird-dashboard/
-  - namespace.yaml
   - secrets.yaml
 
 patches:
