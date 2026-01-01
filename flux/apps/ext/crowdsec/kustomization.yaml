@@ -1,0 +1,6 @@
+namespace: crowdsec
+
+resources:
+  - ../../base/crowdsec/
+  - namespace.yaml
+  - secrets.yaml

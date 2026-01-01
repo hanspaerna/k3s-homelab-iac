@@ -41,6 +41,8 @@ patches:
                   - "--providers.kubernetesgateway=true"
                   - "--accesslog=true"
                   - "--accesslog.format=json"
+                  - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+                  - "--experimental.plugins.bouncer.version=v1.4.6"
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment

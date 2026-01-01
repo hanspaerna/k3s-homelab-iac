@@ -98,6 +98,8 @@ metadata:
 spec:
   chain:
     middlewares:
+      - name: bouncer
+        namespace: traefik-ext
       - name: authelia-auth
         namespace: traefik-ext
 ---

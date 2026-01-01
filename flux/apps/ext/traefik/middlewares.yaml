@@ -10,3 +10,16 @@ spec:
     authResponseHeaders:
       - "Remote-User"
       - "Remote-Groups"
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: bouncer
+  namespace: traefik-ext
+spec:
+  plugin:
+    bouncer:
+      enabled: true
+      crowdsecMode: none
+      crowdsecLapiScheme: https
+      crowdsecLapiHost: crowdsec-service.crowdsec:8080

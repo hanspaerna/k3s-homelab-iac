@@ -1,0 +1,7 @@
+# setting at least one 'agent.acquisition' is required before running helm install or renderer.sh
+
+agent:
+  acquisition:
+    - namespace: traefik-ext
+      podName: traefik-*
+      program: traefik
