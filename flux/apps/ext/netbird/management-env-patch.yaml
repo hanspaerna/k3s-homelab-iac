@@ -4,7 +4,7 @@
     - name: NETBIRD_STORE_CONFIG_ENGINE
       value: "sqlite"
     - name: NETBIRD_SIGNAL_URI
-      value: "netbird.fingol.pro:9443"
+      value: "netbird.fingol.pro:443"
     - name: NETBIRD_SIGNAL_PROTOCOL
       value: "https"
     - name: NETBIRD_STUN_URI
@@ -16,7 +16,7 @@
     - name: NETBIRD_RELAY_DOMAIN
       value: "netbird.fingol.pro"
     - name: NETBIRD_RELAY_PORT
-      value: "33080"
+      value: "443"
 
     - name: CUSTOM_NETBIRD_AUTH_ISSUER
       value: "https://auth.fingol.pro"
