@@ -57,6 +57,10 @@ kubectl run -i --rm curl-test \
 
 You may run flux suspend kustomizations --all to avert Flux from reconciling during an incident or other times.
 
+### Add Crowdsec bouncer with your pre-defined key
+
+cscli bouncers add test-bouncer -k <your_key> 
+
 ## Traefik
 
 ### Gateway API

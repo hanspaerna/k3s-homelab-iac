@@ -10,6 +10,8 @@ spec:
   routes:
     - match: Host(`traefik.fingol.pro`)
       middlewares:
+      - name: bouncer
+        namespace: traefik-ext
       - name: authelia-auth
         namespace: traefik-ext
       kind: Rule

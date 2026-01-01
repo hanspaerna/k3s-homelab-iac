@@ -93,7 +93,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: stub-website-auth-chain
+  name: middleware-chain
   namespace: stub-website
 spec:
   chain:
@@ -124,7 +124,7 @@ spec:
           extensionRef:
             group: traefik.io
             kind: Middleware
-            name: stub-website-auth-chain
+            name: middleware-chain
       backendRefs:
         - name: stub-website
           port: 80
