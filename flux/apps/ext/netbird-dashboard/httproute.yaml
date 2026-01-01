@@ -30,7 +30,7 @@ spec:
           port: 80
     - backendRefs:
         - name: netbird-relay
-          port: 80
+          port: 33080
       matches:
         - path:
             type: PathPrefix

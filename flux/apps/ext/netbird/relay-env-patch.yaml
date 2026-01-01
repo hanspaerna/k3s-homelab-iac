@@ -2,13 +2,13 @@
   path: /spec/template/spec/containers/0/env
   value:
     - name: NB_LOG_LEVEL
-      value: "warn"
+      value: "info"
 
     - name: NB_LISTEN_ADDRESS
-      value: ":443"
+      value: ":33080"
 
     - name: NB_EXPOSED_ADDRESS
-      value: "relay.example.com:443"
+      value: "rels://netbird.fingol.pro/relay"
 
     - name: NB_AUTH_SECRET
       valueFrom:
