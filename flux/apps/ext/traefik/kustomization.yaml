@@ -62,6 +62,10 @@ patches:
                     mountPath: /lapisecret
                     readOnly: true
                 securityContext:
+                  runAsUser: 65532
+                  runAsGroup: 65532
+                  runAsNonRoot: true
+                  allowPrivilegeEscalation: false
                   capabilities:
                     add:
                       - NET_BIND_SERVICE
