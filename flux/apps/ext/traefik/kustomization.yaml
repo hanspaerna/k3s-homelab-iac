@@ -33,6 +33,7 @@ patches:
         template:
           spec:
             hostNetwork: true
+            dnsPolicy: ClusterFirstWithHostNet
             containers:
               - name: traefik
                 args:
