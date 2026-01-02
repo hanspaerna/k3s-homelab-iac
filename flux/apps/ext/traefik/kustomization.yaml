@@ -28,7 +28,7 @@ patches:
       kind: Deployment
       metadata:
         name: traefik
-        namespace: traefik-ext
+        namespace: traefik
       spec:
         template:
           spec:
