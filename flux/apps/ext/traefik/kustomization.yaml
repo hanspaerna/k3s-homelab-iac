@@ -28,6 +28,20 @@ patches:
       kind: Deployment
       metadata:
         name: traefik
+        namespace: traefik-ext
+      spec:
+        template:
+          spec:
+            containers:
+            - name: traefik
+              securityContext:
+                $patch: delete
+
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
         namespace: traefik
       spec:
         template:
@@ -38,6 +52,8 @@ patches:
               runAsUser: 0
               runAsGroup: 0
               runAsNonRoot: false
+              seccompProfile:
+                type: Unconfined
             containers:
               - name: traefik
                 args:
