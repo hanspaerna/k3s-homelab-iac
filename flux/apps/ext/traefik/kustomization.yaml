@@ -117,7 +117,7 @@ patches:
                   - "--setup-key=$(NETBIRD_SETUP_KEY)"
                   - "--log-level=info"
                 volumeMounts:
-                  - name: netbird-client-data-pvc
+                  - name: netbird-client-data
                     mountPath: /var/lib/netbird
 
   - patch: |-
