@@ -47,6 +47,9 @@ patches:
         namespace: traefik
       spec:
         template:
+          metadata:
+            annotations:
+              netbird.io/setup-key: nb-setup-key # Must match the name of an NBSetupKey object in the same namespace
           spec:
             hostNetwork: true
             dnsPolicy: ClusterFirstWithHostNet
