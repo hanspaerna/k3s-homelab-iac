@@ -1,7 +1,0 @@
-#namespace: netbird-operator
-#
-#resources:
-#  - ../../base/netbird-operator/
-#  - namespace.yaml
-#  - secrets.yaml
-#  - setup_keys.yaml
