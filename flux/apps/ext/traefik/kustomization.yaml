@@ -14,6 +14,15 @@ resources:
   - ../../base/traefik/
 
 patches:
+  # we bind Traefik directly to host network, no need for a Service
+  - patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: traefik
+        namespace: traefik
+
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
@@ -51,6 +60,7 @@ patches:
                   - name: bouncer-lapi-secret
                     mountPath: /lapisecret
                     readOnly: true
+
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
@@ -89,15 +99,19 @@ patches:
                 - $patch: replace
                 - name: web
                   containerPort: 80
+                  hostPort: 80
                   protocol: TCP
                 - name: websecure
                   containerPort: 443
+                  hostPort: 443
                   protocol: TCP
                 - name: metrics
                   containerPort: 9100
+                  hostPort: 9100
                   protocol: TCP
                 - name: traefik
                   containerPort: 8080
+                  hostPort: 8080
                   protocol: TCP
 
  
