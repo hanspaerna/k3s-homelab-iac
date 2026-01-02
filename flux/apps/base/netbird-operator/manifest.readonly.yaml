@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-02T21:59:40+0100
+# Generated with Renderer.sh at 2026-01-02T23:17:15+0100
 # Chart version: 0.1.15
 # Repo name: netbirdio
 # Repo: https://netbirdio.github.io/kubernetes-operator
@@ -52,6 +52,77 @@ rules:
   - patch
   - update
 - apiGroups:
+  - netbird.io
+  resources:
+  - nbgroups
+  - nbresources
+  - nbroutingpeers
+  - nbpolicies
+  verbs:
+  - get
+  - patch
+  - update
+  - list
+  - watch
+  - create
+  - delete
+- apiGroups:
+  - netbird.io
+  resources:
+  - nbgroups/status
+  - nbresources/status
+  - nbroutingpeers/status
+  - nbpolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - netbird.io
+  resources:
+  - nbgroups/finalizers
+  - nbresources/finalizers
+  - nbroutingpeers/finalizers
+  - nbpolicies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - patch
+  - update
+  - list
+  - watch
+  - create
+  - delete
+- apiGroups:
   - ""
   resources:
   - pods
@@ -67,6 +138,10 @@ rules:
   - get
   - list
   - watch
+  - patch
+  - update
+  - create
+  - delete
 ---
 # Source: kubernetes-operator/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -247,6 +322,7 @@ spec:
           - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
           - --cluster-name=kubernetes
           - --cluster-dns=svc.cluster.local
+          - --netbird-api-key=$(NB_API_KEY)
           ports:
             - name: webhook-server
               containerPort: 443
@@ -261,6 +337,12 @@ spec:
             periodSeconds: 20
             successThreshold: 1
             timeoutSeconds: 1
+          env:
+            - name: NB_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: key
           readinessProbe:
             failureThreshold: 3
             httpGet:
