@@ -100,11 +100,9 @@ patches:
                 - $patch: replace
                 - name: web
                   containerPort: 80
-                  hostPort: 80
                   protocol: TCP
                 - name: websecure
                   containerPort: 443
-                  hostPort: 443
                   protocol: TCP
                 - name: metrics
                   containerPort: 9100
@@ -112,7 +110,6 @@ patches:
                   protocol: TCP
                 - name: traefik
                   containerPort: 8080
-                  hostPort: 8080
                   protocol: TCP
 
  
