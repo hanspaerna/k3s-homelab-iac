@@ -115,6 +115,7 @@ patches:
                 args:
                   - "run"
                   - "--setup-key=$(NETBIRD_SETUP_KEY)"
+                  - "--management-url=https://netbird.fingol.pro"
                   - "--log-level=info"
                 volumeMounts:
                   - name: netbird-client-data
