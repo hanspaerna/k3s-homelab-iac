@@ -44,7 +44,9 @@
           --cluster-init \
           --write-kubeconfig-mode=644 \
           --tls-san={{ ansible_host }} \
-          --node-name={{ inventory_hostname }}
+          --node-name={{ inventory_hostname }} \
+          --disable=traefik \
+          --disable=servicelb
       args:
         creates: /usr/local/bin/k3s
 
@@ -188,10 +190,12 @@
   tags: fluxcd
 
 - name: Install Age-SOPS secret into cluster
-  delegate_to: localhost
+  hosts: localhost
   become: false
-  environment:
-    - KUBECONFIG: '{{ playbook_dir }}/../.kubeconfig-internal'
   tasks:
-    - ansible.builtin.command:
-        cmd: cat age.agekey | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin
+    - name: (Re-)create sops-age secret resource
+      ansible.builtin.shell: |
+        kubectl delete secret sops-age --namespace=flux-system --ignore-not-found
+        cat ../age.agekey | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin
+      environment:
+        - KUBECONFIG: '{{ playbook_dir }}/../.kubeconfig-internal'
