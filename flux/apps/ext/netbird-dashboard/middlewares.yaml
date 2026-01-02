@@ -1,0 +1,11 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: middleware-chain
+  namespace: netbird
+spec:
+  chain:
+    middlewares:
+      - name: bouncer
+        namespace: traefik-ext
+      # protected by OIDC, don't use auth middleware here

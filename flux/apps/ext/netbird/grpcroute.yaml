@@ -16,6 +16,12 @@ spec:
       backendRefs:
         - name: netbird-management
           port: 80
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: middleware-chain # defined in netbird-dashboard/middlewares.yaml
 
     - matches:
         - method:
@@ -23,3 +29,9 @@ spec:
       backendRefs:
         - name: netbird-signal
           port: 80
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: middleware-chain
