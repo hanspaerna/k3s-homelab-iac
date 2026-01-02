@@ -23,6 +23,8 @@ patches:
         name: traefik
         namespace: traefik
 
+  # we use securityContext block from Deployment resource level
+  # rootless binding to :80 and :443 on host does not work, so we'll define a root access
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
@@ -52,8 +54,6 @@ patches:
               runAsUser: 0
               runAsGroup: 0
               runAsNonRoot: false
-              seccompProfile:
-                type: Unconfined
             containers:
               - name: traefik
                 args:
