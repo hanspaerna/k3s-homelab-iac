@@ -21,7 +21,7 @@ spec:
     bouncer:
       enabled: true
       crowdsecMode: stream
-      logLevel: DEBUG
+#      logLevel: DEBUG
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKeyFile: /lapisecret/key
