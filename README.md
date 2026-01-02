@@ -84,3 +84,7 @@ A copy will be created in the clusterfor each namespace on the reconciliation st
 ## TODOs
 
 - Connect renovate or dependabot to Github repo for getting update PRs
+
+## Authelia
+
+A secret code to create TOTP will be created in the authelia's container: /config/notification.txt
