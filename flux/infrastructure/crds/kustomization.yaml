@@ -4,3 +4,4 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - traefik-crds.readonly.yaml
+  - netbird-operator/

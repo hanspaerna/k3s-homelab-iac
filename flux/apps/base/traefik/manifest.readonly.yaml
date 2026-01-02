@@ -2,7 +2,6 @@
 # Chart version: 38.0.1
 # Repo: https://traefik.github.io/charts
 # Chart name: traefik
-# Release name: traefik
 ---
 # Source: traefik/templates/rbac/serviceaccount.yaml
 kind: ServiceAccount

@@ -19,17 +19,19 @@ usage() {
   cat <<EOF
 Usage:
   $0 --chart NAME \\
+     --repo-name NAME \\
      --repo URL \\
      --version VERSION \\
-     --release NAME \\
+     --folder NAME \\
      --namespace NAMESPACE
      --is-infrastructure BOOL
 
 Required flags:
   --chart              Helm chart name (e.g. traefik)
+  --repo-name          Helm chart repository name 
   --repo               Helm chart repository URL
   --version            Chart version (pinned)
-  --release            Helm release name
+  --folder             A name of a folder the manifest will be put into (.../base/<folder>)
   --namespace          Kubernetes namespace
   --is-infrastructure  Should be installed either in "apps/base" or "infrastructure/base"
 
@@ -43,6 +45,10 @@ while [[ $# -gt 0 ]]; do
       CHART_NAME="$2"
       shift 2
       ;;
+    --repo-name)
+      REPO_NAME="$2"
+      shift 2
+      ;;
     --repo)
       CHART_REPO="$2"
       shift 2
@@ -51,8 +57,8 @@ while [[ $# -gt 0 ]]; do
       CHART_VERSION="$2"
       shift 2
       ;;
-    --release)
-      RELEASE_NAME="$2"
+    --folder)
+      FOLDER="$2"
       shift 2
       ;;
     --namespace)
@@ -77,10 +83,11 @@ if [[ $? -ne 0 ]]; then
   usage
 fi
 
+: "${REPO_NAME:?Missing --repo-name}"
 : "${CHART_NAME:?Missing --chart}"
 : "${CHART_REPO:?Missing --repo}"
 : "${CHART_VERSION:?Missing --version}"
-: "${RELEASE_NAME:?Missing --release}"
+: "${FOLDER:?Missing --folder}"
 : "${NAMESPACE:?Missing --namespace}"
 : "${IS_INFRASTRUCTURE:?Missing --is-infrastructure}"
 
@@ -90,9 +97,8 @@ if [ "$IS_INFRASTRUCTURE" = true ] ; then
     INSTALLATION_TYPE="infrastructure"
 fi
 
-OUTPUT_FILE="./flux/${INSTALLATION_TYPE}/base/${RELEASE_NAME}/manifest.readonly.yaml"
-VALUES_FILE="./flux/${INSTALLATION_TYPE}/base/${RELEASE_NAME}/values-base.yaml"
-REPO_NAME="temp-repo-$(echo "${CHART_NAME}" | tr '/' '-')"
+OUTPUT_FILE="./flux/${INSTALLATION_TYPE}/base/${FOLDER}/manifest.readonly.yaml"
+VALUES_FILE="./flux/${INSTALLATION_TYPE}/base/${FOLDER}/values-base.yaml"
 
 cleanup() {
   helm repo remove "${REPO_NAME}" >/dev/null 2>&1 || true
@@ -105,14 +111,14 @@ helm repo update >/dev/null
 echo "Rendering ${CHART_NAME}@${CHART_VERSION} → ${OUTPUT_FILE}"
 
 if [[ -f "${VALUES_FILE}" ]]; then
-  helm template "${RELEASE_NAME}" "${REPO_NAME}/${CHART_NAME}" \
+  helm template "${FOLDER}" "${REPO_NAME}/${CHART_NAME}" \
     --version "${CHART_VERSION}" \
     --namespace "${NAMESPACE}" \
     --skip-crds \
     --values "${VALUES_FILE}" \
     > "${OUTPUT_FILE}"
 else
-  helm template "${RELEASE_NAME}" "${REPO_NAME}/${CHART_NAME}" \
+  helm template "${FOLDER}" "${REPO_NAME}/${CHART_NAME}" \
     --version "${CHART_VERSION}" \
     --namespace "${NAMESPACE}" \
     --skip-crds \
@@ -129,9 +135,9 @@ TEMP_FILE=$(mktemp)
 {
   printf '# Generated with Renderer.sh at %s\n' "$DATE_NOW"
   printf '# Chart version: %s\n' "$CHART_VERSION"
+  printf '# Repo name: %s\n' "$REPO_NAME"
   printf '# Repo: %s\n' "$CHART_REPO"
   printf '# Chart name: %s\n' "$CHART_NAME"
-  printf '# Release name: %s\n' "$RELEASE_NAME"
   cat "$OUTPUT_FILE"
 } > "$TEMP_FILE" && mv "$TEMP_FILE" "$OUTPUT_FILE"
 

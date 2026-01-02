@@ -2,7 +2,6 @@
 # Chart version: 0.15.0
 # Repo: https://charts.jaconi.io
 # Chart name: netbird
-# Release name: netbird
 ---
 # Source: netbird/templates/management-serviceaccount.yaml
 apiVersion: v1

@@ -2,7 +2,6 @@
 # Chart version: 0.10.49
 # Repo: https://charts.authelia.com
 # Chart name: authelia
-# Release name: authelia
 ---
 # Source: authelia/templates/secret.yaml
 apiVersion: v1

@@ -2,7 +2,6 @@
 # Chart version: 0.6.3
 # Repo: https://charts.hetzner.cloud
 # Chart name: cert-manager-webhook-hetzner
-# Release name: cert-manager-webhook-hetzner
 ---
 # Source: cert-manager-webhook-hetzner/templates/rbac.yaml
 apiVersion: v1

@@ -2,7 +2,6 @@
 # Chart version: 1.2.0
 # Repo: https://charts.jaconi.io
 # Chart name: netbird-dashboard
-# Release name: netbird-dashboard
 ---
 # Source: netbird-dashboard/templates/serviceaccount.yaml
 apiVersion: v1
