@@ -36,7 +36,7 @@ spec:
               exec netbird up \
                 --management-url=https://netbird.fingol.pro \
                 --setup-key="$NB_SETUP_KEY" \
-                --hostname="k3ext" \
+                --hostname="k3int" \
                 --log-level=info \
                 --foreground-mode
       volumes:
