@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-03T01:13:45+0100
+# Generated with Renderer.sh at 2026-01-03T11:24:02+0100
 # Chart version: 0.1.15
 # Repo name: netbirdio
 # Repo: https://netbirdio.github.io/kubernetes-operator
@@ -578,6 +578,87 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 spec:
   selfSigned: {}
+---
+# Source: kubernetes-operator/templates/nbroutingpeers.yaml
+apiVersion: netbird.io/v1
+kind: NBRoutingPeer
+metadata:
+  finalizers:
+    - netbird.io/cleanup
+  labels:
+    app.kubernetes.io/component: operator
+    helm.sh/chart: kubernetes-operator-0.1.15
+    app.kubernetes.io/name: kubernetes-operator
+    app.kubernetes.io/instance: netbird-operator
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+  name: router
+spec: {}
+---
+# Source: kubernetes-operator/templates/kubernetes-nbresource.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: netbird-operator-kubernetes-operator-kubernetes-service-expose
+  labels:
+    app.kubernetes.io/component: operator
+    helm.sh/chart: kubernetes-operator-0.1.15
+    app.kubernetes.io/name: kubernetes-operator
+    app.kubernetes.io/instance: netbird-operator
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    helm.sh/hook: post-upgrade,post-install
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      name: netbird-operator-kubernetes-operator
+      labels:
+        app.kubernetes.io/component: operator
+        helm.sh/chart: kubernetes-operator-0.1.15
+        app.kubernetes.io/name: kubernetes-operator
+        app.kubernetes.io/instance: netbird-operator
+        app.kubernetes.io/version: "0.1.5"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      initContainers:
+      - name: wait-network-ready
+        image: "bitnami/kubectl:latest"
+        command:
+        - bash
+        - -c
+        args:
+        - kubectl wait --for 'jsonpath={.status.networkID}' -n netbird-operator nbroutingpeer router; 
+      containers:
+      - name: apply-nbresource
+        image: "bitnami/kubectl:latest"
+        env:
+        - name: NBRESOURCE_VALUE
+          value: |
+            apiVersion: netbird.io/v1
+            kind: NBResource
+            metadata:
+              finalizers:
+              - netbird.io/cleanup
+              name: kubernetes
+              namespace: default
+            spec:
+              address: kubernetes.default.svc.cluster.local
+              groups:
+              - kubernetes-default-api-access
+              name: default-kubernetes-api
+              networkID: ${NETWORK_ID}
+              tcpPorts:
+              - 443
+        command:
+        - bash
+        - -c
+        args:
+        - kubectl delete NBResource --ignore-not-found -n default kubernetes; export NETWORK_ID=$(kubectl get NBRoutingPeer -n netbird-operator router -o 'jsonpath={.status.networkID}'); echo "$NBRESOURCE_VALUE" | envsubst | kubectl apply -f -
+      serviceAccountName: netbird-operator-kubernetes-operator
+      restartPolicy: Never
 ---
 # Source: kubernetes-operator/templates/pre-delete.yaml
 apiVersion: batch/v1

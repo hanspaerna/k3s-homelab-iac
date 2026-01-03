@@ -2,6 +2,10 @@ managementURL: "https://netbird.fingol.pro"
 
 ingress:
   enabled: true
+  router:
+    enabled: true
+  kubernetesAPI:
+    enabled: true
 
 netbirdAPI:
   keyFromSecret: 
