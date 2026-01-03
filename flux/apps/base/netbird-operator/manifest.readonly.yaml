@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-03T20:11:35+0100
+# Generated with Renderer.sh at 2026-01-03T21:46:36+0100
 # Chart version: 0.1.15
 # Repo name: netbirdio
 # Repo: https://netbirdio.github.io/kubernetes-operator
@@ -320,7 +320,7 @@ spec:
           - --leader-elect
           - --health-probe-bind-address=:8081
           - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
-          - --netbird-management-url=https://replaceme.nonexistent
+          - --netbird-management-url=https://netbird.fingol.pro
           - --cluster-name=replacename
           - --cluster-dns=svc.cluster.local
           - --netbird-api-key=$(NB_API_KEY)
