@@ -5,5 +5,5 @@ metadata:
 spec:
   managementURL: https://netbird.fingol.pro
   secretKeyRef:
-    name: setupkey-secret
+    name: nb-setupkey-secret
     key: setupkey
