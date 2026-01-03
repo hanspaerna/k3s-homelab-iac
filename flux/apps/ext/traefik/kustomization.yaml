@@ -98,29 +98,6 @@ patches:
                     mountPath: /lapisecret
                     readOnly: true
 
-              - name: netbird
-                image: netbirdio/netbird:latest
-                securityContext:
-                  privileged: true
-                  capabilities:
-                    add:
-                      - NET_ADMIN
-                      - SYS_MODULE
-                env:
-                  - name: NETBIRD_SETUP_KEY
-                    valueFrom:
-                      secretKeyRef:
-                        name: netbird-client-secret
-                        key: setup-key
-                args:
-                  - "run"
-                  - "--setup-key=$(NETBIRD_SETUP_KEY)"
-                  - "--management-url=https://netbird.fingol.pro"
-                  - "--log-level=info"
-                volumeMounts:
-                  - name: netbird-client-data
-                    mountPath: /var/lib/netbird
-
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
@@ -143,9 +120,6 @@ patches:
             - name: bouncer-lapi-secret
               secret:
                 secretName: bouncer-lapi-secret
-            - name: netbird-client-data
-              persistentVolumeClaim:
-                claimName: netbird-client-data-pvc
 
   - patch: |-
       apiVersion: apps/v1

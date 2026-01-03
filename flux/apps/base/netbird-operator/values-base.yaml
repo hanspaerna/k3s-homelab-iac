@@ -1,0 +1,9 @@
+managementURL: "https://netbird.fingol.pro"
+
+ingress:
+  enabled: true
+
+netbirdAPI:
+  keyFromSecret: 
+    name: api-secret
+    key: key

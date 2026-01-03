@@ -24,15 +24,3 @@ spec:
   resources:
     requests:
       storage: 512Mi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: netbird-client-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 512Mi
