@@ -4,6 +4,23 @@ kind: Namespace
 metadata:
   name: stub-website
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+    name: setupkey-secret
+stringData:
+    setupkey: EBB07DDD-DFDE-44EE-B3D6-AD56EB18ACCC
+---
+apiVersion: netbird.io/v1
+kind: NBSetupKey
+metadata:
+  name: nb-setup-key
+spec:
+  managementURL: https://netbird.fingol.pro
+  secretKeyRef:
+    name: setupkey-secret
+    key: setupkey
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,10 +33,11 @@ spec:
       app: stub-website
   template:
     metadata:
-      annotations:
-        netbird.io/setup-key: nb-setup-key
       labels:
         app: stub-website
+#      annotations:
+#        netbird.io/extra-dns-labels: "stub"
+#        netbird.io/setup-key: nb-setup-key
     spec:
       containers:
         - name: nginx
