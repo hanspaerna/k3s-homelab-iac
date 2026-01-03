@@ -63,9 +63,6 @@ patches:
         strategy:
           type: Recreate 
         template:
-          metadata:
-            annotations:
-              netbird.io/setup-key: nb-setup-key
           spec:
             hostNetwork: true
             dnsPolicy: ClusterFirstWithHostNet
