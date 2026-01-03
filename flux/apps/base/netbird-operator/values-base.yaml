@@ -2,7 +2,6 @@ managementURL: "https://replaceme.nonexistent"
 
 cluster:
   name: replacename
-  dns: replacedns
 
 ingress:
   enabled: true

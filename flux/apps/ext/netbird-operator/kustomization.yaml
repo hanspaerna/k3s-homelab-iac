@@ -6,7 +6,7 @@ resources:
   - secrets.yaml
 
 patches:
-  # replace netbird-management url, cluster name, cluster dns
+  # replace netbird-management url, cluster name
   - target:
       kind: Deployment
       name: netbird-operator-kubernetes-operator
@@ -28,11 +28,11 @@ patches:
                   - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
                   - --netbird-management-url=https://netbird.fingol.pro
                   - --cluster-name=k3ext
-                  - --cluster-dns=k3ext.nb
+                  - --cluster-dns=svc.cluster.local
                   - --netbird-api-key=$(NB_API_KEY)
                   - --allow-automatic-policy-creation
 
-  # replace cluster name, cluster dns
+  # replace cluster name
   - target:
       kind: Job
       name: netbird-operator-kubernetes-operator-kubernetes-service-expose
@@ -57,25 +57,10 @@ patches:
                         name: kubernetes
                         namespace: default
                       spec:
-                        address: kubernetes.default.ext.nb
+                        address: kubernetes.default.svc.cluster.local
                         groups:
-                        - my-cluster-default-api-access
+                        - k3ext-default-api-access
                         name: default-kubernetes-api
                         networkID: ${NETWORK_ID}
                         tcpPorts:
                         - 443
-
-  # replace cluster dns
-  - target:
-      kind: Certificate
-      name: netbird-operator-kubernetes-operator-serving-cert
-    patch: |
-      apiVersion: cert-manager.io/v1
-      kind: Certificate
-      metadata:
-        name: netbird-operator-kubernetes-operator-serving-cert
-      spec:
-        dnsNames:
-        - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.svc
-        - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.k3ext.nb
-

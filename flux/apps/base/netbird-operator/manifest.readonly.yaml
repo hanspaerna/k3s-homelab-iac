@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-03T19:31:04+0100
+# Generated with Renderer.sh at 2026-01-03T20:11:35+0100
 # Chart version: 0.1.15
 # Repo name: netbirdio
 # Repo: https://netbirdio.github.io/kubernetes-operator
@@ -322,7 +322,7 @@ spec:
           - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
           - --netbird-management-url=https://replaceme.nonexistent
           - --cluster-name=replacename
-          - --cluster-dns=replacedns
+          - --cluster-dns=svc.cluster.local
           - --netbird-api-key=$(NB_API_KEY)
           - --allow-automatic-policy-creation
           ports:
@@ -559,7 +559,7 @@ metadata:
 spec:
   dnsNames:
   - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.svc
-  - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.replacedns
+  - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: netbird-operator-kubernetes-operator-selfsigned-issuer
@@ -647,7 +647,7 @@ spec:
               name: kubernetes
               namespace: default
             spec:
-              address: kubernetes.default.replacedns
+              address: kubernetes.default.svc.cluster.local
               groups:
               - replacename-default-api-access
               name: default-kubernetes-api
