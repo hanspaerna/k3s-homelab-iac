@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbird-router
+  namespace: netbird-router
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netbird-router
+  template:
+    metadata:
+      labels:
+        app: netbird-router
+    spec:
+      hostNetwork: true
+      containers:
+        - name: netbird
+          image: netbirdio/netbird:0.61.0
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN"]
+          env:
+            - name: NB_SETUP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: netbird-setup-key
+                  key: key
+          command:
+            - netbird
+            - up
+            - "--setup-key=$(NB_SETUP_KEY)"

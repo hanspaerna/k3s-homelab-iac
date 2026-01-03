@@ -1,0 +1,5 @@
+namespace: netbird-router
+
+resources:
+  - deployment.yaml
+  - secrets.yaml
