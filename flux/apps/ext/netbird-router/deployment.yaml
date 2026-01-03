@@ -16,7 +16,7 @@ spec:
       hostNetwork: true
       containers:
         - name: netbird
-          image: netbirdio/netbird:0.61.0
+          image: netbirdio/netbird:0.61.2
           securityContext:
             capabilities:
               add: ["NET_ADMIN"]
@@ -26,7 +26,19 @@ spec:
                 secretKeyRef:
                   name: netbird-setup-key
                   key: key
+          volumeMounts:
+            - name: netbird-client
+              mountPath: /var/lib/netbird
           command:
-            - netbird
-            - up
-            - "--setup-key=$(NB_SETUP_KEY)"
+            - sh
+            - -c
+            - |
+              exec netbird up \
+                --management-url=https://netbird.fingol.pro \
+                --setup-key="$NB_SETUP_KEY" \
+                --log-level=info \
+                --foreground-mode
+      volumes:
+        - name: netbird-client
+          persistentVolumeClaim:
+            claimName: netbird-client-pvc
