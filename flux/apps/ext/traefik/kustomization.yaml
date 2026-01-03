@@ -11,7 +11,6 @@ resources:
   - middlewares.yaml
   - grants.yaml
   - secrets.yaml
-  - nb_setup_key.yaml
   - ../../base/traefik/
 
 patches:
@@ -64,10 +63,6 @@ patches:
         strategy:
           type: Recreate 
         template:
-          metadata:
-            annotations:
-              netbird.io/extra-dns-labels: "traefik-ext"
-              netbird.io/setup-key: nb-setup-key
           spec:
             hostNetwork: true
             dnsPolicy: ClusterFirstWithHostNet
