@@ -19,9 +19,6 @@ patches:
         namespace: authelia
       spec:
         template:
-          metadata:
-            annotations:
-              netbird.io/setup-key: nb-setup-key
           spec:
             containers:
               - name: authelia

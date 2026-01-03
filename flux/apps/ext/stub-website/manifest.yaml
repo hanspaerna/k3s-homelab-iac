@@ -16,6 +16,8 @@ spec:
       app: stub-website
   template:
     metadata:
+      annotations:
+        netbird.io/setup-key: nb-setup-key
       labels:
         app: stub-website
     spec:
@@ -83,8 +85,6 @@ kind: Service
 metadata:
   name: stub-website
   namespace: stub-website
-  annotations:
-    netbird.io/expose: "true"
 spec:
   selector:
     app: stub-website
