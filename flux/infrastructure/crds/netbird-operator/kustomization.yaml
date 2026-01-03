@@ -1,6 +1,0 @@
-resources:
-  - netbird.io_nbgroups.yaml
-  - netbird.io_nbpolicies.yaml
-  - netbird.io_nbresources.yaml
-  - netbird.io_nbroutingpeers.yaml
-  - netbird.io_nbsetupkeys.yaml
