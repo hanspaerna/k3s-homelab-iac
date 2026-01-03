@@ -4,3 +4,78 @@ resources:
   - ../../base/netbird-operator/
   - namespace.yaml
   - secrets.yaml
+
+patches:
+  # replace netbird-management url, cluster name, cluster dns
+  - target:
+      kind: Deployment
+      name: netbird-operator-kubernetes-operator
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: netbird-operator-kubernetes-operator
+      spec:
+        template:
+          spec:
+            containers:
+              - name: kubernetes-operator
+                args:
+                  - /manager
+                  - --metrics-bind-address=:8080
+                  - --leader-elect
+                  - --health-probe-bind-address=:8081
+                  - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
+                  - --netbird-management-url=https://netbird.fingol.pro
+                  - --cluster-name=k3ext
+                  - --cluster-dns=k3ext.nb
+                  - --netbird-api-key=$(NB_API_KEY)
+                  - --allow-automatic-policy-creation
+
+  # replace cluster name, cluster dns
+  - target:
+      kind: Job
+      name: netbird-operator-kubernetes-operator-kubernetes-service-expose
+    patch: |
+      apiVersion: batch/v1
+      kind: Job
+      metadata:
+        name: netbird-operator-kubernetes-operator-kubernetes-service-expose
+      spec:
+        template:
+          spec:
+            containers:
+              - name: apply-nbresource
+                env:
+                  - name: NBRESOURCE_VALUE
+                    value: |
+                      apiVersion: netbird.io/v1
+                      kind: NBResource
+                      metadata:
+                        finalizers:
+                        - netbird.io/cleanup
+                        name: kubernetes
+                        namespace: default
+                      spec:
+                        address: kubernetes.default.ext.nb
+                        groups:
+                        - my-cluster-default-api-access
+                        name: default-kubernetes-api
+                        networkID: ${NETWORK_ID}
+                        tcpPorts:
+                        - 443
+
+  # replace cluster dns
+  - target:
+      kind: Certificate
+      name: netbird-operator-kubernetes-operator-serving-cert
+    patch: |
+      apiVersion: cert-manager.io/v1
+      kind: Certificate
+      metadata:
+        name: netbird-operator-kubernetes-operator-serving-cert
+      spec:
+        dnsNames:
+        - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.svc
+        - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.k3ext.nb
+

@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-03T11:24:02+0100
+# Generated with Renderer.sh at 2026-01-03T19:31:04+0100
 # Chart version: 0.1.15
 # Repo name: netbirdio
 # Repo: https://netbirdio.github.io/kubernetes-operator
@@ -320,10 +320,11 @@ spec:
           - --leader-elect
           - --health-probe-bind-address=:8081
           - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
-          - --netbird-management-url=https://netbird.fingol.pro
-          - --cluster-name=kubernetes
-          - --cluster-dns=svc.cluster.local
+          - --netbird-management-url=https://replaceme.nonexistent
+          - --cluster-name=replacename
+          - --cluster-dns=replacedns
           - --netbird-api-key=$(NB_API_KEY)
+          - --allow-automatic-policy-creation
           ports:
             - name: webhook-server
               containerPort: 443
@@ -558,7 +559,7 @@ metadata:
 spec:
   dnsNames:
   - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.svc
-  - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.svc.cluster.local
+  - netbird-operator-kubernetes-operator-webhook-service.netbird-operator.replacedns
   issuerRef:
     kind: Issuer
     name: netbird-operator-kubernetes-operator-selfsigned-issuer
@@ -593,7 +594,8 @@ metadata:
     app.kubernetes.io/version: "0.1.5"
     app.kubernetes.io/managed-by: Helm
   name: router
-spec: {}
+spec:
+  replicas: 1
 ---
 # Source: kubernetes-operator/templates/kubernetes-nbresource.yaml
 apiVersion: batch/v1
@@ -645,9 +647,9 @@ spec:
               name: kubernetes
               namespace: default
             spec:
-              address: kubernetes.default.svc.cluster.local
+              address: kubernetes.default.replacedns
               groups:
-              - kubernetes-default-api-access
+              - replacename-default-api-access
               name: default-kubernetes-api
               networkID: ${NETWORK_ID}
               tcpPorts:
