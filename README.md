@@ -45,6 +45,12 @@ kubectl -n flux-system logs deploy/kustomize-controller
 
 kubectl delete namespace authentik
 
+If it's stuck in "Terminating", more radical measures needed:
+
+kubectl get namespace <NAMESPACE> -o json \
+| jq '.spec.finalizers=[]' \
+| kubectl replace --raw "/api/v1/namespaces/<NAMESPACE>/finalize" -f -
+
 ### Test connectivity between pods/services
 
 kubectl run -i --rm curl-test \
