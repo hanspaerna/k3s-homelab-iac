@@ -83,6 +83,8 @@ kind: Service
 metadata:
   name: stub-website
   namespace: stub-website
+  annotations:
+    netbird.io/expose: "true"
 spec:
   selector:
     app: stub-website
