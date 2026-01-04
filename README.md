@@ -76,7 +76,7 @@ You may run flux suspend kustomizations --all to avert Flux from reconciling dur
 
 ### Add Crowdsec bouncer with your pre-defined key
 
-cscli bouncers add test-bouncer -k <your_key> 
+cscli bouncers add traefik-bouncer -k <your_key> 
 
 ## Traefik
 
