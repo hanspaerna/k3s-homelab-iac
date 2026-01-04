@@ -48,7 +48,8 @@
           --cluster-cidr=10.42.0.0/16 \
           --service-cidr=10.43.0.0/16 \
           --disable=traefik \
-          --disable=servicelb
+          --disable=servicelb \
+          --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.ip_forward,net.ipv4.conf.all.forwarding
       args:
         creates: /usr/local/bin/k3s
 
@@ -108,7 +109,8 @@
         K3S_URL={{ k3s_url }} \
         K3S_TOKEN={{ k3s_token }} \
         sh /tmp/k3s-install.sh agent \
-          --node-name={{ inventory_hostname }}
+          --node-name={{ inventory_hostname }} \
+          --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.ip_forward,net.ipv4.conf.all.forwarding
       args:
         creates: /usr/local/bin/k3s-agent
 

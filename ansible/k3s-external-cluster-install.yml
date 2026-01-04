@@ -48,7 +48,8 @@
           --cluster-cidr=10.44.0.0/16 \
           --service-cidr=10.45.0.0/16 \
           --disable=traefik \
-          --disable=servicelb
+          --disable=servicelb \
+          --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.ip_forward,net.ipv4.conf.all.forwarding
       args:
         creates: /usr/local/bin/k3s
 
