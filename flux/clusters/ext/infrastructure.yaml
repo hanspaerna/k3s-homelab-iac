@@ -9,7 +9,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./flux/infrastructure
+  path: ./flux/infrastructure/ext
   prune: true
   wait: true
   decryption:

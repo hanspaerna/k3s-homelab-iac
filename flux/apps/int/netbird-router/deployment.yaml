@@ -14,6 +14,12 @@ spec:
         app: netbird-router
     spec:
       hostNetwork: true
+      securityContext:
+        sysctls:
+          - name: net.ipv4.ip_forward
+            value: "1"
+          - name: net.ipv4.conf.all.forwarding
+            value: "1"
       containers:
         - name: netbird
           image: netbirdio/netbird:0.61.2
@@ -36,7 +42,8 @@ spec:
               exec netbird up \
                 --management-url=https://netbird.fingol.pro \
                 --setup-key="$NB_SETUP_KEY" \
-                --hostname="k3int" \
+                --hostname="k3int-router" \
+                --allow-server-ssh=false \
                 --log-level=info \
                 --foreground-mode
       volumes:

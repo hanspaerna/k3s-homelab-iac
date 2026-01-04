@@ -45,6 +45,8 @@
           --write-kubeconfig-mode=644 \
           --tls-san={{ ansible_host }} \
           --node-name={{ inventory_hostname }} \
+          --cluster-cidr=10.44.0.0/16 \
+          --service-cidr=10.45.0.0/16 \
           --disable=traefik \
           --disable=servicelb
       args:
