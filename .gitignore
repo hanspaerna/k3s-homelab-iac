@@ -6,6 +6,7 @@ age.agekey
 !/logs/.gitkeep
 
 /opentofu/opentofu.tfvars
+/opentofu/.terraform.tfstate.lock.info
 *kubeconfig*
 */.env
 
