@@ -13,12 +13,12 @@ spec:
       labels:
         app: netbird-router
     spec:
-#      securityContext:
-#        sysctls:
-#          - name: net.ipv4.ip_forward
-#            value: "1"
-#          - name: net.ipv4.conf.all.forwarding
-#            value: "1"
+      securityContext:
+        sysctls:
+          - name: net.ipv4.ip_forward
+            value: "1"
+          - name: net.ipv4.conf.all.forwarding
+            value: "1"
       containers:
         - name: netbird
           image: netbirdio/netbird:0.61.2
