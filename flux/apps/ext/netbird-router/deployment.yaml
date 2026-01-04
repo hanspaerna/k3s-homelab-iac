@@ -13,7 +13,6 @@ spec:
       labels:
         app: netbird-router
     spec:
-      hostNetwork: true
       securityContext:
         sysctls:
           - name: net.ipv4.ip_forward
