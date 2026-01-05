@@ -39,11 +39,12 @@ spec:
             - sh
             - -c
             - |
-              exec netbird service run \
+              exec netbird up \
                 --management-url=https://netbird.fingol.pro \
                 --setup-key="$NB_SETUP_KEY" \
-                --hostname="k3ext-router" \
-                --log-level=info
+                --hostname="k3s-ext" \
+                --log-level=info \
+                --foreground-mode
       volumes:
         - name: netbird-client
           persistentVolumeClaim:
