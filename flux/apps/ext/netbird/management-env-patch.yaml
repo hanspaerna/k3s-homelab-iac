@@ -9,8 +9,6 @@
       value: "https"
     - name: NETBIRD_STUN_URI
       value: "stun:netbird.fingol.pro:3478"
-    - name: NETBIRD_TURN_URI
-      value: "turn:netbird.fingol.pro:3478"
     - name: NETBIRD_IDP_MANAGER_TYPE
       value: "oidc"
       value: "netbird.fingol.pro"
@@ -24,6 +22,17 @@
         secretKeyRef:
           name: netbird-secret
           key: netbird-relay-secret-key
+
+    - name: NETBIRD_COTURN_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: netbird-coturn-auth-secret
+          key: username
+    - name: NETBIRD_COTURN_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: netbird-coturn-auth-secret
+          key: password
 
     - name: CUSTOM_NETBIRD_AUTH_ISSUER
       value: "https://auth.fingol.pro"

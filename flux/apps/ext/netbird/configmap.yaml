@@ -9,8 +9,8 @@ data:
             {
                 "Proto": "udp",
                 "URI": "${NETBIRD_STUN_URI}",
-                "Username": "",
-                "Password": null
+                "Username": "${NETBIRD_COTURN_USERNAME}",
+                "Password": "${NETBIRD_COTURN_PASSWORD}"
             }
         ],
         "Relay": {
