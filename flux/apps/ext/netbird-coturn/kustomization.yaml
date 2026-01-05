@@ -1,0 +1,6 @@
+namespace: netbird
+
+resources:
+  - ../../base/netbird-coturn/
+  - secrets.yaml
+  - turnserver-configmap.yaml
