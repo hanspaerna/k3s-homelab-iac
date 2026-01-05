@@ -29,6 +29,8 @@ spec:
           env:
             - name: NB_MANAGEMENT_URL
               value: "https://netbird.fingol.pro"
+            - name: NB_HOSTNAME
+              value: "k3s-int"
             - name: NB_SETUP_KEY
               valueFrom:
                 secretKeyRef:
