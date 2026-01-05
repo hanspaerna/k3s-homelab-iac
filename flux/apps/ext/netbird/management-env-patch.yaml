@@ -35,3 +35,16 @@
     - name: CUSTOM_NETBIRD_PKCE_TOKEN_ENDPOINT
       value: "https://auth.fingol.pro/api/oidc/token"
 
+- op: replace
+  path: /spec/template/spec/containers/0/args
+  value:
+    - --log-level
+    - info
+    - --log-file
+    - console
+    - --disable-anonymous-metrics
+    - true
+    - --dns-domain
+    - nb.fingol.pro
+    - --single-account-mode-domain
+    - nb.fingol.pro
