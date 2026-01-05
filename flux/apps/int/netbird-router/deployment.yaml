@@ -23,22 +23,19 @@ spec:
       containers:
         - name: netbird
           image: netbirdio/netbird:0.61.2
-          args:
-            - "--management-url=https://netbird.fingol.pro"
-            - "--hostname=k3s-int"
-            - "--log-level=info"
           securityContext:
             capabilities:
               add: ["NET_ADMIN"]
           env:
+            - name: NB_MANAGEMENT_URL
+              value: "https://netbird.fingol.pro"
             - name: NB_SETUP_KEY
               valueFrom:
                 secretKeyRef:
                   name: netbird-setup-key
                   key: key
-          volumeMounts:
-            - name: netbird-client
-              mountPath: /var/lib/netbird
+            - name: NB_LOG_LEVEL
+              value: "info"
       volumes:
         - name: netbird-client
           persistentVolumeClaim:
