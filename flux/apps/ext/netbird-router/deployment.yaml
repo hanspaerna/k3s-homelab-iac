@@ -25,7 +25,7 @@ spec:
           image: netbirdio/netbird:0.61.2
           args:
             - "--management-url=https://netbird.fingol.pro"
-            - "--setup-key=$(NB_SETUP_KEY)"
+            - "--setup-key=714619E0-C9D6-46FE-BF8F-665F286A4AB9"
             - "--hostname=k3s-ext"
             - "--log-level=info"
           securityContext:
