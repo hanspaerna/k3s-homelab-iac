@@ -23,6 +23,11 @@ spec:
       containers:
         - name: netbird
           image: netbirdio/netbird:0.61.2
+          args:
+            - "--management-url=https://netbird.fingol.pro"
+            - "--setup-key=$NB_SETUP_KEY"
+            - "--hostname=k3s-int"
+            - "--log-level=info"
           securityContext:
             capabilities:
               add: ["NET_ADMIN"]
@@ -35,16 +40,6 @@ spec:
           volumeMounts:
             - name: netbird-client
               mountPath: /var/lib/netbird
-          command:
-            - sh
-            - -c
-            - |
-              exec netbird up \
-                --management-url=https://netbird.fingol.pro \
-                --setup-key="$NB_SETUP_KEY" \
-                --hostname="k3s-int" \
-                --log-level=info \
-                --foreground-mode
       volumes:
         - name: netbird-client
           persistentVolumeClaim:
