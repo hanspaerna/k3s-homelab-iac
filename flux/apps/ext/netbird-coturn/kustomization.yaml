@@ -4,3 +4,21 @@ resources:
   - ../../base/netbird-coturn/
   - secrets.yaml
   - turnserver-configmap.yaml
+
+patches:
+  # Enable hostNetwork to bind directly to port 3478 on the host
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: netbird-coturn-coturn
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: netbird-coturn-coturn
+      spec:
+        template:
+          spec:
+            hostNetwork: true
+            dnsPolicy: ClusterFirstWithHostNet
