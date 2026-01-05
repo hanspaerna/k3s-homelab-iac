@@ -1,0 +1,16 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`traefik.vpn.fingol.pro`)
+      kind: Rule
+      services:
+      - name: api@internal
+        kind: TraefikService
+  tls:
+    secretName: letsencrypt-dns-wildcard-cert

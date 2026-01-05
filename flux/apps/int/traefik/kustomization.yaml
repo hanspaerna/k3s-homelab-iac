@@ -1,0 +1,132 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: traefik-int
+resources:
+  - namespace.yaml
+  - gateway.yaml
+  - gatewayclass.yaml
+  - rbac.yaml
+  - dashboard.yaml
+  - pvc.yaml
+  - ../../base/traefik/
+
+patches:
+  # we bind Traefik directly to host network, no need for a Service
+  - patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: traefik
+        namespace: traefik
+
+  # we use securityContext block from Deployment resource level
+  # rootless binding to :80 and :443 on host does not work, so we'll define a root access
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
+        namespace: traefik
+      spec:
+        template:
+          spec:
+            containers:
+            - name: traefik
+              securityContext:
+                $patch: delete
+
+  # "rollingUpdate" block is forbidden when "Recreate" strategy is used
+  # RollingUpdate is disabled because it leads to two pods fighting for host's ports
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
+        namespace: traefik
+      spec:
+        strategy:
+          rollingUpdate:
+            $patch: delete
+
+
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
+        namespace: traefik
+      spec:
+        strategy:
+          type: Recreate 
+        template:
+          spec:
+            hostNetwork: true
+            dnsPolicy: ClusterFirstWithHostNet
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+            containers:
+              - name: traefik
+                args:
+                  - "--entryPoints.web.address=:80/tcp"
+                  - "--entryPoints.websecure.address=:443/tcp"
+                  - "--entryPoints.traefik.address=:8080/tcp"
+                  - "--entryPoints.web.http.redirections.entrypoint.to=websecure"
+                  - "--entryPoints.web.http.redirections.entrypoint.scheme=https" 
+                  - "--entryPoints.web.http.redirections.entrypoint.permanent=true"
+                  - "--api=true"
+                  - "--api.dashboard=true"
+                  - "--ping=true"
+                  - "--global.sendAnonymousUsage=false"
+                  - "--global.checkNewVersion=false"
+                  - "--providers.kubernetescrd"
+                  - "--providers.kubernetescrd.allowCrossNamespace=true"
+                  - "--providers.kubernetesgateway=true"
+                  - "--accesslog=true"
+                  - "--accesslog.format=json"
+
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
+        namespace: traefik
+      spec:
+        template:
+          spec:
+            volumes:
+            - $patch: replace
+            - name: data
+              persistentVolumeClaim:
+                claimName: local-path-pvc
+            - name: tmp
+              emptyDir: {}
+
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: traefik
+        namespace: traefik
+      spec:
+        template:
+          spec:
+            containers:
+              - name: traefik
+                ports:
+                - $patch: replace
+                - name: web
+                  containerPort: 80
+                  protocol: TCP
+                - name: websecure
+                  containerPort: 443
+                  protocol: TCP
+                - name: metrics
+                  containerPort: 9100
+                  hostPort: 9100
+                  protocol: TCP
+                - name: traefik
+                  containerPort: 8080
+                  protocol: TCP
