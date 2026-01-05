@@ -14,6 +14,12 @@ spec:
         app: netbird-router
     spec:
       hostNetwork: true
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
       containers:
         - name: netbird
           image: netbirdio/netbird:0.61.2

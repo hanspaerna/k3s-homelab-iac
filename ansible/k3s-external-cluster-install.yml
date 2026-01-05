@@ -1,4 +1,4 @@
----
+/--
 - name: Ensure binary is installed on the local machine
   hosts: localhost
   become: false
