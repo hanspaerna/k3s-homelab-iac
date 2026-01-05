@@ -13,10 +13,17 @@
       value: "turn:netbird.fingol.pro:3478"
     - name: NETBIRD_IDP_MANAGER_TYPE
       value: "oidc"
+      value: "netbird.fingol.pro"
+
     - name: NETBIRD_RELAY_DOMAIN
       value: "netbird.fingol.pro"
     - name: NETBIRD_RELAY_PORT
       value: "443"
+    - name: NETBIRD_RELAY_AUTH_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: netbird-secret
+          key: netbird-relay-secret-key
 
     - name: CUSTOM_NETBIRD_AUTH_ISSUER
       value: "https://auth.fingol.pro"

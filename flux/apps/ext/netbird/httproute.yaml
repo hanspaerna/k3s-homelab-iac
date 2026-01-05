@@ -1,0 +1,25 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: netbird-relay-route
+  namespace: netbird
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-ext
+  hostnames:
+    - "netbird.fingol.pro"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /relay
+      backendRefs:
+        - name: netbird-relay
+          port: 80
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: middleware-chain

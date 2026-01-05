@@ -5,10 +5,10 @@
       value: "info"
 
     - name: NB_LISTEN_ADDRESS
-      value: ":33080"
+      value: ":80"
 
     - name: NB_EXPOSED_ADDRESS
-      value: "rels://netbird.fingol.pro/relay"
+      value: "rels://netbird.fingol.pro:443"
 
     - name: NB_AUTH_SECRET
       valueFrom:

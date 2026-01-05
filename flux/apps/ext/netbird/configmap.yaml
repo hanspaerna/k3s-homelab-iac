@@ -13,21 +13,8 @@ data:
                 "Password": null
             }
         ],
-        "TURNConfig": {
-            "Turns": [
-                {
-                    "Proto": "udp",
-                    "URI": "${NETBIRD_TURN_URI}",
-                    "Username": "${NETBIRD_TURN_USER}",
-                    "Password": "${NETBIRD_TURN_PASSWORD}"
-                }
-            ],
-            "CredentialsTTL": "12h",
-            "Secret": "secret",
-            "TimeBasedCredentials": false
-        },
         "Relay": {
-            "Addresses": ["${NETBIRD_RELAY_DOMAIN}:${NETBIRD_RELAY_PORT}"],
+            "Addresses": ["rels://${NETBIRD_RELAY_DOMAIN}:${NETBIRD_RELAY_PORT}"],
             "CredentialsTTL": "24h",
             "Secret": "${NETBIRD_RELAY_AUTH_SECRET}"
         },
