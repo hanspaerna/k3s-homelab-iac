@@ -38,6 +38,9 @@ spec:
                   key: key
             - name: NB_LOG_LEVEL
               value: "info"
+          volumeMounts:
+            - name: netbird-client
+              mountPath: /var/lib/netbird
       volumes:
         - name: netbird-client
           persistentVolumeClaim:
