@@ -5,7 +5,7 @@
       value: "info"
 
     - name: NB_LISTEN_ADDRESS
-      value: ":80"
+      value: ":33080"
 
     - name: NB_EXPOSED_ADDRESS
       value: "rels://netbird.fingol.pro:443"

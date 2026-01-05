@@ -16,10 +16,4 @@ spec:
             value: /relay
       backendRefs:
         - name: netbird-relay
-          port: 80
-      filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: traefik.io
-            kind: Middleware
-            name: middleware-chain
+          port: 33080
