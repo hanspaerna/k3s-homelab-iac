@@ -43,7 +43,7 @@
     - --log-file
     - console
     - --disable-anonymous-metrics
-    - true
+    - "true"
     - --dns-domain
     - nb.fingol.pro
     - --single-account-mode-domain
