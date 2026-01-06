@@ -38,6 +38,16 @@ spec:
                   key: key
             - name: NB_LOG_LEVEL
               value: "info"
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - netbird status | grep -q 'Management: Connected' && netbird status | grep -q 'Signal: Connected'
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
           volumeMounts:
             - name: netbird-client
               mountPath: /var/lib/netbird
