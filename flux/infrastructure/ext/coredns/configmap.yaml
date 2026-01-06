@@ -6,9 +6,9 @@ metadata:
 data:
   vpn.fingol.pro.server: |
     vpn.fingol.pro:53 {
-        template IN CNAME {
-            match ^vpn\.fingol\.pro\.$
-            answer "vpn.fingol.pro. 60 IN CNAME k3s-int.nb.fingol.pro."
+        rewrite stop {
+            name exact vpn.fingol.pro k3s-int.nb.fingol.pro
+            answer name k3s-int.nb.fingol.pro vpn.fingol.pro
         }
         forward . /etc/resolv.conf
     }
