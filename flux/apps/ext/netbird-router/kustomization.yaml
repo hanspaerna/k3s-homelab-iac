@@ -3,5 +3,4 @@ namespace: netbird-router
 resources:
   - namespace.yaml
   - deployment.yaml
-  - secrets.yaml
   - pvc.yaml
