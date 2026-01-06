@@ -1,6 +1,7 @@
 namespace: homepage
 
 resources:
+  - namespace.yaml
   - deployment.yaml
   - rbac.yaml
   - secrets.yaml
