@@ -7,6 +7,7 @@ resources:
   - secrets.yaml
   - grpcroute.yaml
   - httproute.yaml
+  - serverstransport.yaml
 
 images:
   - name: netbirdio/management
@@ -32,7 +33,7 @@ patches:
     path: relay-env-patch.yaml
 
 
-  # this Service patch is needed because there is a discrepancy between port names for TCP/33080 in Helm chart.  
+  # this Service patch is needed because there is a discrepancy between port names for TCP/33080 in Helm chart.
   # It is called "http" in one place and "websocket" in another.
   - target:
       version: v1
@@ -54,3 +55,17 @@ patches:
             targetPort: metrics
             protocol: TCP
             name: metrics
+
+  # Configure timeout for long-lived gRPC Signal streams
+  - target:
+      version: v1
+      kind: Service
+      name: netbird-signal
+    patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: netbird-signal
+        namespace: netbird
+        annotations:
+          traefik.ingress.kubernetes.io/service.serverstransport: netbird-signal-transport
