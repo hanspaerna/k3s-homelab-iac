@@ -6,5 +6,5 @@ resources:
   - rbac.yaml
   - secrets.yaml
   - configmaps.yaml
+  - services.yaml
   - httproute.yaml
-
