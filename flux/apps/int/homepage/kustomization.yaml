@@ -1,0 +1,9 @@
+namespace: homepage
+
+resources:
+  - deployment.yaml
+  - rbac.yaml
+  - secrets.yaml
+  - configmaps.yaml
+  - httproute.yaml
+
