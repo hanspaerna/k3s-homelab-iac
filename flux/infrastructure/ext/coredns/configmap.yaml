@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  vpn.fingol.pro.server: |
+    vpn.fingol.pro:53 {
+        template IN CNAME {
+            match ^vpn\.fingol\.pro\.$
+            answer "vpn.fingol.pro. 60 IN CNAME k3s-int.nb.fingol.pro."
+        }
+        forward . /etc/resolv.conf
+    }
