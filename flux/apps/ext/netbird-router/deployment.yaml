@@ -36,6 +36,7 @@ spec:
                 secretKeyRef:
                   name: netbird-setup-key
                   key: key
+                  optional: true
             - name: NB_LOG_LEVEL
               value: "info"
           livenessProbe:
