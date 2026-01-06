@@ -101,6 +101,10 @@ patches:
                   # Has to be set globally until there is an implementation of this setting in Gateway API's GRPCRoute.
                   # Without this setting, Netbird clients reconnect to Signal every minute or so.
                   - "--serverstransport.forwardingTimeouts.responseHeaderTimeout=0s"
+                  - "--serverstransport.forwardingTimeouts.readIdleTimeout=0s"
+                  - "--entryPoints.websecure.transport.respondingTimeouts.readTimeout=0s"
+                  - "--entryPoints.websecure.transport.respondingTimeouts.writeTimeout=0s"
+                  - "--entryPoints.websecure.transport.respondingTimeouts.idleTimeout=180s"
                 volumeMounts:
                   - name: plugins-storage
                     mountPath: /plugins-storage
