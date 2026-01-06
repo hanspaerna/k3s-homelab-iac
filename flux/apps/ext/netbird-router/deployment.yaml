@@ -43,7 +43,7 @@ spec:
               command:
                 - sh
                 - -c
-                - netbird status | grep -q 'Management: Connected' && netbird status | grep -q 'Signal: Connected'
+                - "netbird status | grep -q 'Management: Connected' && netbird status | grep -q 'Signal: Connected'"
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 5
