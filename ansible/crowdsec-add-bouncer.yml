@@ -1,0 +1,99 @@
+---
+- name: Add Traefik bouncer to Crowdsec LAPI
+  hosts: localhost
+  become: false
+  vars:
+    secrets_file: "{{ playbook_dir }}/../flux/apps/ext/traefik/secrets.yaml"
+    kubeconfig: "{{ playbook_dir }}/../.kubeconfig-external"
+  tasks:
+    - name: Check if SOPS is installed
+      ansible.builtin.command: which sops
+      register: sops_check
+      failed_when: sops_check.rc != 0
+      changed_when: false
+
+    - name: Decrypt secrets file with SOPS
+      ansible.builtin.command: sops -d {{ secrets_file }}
+      environment:
+        SOPS_AGE_KEY_FILE: "{{ playbook_dir }}/../age.agekey"
+      register: decrypted_secrets
+      changed_when: false
+
+    - name: Parse decrypted YAML
+      ansible.builtin.set_fact:
+        secrets_data: "{{ decrypted_secrets.stdout | from_yaml }}"
+
+    - name: Extract bouncer LAPI key
+      ansible.builtin.set_fact:
+        bouncer_lapi_key: "{{ secrets_data.stringData.key }}"
+
+    - name: Display extracted key (first 10 chars)
+      ansible.builtin.debug:
+        msg: "Bouncer key: {{ bouncer_lapi_key[:10] }}..."
+
+    - name: Find Crowdsec LAPI pod
+      ansible.builtin.shell: |
+        kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=lapi -o jsonpath='{.items[0].metadata.name}'
+      environment:
+        KUBECONFIG: "{{ kubeconfig }}"
+      register: crowdsec_pod
+      changed_when: false
+      failed_when: crowdsec_pod.stdout == ''
+
+    - name: Display Crowdsec pod name
+      ansible.builtin.debug:
+        msg: "Crowdsec LAPI pod: {{ crowdsec_pod.stdout }}"
+
+    - name: Check if bouncer already exists
+      ansible.builtin.shell: |
+        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers list -o json
+      environment:
+        KUBECONFIG: "{{ kubeconfig }}"
+      register: bouncers_list
+      changed_when: false
+      failed_when: false
+
+    - name: Parse bouncers list
+      ansible.builtin.set_fact:
+        existing_bouncers: "{{ bouncers_list.stdout | from_json }}"
+      when: bouncers_list.rc == 0
+
+    - name: Check if traefik-bouncer exists
+      ansible.builtin.set_fact:
+        bouncer_exists: "{{ existing_bouncers | selectattr('name', 'equalto', 'traefik-bouncer') | list | length > 0 }}"
+      when: existing_bouncers is defined
+
+    - name: Delete existing traefik-bouncer if it exists
+      ansible.builtin.shell: |
+        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers delete traefik-bouncer
+      environment:
+        KUBECONFIG: "{{ kubeconfig }}"
+      when: bouncer_exists | default(false)
+      register: delete_result
+
+    - name: Add traefik-bouncer to Crowdsec
+      ansible.builtin.shell: |
+        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers add traefik-bouncer -k {{ bouncer_lapi_key | quote }}
+      environment:
+        KUBECONFIG: "{{ kubeconfig }}"
+      register: add_bouncer_result
+      changed_when: "'successfully added' in add_bouncer_result.stdout or 'successfully added' in add_bouncer_result.stderr"
+
+    - name: Display result
+      ansible.builtin.debug:
+        msg:
+          - "Bouncer registration result:"
+          - "{{ add_bouncer_result.stdout }}"
+          - "{{ add_bouncer_result.stderr }}"
+
+    - name: Verify bouncer was added
+      ansible.builtin.shell: |
+        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers list
+      environment:
+        KUBECONFIG: "{{ kubeconfig }}"
+      register: verify_result
+      changed_when: false
+
+    - name: Display bouncers list
+      ansible.builtin.debug:
+        msg: "{{ verify_result.stdout_lines }}"

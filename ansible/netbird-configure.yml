@@ -1,0 +1,124 @@
+---
+- name: Create Netbird Setup Key and apply to clusters
+  hosts: localhost
+  tags: setup-keys
+  become: false
+  vars:
+    setup_key_name: "k3s-router-{{ ansible_date_time.epoch }}"
+    setup_key_type: "reusable"
+    setup_key_expires_in_days: 1
+  tasks:
+    - name: Check netbird_api_token is set
+      ansible.builtin.fail:
+        msg: "Please set netbird_api_token in inventory.tf.yml"
+      when: netbird_api_token is not defined or netbird_api_token == 'REPLACE_WITH_YOUR_NETBIRD_API_TOKEN'
+
+    - name: Create Netbird setup key via API
+      ansible.builtin.uri:
+        url: "{{ netbird_management_url }}/api/setup-keys"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ netbird_api_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          name: "{{ setup_key_name }}"
+          type: "{{ setup_key_type }}"
+          expires_in: "{{ setup_key_expires_in_days * 86400 }}"
+          auto_groups: []
+          usage_limit: 2
+        status_code: 200
+        validate_certs: true
+      register: setup_key_response
+
+    - name: Extract setup key from response
+      ansible.builtin.set_fact:
+        netbird_setup_key: "{{ setup_key_response.json.key }}"
+
+    - name: Display setup key info
+      ansible.builtin.debug:
+        msg:
+          - "Setup key created successfully"
+          - "Name: {{ setup_key_response.json.name }}"
+          - "ID: {{ setup_key_response.json.id }}"
+          - "Key: {{ netbird_setup_key }}"
+
+    - name: Read secret template
+      ansible.builtin.slurp:
+        src: "{{ playbook_dir }}/templates/nb-setupkey-secret-template.yaml"
+      register: secret_template
+
+    - name: Substitute setup key in template
+      ansible.builtin.set_fact:
+        secret_manifest: "{{ (secret_template.content | b64decode) | regex_replace('INSERT-SOME-KEY', netbird_setup_key) }}"
+
+    - name: Apply secret to external cluster
+      ansible.builtin.shell: |
+        cat <<EOF | kubectl apply -f -
+        {{ secret_manifest }}
+        EOF
+      environment:
+        KUBECONFIG: "{{ playbook_dir }}/../.kubeconfig-external"
+      register: ext_result
+      changed_when: "'created' in ext_result.stdout or 'configured' in ext_result.stdout"
+
+    - name: Apply secret to internal cluster
+      ansible.builtin.shell: |
+        cat <<EOF | kubectl apply -f -
+        {{ secret_manifest }}
+        EOF
+      environment:
+        KUBECONFIG: "{{ playbook_dir }}/../.kubeconfig-internal"
+      register: int_result
+      changed_when: "'created' in int_result.stdout or 'configured' in int_result.stdout"
+
+    - name: Display results
+      ansible.builtin.debug:
+        msg:
+          - "External cluster: {{ ext_result.stdout }}"
+          - "Internal cluster: {{ int_result.stdout }}"
+          - "Setup key has been applied to both clusters"
+
+#
+#  TODO: as of netbird-management v0.61.0, Netbird's REST API method "PUT /api/accounts/{accountId}" is broken and returns 502
+#
+#  - name: Configure Netbird's network settings
+#    hosts: localhost
+#    tags: network
+#    become: false
+#    tasks:
+#      - name: Get user's accounts
+#        ansible.builtin.uri:
+#          url: "{{ netbird_management_url }}/api/accounts"
+#          method: GET
+#          headers:
+#            Authorization: "Bearer {{ netbird_api_token }}"
+#            Content-Type: "application/json"
+#        register: accounts_list
+#
+#
+#      - name: Set network range, enable lazy connections
+#        ansible.builtin.uri:
+#          url: "{{ netbird_management_url }}/api/accounts/{{ accounts_list.json[0].id }}"
+#          method: PUT
+#          headers:
+#            Authorization: "Bearer {{ netbird_api_token }}"
+#            Content-Type: "application/json"
+#          body_format: json
+#          body:
+#            settings:
+#              network_range: "100.116.0.0/16"
+#              lazy_connection_enabled: false
+#              peer_inactivity_expiration: 600
+#              peer_inactivity_expiration_enabled: false
+#              peer_login_expiration: 86400
+#              peer_login_expiration_enabled: true
+#              regular_users_view_blocked: true
+#          status_code: 200
+#          validate_certs: true
+#        register: set_network_range_response
+#
+#      - name: Display results
+#        ansible.builtin.debug:
+#          msg:
+#            - "Network range has been changed for account {{ accounts_list.json[0].id }}: {{ set_network_range_response.stdout }}"
