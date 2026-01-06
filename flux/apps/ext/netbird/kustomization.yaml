@@ -7,7 +7,6 @@ resources:
   - secrets.yaml
   - grpcroute.yaml
   - httproute.yaml
-  - serverstransport.yaml
 
 images:
   - name: netbirdio/management
@@ -55,17 +54,3 @@ patches:
             targetPort: metrics
             protocol: TCP
             name: metrics
-
-  # Configure timeout for long-lived gRPC Signal streams
-  - target:
-      version: v1
-      kind: Service
-      name: netbird-signal
-    patch: |-
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: netbird-signal
-        namespace: netbird
-        annotations:
-          traefik.ingress.kubernetes.io/service.serverstransport: netbird-signal-transport

@@ -97,6 +97,10 @@ patches:
                   - "--accesslog.format=json"
                   - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
                   - "--experimental.plugins.bouncer.version=v1.4.6"
+
+                  # Has to be set globally until there is an implementation of this setting in Gateway API's GRPCRoute.
+                  # Without this setting, Netbird clients reconnect to Signal every minute or so.
+                  - "--serverstransport.forwardingTimeouts.responseHeaderTimeout=0s"
                 volumeMounts:
                   - name: plugins-storage
                     mountPath: /plugins-storage
