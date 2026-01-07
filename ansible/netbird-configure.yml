@@ -1,4 +1,51 @@
 ---
+- name: Configure Netbird's network settings
+  hosts: localhost
+  tags: network
+  become: false
+  tasks:
+    - name: Get user's accounts
+      ansible.builtin.uri:
+        url: "{{ netbird_management_url }}/api/accounts"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ netbird_api_token }}"
+          Content-Type: "application/json"
+      register: accounts_list
+
+
+    - name: Update account's network settings
+      ansible.builtin.uri:
+        url: "{{ netbird_management_url }}/api/accounts/{{ accounts_list.json[0].id }}"
+        method: PUT
+        headers:
+          Authorization: "Bearer {{ netbird_api_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          settings:
+            network_range: "{{ netbird_network_range }}"
+            lazy_connection_enabled: "{{ netbird_enable_lazy_connections }}"
+            peer_inactivity_expiration: 600
+            peer_inactivity_expiration_enabled: false
+            peer_login_expiration: 86400
+            peer_login_expiration_enabled: true
+            regular_users_view_blocked: true
+            extra: # required with netbird-management v0.61.0 because there will be 502 without it; can be removed later
+              peer_approval_enabled: false
+              network_traffic_logs_enabled: false
+              network_traffic_packet_counter_enabled: false
+              network_traffic_logs_groups: []
+        status_code: 200
+        validate_certs: true
+      register: set_network_range_response
+
+    - name: Display results
+      ansible.builtin.debug:
+        msg:
+          - "Network settings have been updated for account {{ accounts_list.json[0].id }}: {{ set_network_range_response }}"
+
+
 - name: Create Netbird Setup Key and apply to clusters
   hosts: localhost
   tags: setup-keys
@@ -78,47 +125,3 @@
           - "External cluster: {{ ext_result.stdout }}"
           - "Internal cluster: {{ int_result.stdout }}"
           - "Setup key has been applied to both clusters"
-
-#
-#  TODO: as of netbird-management v0.61.0, Netbird's REST API method "PUT /api/accounts/{accountId}" is broken and returns 502
-#
-#  - name: Configure Netbird's network settings
-#    hosts: localhost
-#    tags: network
-#    become: false
-#    tasks:
-#      - name: Get user's accounts
-#        ansible.builtin.uri:
-#          url: "{{ netbird_management_url }}/api/accounts"
-#          method: GET
-#          headers:
-#            Authorization: "Bearer {{ netbird_api_token }}"
-#            Content-Type: "application/json"
-#        register: accounts_list
-#
-#
-#      - name: Set network range, enable lazy connections
-#        ansible.builtin.uri:
-#          url: "{{ netbird_management_url }}/api/accounts/{{ accounts_list.json[0].id }}"
-#          method: PUT
-#          headers:
-#            Authorization: "Bearer {{ netbird_api_token }}"
-#            Content-Type: "application/json"
-#          body_format: json
-#          body:
-#            settings:
-#              network_range: "100.116.0.0/16"
-#              lazy_connection_enabled: false
-#              peer_inactivity_expiration: 600
-#              peer_inactivity_expiration_enabled: false
-#              peer_login_expiration: 86400
-#              peer_login_expiration_enabled: true
-#              regular_users_view_blocked: true
-#          status_code: 200
-#          validate_certs: true
-#        register: set_network_range_response
-#
-#      - name: Display results
-#        ansible.builtin.debug:
-#          msg:
-#            - "Network range has been changed for account {{ accounts_list.json[0].id }}: {{ set_network_range_response.stdout }}"
