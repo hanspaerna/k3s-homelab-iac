@@ -1,4 +1,3 @@
----
 - name: Add Traefik bouncer to Crowdsec LAPI
   hosts: localhost
   become: false
@@ -23,13 +22,19 @@
       ansible.builtin.set_fact:
         secrets_data: "{{ decrypted_secrets.stdout | from_yaml }}"
 
-    - name: Extract bouncer LAPI key
+    - name: Extract Traefik bouncer LAPI key
       ansible.builtin.set_fact:
-        bouncer_lapi_key: "{{ secrets_data.stringData.key }}"
+        traefik_bouncer_lapi_key: "{{ secrets_data.stringData.key }}"
 
-    - name: Display extracted key (first 10 chars)
+    - name: Extract Firewall bouncer LAPI key
+      ansible.builtin.set_fact:
+        firewall_bouncer_lapi_key: "{{ secrets_data.stringData.firewallKey }}"
+
+    - name: Display extracted keys (first 10 chars)
       ansible.builtin.debug:
-        msg: "Bouncer key: {{ bouncer_lapi_key[:10] }}..."
+        msg: 
+          - "Traefik bouncer key: {{ traefik_bouncer_lapi_key[:10] }}..."
+          - "Firewall bouncer key: {{ firewall_bouncer_lapi_key[:10] }}..."
 
     - name: Find Crowdsec LAPI pod
       ansible.builtin.shell: |
@@ -60,7 +65,12 @@
 
     - name: Check if traefik-bouncer exists
       ansible.builtin.set_fact:
-        bouncer_exists: "{{ existing_bouncers | selectattr('name', 'equalto', 'traefik-bouncer') | list | length > 0 }}"
+        traefik_bouncer_exists: "{{ existing_bouncers | selectattr('name', 'equalto', 'traefik-bouncer') | list | length > 0 }}"
+      when: existing_bouncers is defined
+
+    - name: Check if firewall-bouncer exists
+      ansible.builtin.set_fact:
+        firewall_bouncer_exists: "{{ existing_bouncers | selectattr('name', 'equalto', 'firewall-bouncer') | list | length > 0 }}"
       when: existing_bouncers is defined
 
     - name: Delete existing traefik-bouncer if it exists
@@ -68,25 +78,42 @@
         kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers delete traefik-bouncer
       environment:
         KUBECONFIG: "{{ kubeconfig }}"
-      when: bouncer_exists | default(false)
-      register: delete_result
+      when: traefik_bouncer_exists | default(false)
+
+    - name: Delete existing firewall-bouncer if it exists
+      ansible.builtin.shell: |
+        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers delete firewall-bouncer
+      environment:
+        KUBECONFIG: "{{ kubeconfig }}"
+      when: firewall_bouncer_exists | default(false)
 
     - name: Add traefik-bouncer to Crowdsec
       ansible.builtin.shell: |
-        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers add traefik-bouncer -k {{ bouncer_lapi_key | quote }}
+        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers add traefik-bouncer -k {{ traefik_bouncer_lapi_key | quote }}
       environment:
         KUBECONFIG: "{{ kubeconfig }}"
-      register: add_bouncer_result
-      changed_when: "'successfully added' in add_bouncer_result.stdout or 'successfully added' in add_bouncer_result.stderr"
+      register: add_traefik_bouncer_result
+      changed_when: "'successfully added' in add_traefik_bouncer_result.stdout or 'successfully added' in add_traefik_bouncer_result.stderr"
 
-    - name: Display result
+    - name: Add firewall-bouncer to Crowdsec
+      ansible.builtin.shell: |
+        kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers add firewall-bouncer -k {{ firewall_bouncer_lapi_key | quote }}
+      environment:
+        KUBECONFIG: "{{ kubeconfig }}"
+      register: add_firewall_bouncer_result
+      changed_when: "'successfully added' in add_firewall_bouncer_result.stdout or 'successfully added' in add_firewall_bouncer_result.stderr"
+
+    - name: Display results
       ansible.builtin.debug:
         msg:
-          - "Bouncer registration result:"
-          - "{{ add_bouncer_result.stdout }}"
-          - "{{ add_bouncer_result.stderr }}"
+          - "Traefik bouncer registration result:"
+          - "{{ add_traefik_bouncer_result.stdout }}"
+          - "{{ add_traefik_bouncer_result.stderr }}"
+          - "Firewall bouncer registration result:"
+          - "{{ add_firewall_bouncer_result.stdout }}"
+          - "{{ add_firewall_bouncer_result.stderr }}"
 
-    - name: Verify bouncer was added
+    - name: Verify bouncers were added
       ansible.builtin.shell: |
         kubectl exec -n crowdsec {{ crowdsec_pod.stdout }} -- cscli bouncers list
       environment:
