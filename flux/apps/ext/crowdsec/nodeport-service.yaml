@@ -11,4 +11,6 @@ spec:
     targetPort: 8080
     nodePort: 30800
   selector:
-    app: crowdsec-lapi
+    k8s-app: crowdsec
+    type: lapi
+    version: v1
