@@ -163,6 +163,13 @@
         regexp: '^api_key:'
         line: 'api_key: {{ firewall_bouncer_lapi_key }}' 
 
+    - name: Update LAPI URL in YAML
+      become: true
+      lineinfile:
+        path: /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
+        regexp: '^api_url:'
+        line: 'api_url: http://127.0.0.1:30800/'
+
     - name: Restart firewall bouncer's systemd service
       become: true
       systemd:
