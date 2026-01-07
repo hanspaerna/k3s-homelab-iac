@@ -3,3 +3,4 @@ namespace: navidrome
 resources:
   - manifest.yaml
   - httproute.yaml
+  - volsync.yaml
