@@ -4,6 +4,7 @@ resources:
   - ../../base/crowdsec/
   - namespace.yaml
   - secrets.yaml
+  - nodeport-service.yaml
 
 patches:
   - target:

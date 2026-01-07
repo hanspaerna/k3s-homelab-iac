@@ -1,4 +1,4 @@
-- name: Add Traefik bouncer to Crowdsec LAPI
+- name: Add Traefik and firewall bouncers to Crowdsec LAPI
   hosts: localhost
   become: false
   vars:
@@ -124,3 +124,47 @@
     - name: Display bouncers list
       ansible.builtin.debug:
         msg: "{{ verify_result.stdout_lines }}"
+
+- name: Update firewall bouncer's configuration
+  hosts: control_plane_external
+  become: false
+  vars:
+    secrets_file: "{{ playbook_dir }}/../flux/apps/ext/traefik/secrets.yaml"
+  tasks:
+    - name: Check if SOPS is installed
+      delegate_to: localhost
+      ansible.builtin.command: which sops
+      register: sops_check
+      failed_when: sops_check.rc != 0
+      changed_when: false
+
+    - name: Decrypt secrets file with SOPS
+      delegate_to: localhost
+      ansible.builtin.command: sops -d {{ secrets_file }}
+      environment:
+        SOPS_AGE_KEY_FILE: "{{ playbook_dir }}/../age.agekey"
+      register: decrypted_secrets
+      changed_when: false
+
+    - name: Parse decrypted YAML
+      delegate_to: localhost
+      ansible.builtin.set_fact:
+        secrets_data: "{{ decrypted_secrets.stdout | from_yaml }}"
+
+    - name: Extract Traefik bouncer LAPI key
+      delegate_to: localhost
+      ansible.builtin.set_fact:
+        firewall_bouncer_lapi_key: "{{ secrets_data.stringData.firewallKey }}"
+
+    - name: Insert API key into YAML
+      become: true
+      lineinfile:
+        path: /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
+        regexp: '^api_key:'
+        line: 'api_key: {{ firewall_bouncer_lapi_key }}' 
+
+    - name: Restart firewall bouncer's systemd service
+      become: true
+      systemd:
+        name: crowdsec-firewall-bouncer.service
+        state: restarted
