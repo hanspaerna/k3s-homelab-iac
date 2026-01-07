@@ -7,14 +7,54 @@ resources:
   - nodeport-service.yaml
 
 patches:
+  # install collections in LAPI pod automatically via initContainer
   - target:
       group: apps
       version: v1
-      kind: DaemonSet
-      name: crowdsec-agent
+      kind: Deployment
+      name: crowdsec-lapi
     patch: |
       - op: add
-        path: /spec/template/spec/containers/0/env/-
+        path: /spec/template/spec/initContainers
         value:
-          name: COLLECTIONS
-          value: crowdsecurity/traefik
+          - name: install-collections
+            image: crowdsecurity/crowdsec:v1.7.4
+            imagePullPolicy: IfNotPresent
+            command:
+              - sh
+              - -c
+              - |
+                set -e
+                echo "Setting up CrowdSec environment..."
+                cp -nR /staging/etc/crowdsec/* /etc/crowdsec_data/ || true
+                ln -sf /etc/crowdsec_data /etc/crowdsec
+
+                echo "Updating hub..."
+                cscli hub update
+
+                echo "Installing collections: ${COLLECTIONS}"
+                for collection in ${COLLECTIONS}; do
+                  echo "Installing collection: $collection"
+                  cscli collections install "$collection" --force || echo "Failed to install $collection, continuing..."
+                done
+
+                echo "Collection installation complete"
+                cscli collections list
+            env:
+              - name: COLLECTIONS
+                value: crowdsecurity/traefik
+            volumeMounts:
+              - name: crowdsec-db
+                mountPath: /var/lib/crowdsec/data
+                subPath: crowdsec
+              - name: crowdsec-config
+                mountPath: /etc/crowdsec_data
+            resources:
+              limits:
+                memory: 100Mi
+              requests:
+                cpu: 10m
+                memory: 50Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
