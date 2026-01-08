@@ -5,4 +5,4 @@ resources:
   - httproute.yaml
   - storage.yaml
 #  - ../../../shared-resources/restic-secret/
-#  - volsync.yaml
+#  - backup.yaml

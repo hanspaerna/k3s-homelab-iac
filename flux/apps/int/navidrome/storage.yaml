@@ -4,13 +4,14 @@ metadata:
   name: navidrome-music-pv
 spec:
   capacity:
-    storage: 2Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: 
+    volumeHandle: "truenas.lan#music#navidrome" # smb server host + # + share name + # + app name, must be unique
     volumeAttributes:
       source: "//truenas.lan/music"
     nodeStageSecretRef:
@@ -33,7 +34,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 2Gi
+      storage: 1Gi
   volumeName: navidrome-music-pv
   storageClassName: ""
 ---
@@ -46,4 +47,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 1Gi
