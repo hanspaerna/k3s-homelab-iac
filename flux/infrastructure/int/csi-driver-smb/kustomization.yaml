@@ -1,3 +1,4 @@
 resources:
   - ../../base/csi-driver-smb/
   - ../../../shared-resources/smb-secret/
+  - storageclasses.yaml
