@@ -110,6 +110,8 @@ metadata:
   name: navidrome-data-pvc
 spec:
   storageClassName: smb-test
+  accessModes:
+    - ReadWriteOnce
   resources:
     requests:
       storage: 3Gi 
