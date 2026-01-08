@@ -3,5 +3,5 @@ namespace: navidrome
 resources:
   - manifest.yaml
   - httproute.yaml
-  - volsync.yaml
-  - ../../../shared-resources/restic-secret/
+#  - volsync.yaml
+#  - ../../../shared-resources/restic-secret/

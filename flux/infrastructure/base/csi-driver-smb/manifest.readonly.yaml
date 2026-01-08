@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-08T19:00:30+0100
+# Generated with Renderer.sh at 2026-01-08T19:23:31+0100
 # Chart version: 1.19.1
 # Repo name: csi-driver-smb
 # Repo: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
@@ -471,6 +471,13 @@ spec:
         app: csi-smb-controller
     spec:
     # runOnControlPlane=true or runOnMaster=true only takes effect if affinity is not set
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: Exists
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: csi-smb-controller-sa
