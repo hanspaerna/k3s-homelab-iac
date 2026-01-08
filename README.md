@@ -51,17 +51,6 @@ kubectl get namespace <NAMESPACE> -o json \
 | jq '.spec.finalizers=[]' \
 | kubectl replace --raw "/api/v1/namespaces/<NAMESPACE>/finalize" -f -
 
-### Purging netbird-operator
-
-This is an unique deployment thanks to the complexity of removing it from a cluster. And you often this is what you need to do to before re-deploying it.
-See this: https://github.com/netbirdio/kubernetes-operator/issues/46
-Check these resource types, they all must be removed before re-deployment: nbpolicies, nbroutingpeers, mutatingadmissionwebhooks, validatingadmissionwebhooks... check CRDs.
-
-Once I had a nbroutingpeer resource that remained even after the removal of its parent namespace. The only thing that helped me was: 
-
-kubectl patch nbroutingpeer <NAME> -n <namespace> \
-  -p '{"metadata":{"finalizers":[]}}' --type=merge
-
 ### Test connectivity between pods/services
 
 kubectl run -i --rm curl-test \
