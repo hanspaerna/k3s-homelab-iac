@@ -99,19 +99,12 @@ spec:
           volumeMounts:
             - name: navidrome-data
               mountPath: /data
+            - name: navidrome-music
+              mountPath: /music
       volumes:
         - name: navidrome-data
           persistentVolumeClaim:
             claimName: navidrome-data-pvc
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: navidrome-data-pvc
-spec:
-  storageClassName: smb-test
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 3Gi 
+        - name: navidrome-music
+          persistentVolumeClaim:
+            claimName: navidrome-music-pvc
