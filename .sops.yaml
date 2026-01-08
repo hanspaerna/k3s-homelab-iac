@@ -1,4 +1,11 @@
 creation_rules:
+  # Restic secrets - only encrypt passwords, not repository paths (for Kustomize patching)
+  - path_regex: flux/shared-resources/restic-secret/.*\.yaml
+    encrypted_regex: ^(.*PASSWORD.*|.*SECRET.*|.*TOKEN.*|.*USERNAME.*)$
+    age: >-
+      age1msftgg3vlt9as2r20vmnudgu63hsqxc8fwwp0t63ul3nzezle5rs5lmtvy
+
+  # All other secrets - encrypt everything in data/stringData
   - path_regex: flux/.*\.yaml|flux/.*\.yml
     encrypted_regex: ^(data|stringData|users)$
     age: >-
