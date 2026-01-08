@@ -41,7 +41,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: navidrome-data-pvc
+  name: data-pvc
 spec:
   accessModes:
     - ReadWriteOnce

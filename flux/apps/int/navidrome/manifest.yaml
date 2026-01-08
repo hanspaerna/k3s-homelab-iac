@@ -104,7 +104,7 @@ spec:
       volumes:
         - name: navidrome-data
           persistentVolumeClaim:
-            claimName: navidrome-data-pvc
+            claimName: data-pvc
         - name: navidrome-music
           persistentVolumeClaim:
-            claimName: navidrome-music-pvc
+            claimName: music-pvc
