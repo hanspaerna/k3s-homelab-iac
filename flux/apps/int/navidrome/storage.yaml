@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: smb
+  storageClassName: ""  # Must match PVC (empty string for static binding)
   csi:
     driver: smb.csi.k8s.io
     volumeHandle: "truenas.lan#music#navidrome" # smb server host + # + share name + # + app name, must be unique
@@ -45,6 +45,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: local-path
   resources:
     requests:
       storage: 1Gi
