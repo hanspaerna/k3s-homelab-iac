@@ -4,3 +4,4 @@ resources:
   - manifest.yaml
   - httproute.yaml
   - volsync.yaml
+  - ../../../shared-resources/restic-secret/
