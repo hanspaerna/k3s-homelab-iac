@@ -29,5 +29,5 @@ spec:
   restic:
     repository: restic-config
     # Use an existing PVC, don't provision a new one
-    destinationPVC: navidrome-data-pvc
+    destinationPVC: data-pvc
     copyMethod: Direct
