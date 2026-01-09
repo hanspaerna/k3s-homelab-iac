@@ -14,7 +14,8 @@ age.agekey
 *.tfstate.backup
 *.tfvars
 
-opentofu/.terraform
-opentofu/.terraform.lock.hcl
+.terraform
+.terraform.lock.hcl
+terraform.*.backup
 
 ansible/inventory.tf.yml

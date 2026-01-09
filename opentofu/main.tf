@@ -99,14 +99,14 @@ resource "proxmox_vm_qemu" "k3s_control_plane" {
   }
 
   network {
-    id     = 0
-    model  = "virtio"
+    id = 0
+    model = "virtio"
     bridge = var.bridge
   }
 
   # Serial port for console access
   serial {
-    id   = 0
+    id = 0
     type = "socket"
   }
   
@@ -204,12 +204,12 @@ resource "proxmox_vm_qemu" "k3s_worker" {
 
   ipconfig0 = "ip=${cidrhost(var.subnet, var.worker_first_num + count.index)}/24,gw=${var.gateway}"
 
-  nameserver   = var.nameserver
+  nameserver = var.nameserver
   searchdomain = var.searchdomain
 
-  ciuser     = var.cloud_init_username
+  ciuser = var.cloud_init_username
   cipassword = var.cloud_init_password
-  sshkeys    = var.ssh_public_key
+  sshkeys = var.ssh_public_key
 
   lifecycle {
     ignore_changes = [
@@ -223,20 +223,13 @@ resource "proxmox_vm_qemu" "k3s_worker" {
 }
 
 resource "hcloud_ssh_key" "main" {
-  name       = "tofu-key"
+  name = "tofu-key"
   public_key = var.ssh_public_key
 }
 
-resource "hcloud_primary_ip" "primary_ip_k3s_ext" {
+# primary IP is managed in persistent/ directory to survive infrastructure destroys
+data "hcloud_primary_ip" "primary_ip_k3s_ext" {
   name = "primary_ip_k3s_ext"
-  type= "ipv4"
-  assignee_type = "server"
-  datacenter = "nbg1-dc3"
-  auto_delete = false
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "hcloud_server" "k3s_control_plane_external" {
@@ -250,7 +243,7 @@ resource "hcloud_server" "k3s_control_plane_external" {
   
   public_net {
     ipv4_enabled = true
-    ipv4 = hcloud_primary_ip.primary_ip_k3s_ext.id
+    ipv4 = data.hcloud_primary_ip.primary_ip_k3s_ext.id
     ipv6_enabled = true
   }
 
