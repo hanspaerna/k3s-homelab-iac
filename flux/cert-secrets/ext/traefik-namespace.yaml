@@ -1,4 +1,4 @@
----
+# Ensure namespace exists before applying secrets
 apiVersion: v1
 kind: Namespace
 metadata:
