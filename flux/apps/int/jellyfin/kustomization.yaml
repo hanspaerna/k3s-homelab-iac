@@ -5,6 +5,7 @@ resources:
   - storage.yaml
   - ../../../shared-resources/restic-secret/
   - backup.yaml
+  - httproute.yaml
 
 patches:
   - target:
