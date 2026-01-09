@@ -123,19 +123,19 @@ variable "worker_count" {
 variable "worker_cpu" {
   description = "CPU cores for worker nodes"
   type = number
-  default = 1
+  default = 2
 }
 
 variable "worker_memory" {
   description = "Memory in MB for worker nodes"
   type = number
-  default = 2048
+  default = 8192
 }
 
 variable "worker_disk_size" {
   description = "Disk size for worker nodes"
   type = string
-  default = "10G"
+  default = "40G"
 }
 
 variable "worker_ip_start" {

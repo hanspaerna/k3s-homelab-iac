@@ -13,13 +13,10 @@ metadata:
         cert-manager.io/issuer-kind: ClusterIssuer
         cert-manager.io/issuer-name: letsencrypt-prod
         cert-manager.io/uri-sans: ""
-    creationTimestamp: "2026-01-04T15:44:36Z"
     labels:
         controller.cert-manager.io/fao: "true"
     name: letsencrypt-dns-wildcard-cert
     namespace: traefik-ext
-    resourceVersion: "3625"
-    uid: 9a164895-88fe-4fb9-a218-70b6289c04e0
 type: kubernetes.io/tls
 sops:
     age:
@@ -32,7 +29,7 @@ sops:
             cGtlYU9Xd0JRYXFyNzNZbUh6alRLMEkKqNiQiUhCOkID0SawN5um6/af6rmr1uIL
             /DS4VRFGYc/5I9tmy/7YIMC27USnDAUxd2gPOUD50Nto7GoT0pG7kg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-01-09T17:49:29Z"
-    mac: ENC[AES256_GCM,data:CHerNg8zZ9OQr6GzauxXcohQvB7Ajea4bE9LWvciBlY7GS0Kih+bnJ1fRLWRT02z7HqWB9EX7bJzPN6YHbOo2uidzTcyi2IsLpbt6zdDowUGSts6RN4zMhK91DcMiiUQfFc7niXIPXLuAPSnETnzi71HObWHjJooSnEid8+c3K4=,iv:+22iyCZadqdqzv8VQ/B3gWiKqWihqWIpWDIhIV56Igs=,tag:nh4wC+VRcOlhK750EjFpJw==,type:str]
+    lastmodified: "2026-01-09T18:59:43Z"
+    mac: ENC[AES256_GCM,data:HcmHgC+aOc8KR2+Vbp2z4cWcx1Ri6qUlZeUSJm7iM0IfuUwPmko8nx/3RLTiJB4N9WZ1JFLKOuiJP3tBOn+C7U2k28OXVPXeurbl9jYnw+0Sp0uOVGgIUi4vyjoRTm+PemVK81vsFfFN6Ttt8ILT9QCctO62iX+G6uN1hwJsFtQ=,iv:w6XAyU6OE2rp5IKP+MJXBwVbA9U2eGXbVrvuAxUSZVs=,tag:aTcohdkskgNMBkOUtLTgCQ==,type:str]
     encrypted_regex: ^(data|stringData|users)$
     version: 3.11.0

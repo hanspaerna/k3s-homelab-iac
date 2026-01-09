@@ -31,11 +31,6 @@
             peer_login_expiration: 86400
             peer_login_expiration_enabled: true
             regular_users_view_blocked: true
-            extra: # required with netbird-management v0.61.0 because there will be 502 without it; can be removed later
-              peer_approval_enabled: false
-              network_traffic_logs_enabled: false
-              network_traffic_packet_counter_enabled: false
-              network_traffic_logs_groups: []
         status_code: 200
         validate_certs: true
       register: set_network_range_response
