@@ -1,0 +1,16 @@
+namespace: jellyfin
+
+resources:
+  - manifest.yaml
+  - storage.yaml
+  - ../../../shared-resources/restic-secret/
+  - backup.yaml
+
+patches:
+  - target:
+      kind: Secret
+      name: restic-config
+    patch: |
+      - op: replace
+        path: /stringData/RESTIC_REPOSITORY
+        value: rest:http://truenas.lan:8888/jellyfin

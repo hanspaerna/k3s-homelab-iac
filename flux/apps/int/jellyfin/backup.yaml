@@ -1,0 +1,33 @@
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: jellyfin-config-pvc-backup
+spec:
+  # The PVC to be backed up
+  sourcePVC: config-pvc
+  trigger:
+    # Take a backup every 30 minutes
+    schedule: "*/30 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-config
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Direct
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: jellyfin-config-pvc-dest
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-config
+    # Use an existing PVC, don't provision a new one
+    destinationPVC: config-pvc
+    copyMethod: Direct
