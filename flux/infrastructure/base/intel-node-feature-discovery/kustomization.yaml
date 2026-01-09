@@ -1,2 +1,4 @@
 resources:
   - manifest.readonly.yaml
+  - node-feature-rules.readonly.yaml
+  - gpu-plugin-daemonset.readonly.yaml

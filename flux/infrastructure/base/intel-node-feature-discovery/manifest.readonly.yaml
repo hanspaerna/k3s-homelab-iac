@@ -1,3 +1,6 @@
+# v0.34.1
+# Installed manually with: kubectl create -k 'https://github.com/intel/intel-device-plugins-for-kubernetes/deployments/nfd?ref=v0.34.1' --dry-run --output=yaml > manifest.readonly.yaml
+#
 apiVersion: v1
 kind: Namespace
 metadata:
