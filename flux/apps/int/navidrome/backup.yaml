@@ -3,11 +3,10 @@ kind: ReplicationSource
 metadata:
   name: navidrome-data-pvc-backup
 spec:
-  # The PVC to be backed up
   sourcePVC: data-pvc
   trigger:
-    # Take a backup every 30 minutes
-    schedule: "*/30 * * * *"
+    # Take a backup every night at 01:00 AM
+    schedule: "0 1 * * *"
   restic:
     pruneIntervalDays: 14
     repository: restic-config
@@ -31,3 +30,4 @@ spec:
     # Use an existing PVC, don't provision a new one
     destinationPVC: data-pvc
     copyMethod: Direct
+    enableFileDeletion: true
