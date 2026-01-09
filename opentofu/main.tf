@@ -25,8 +25,8 @@ terraform {
 
 provider "proxmox" {
   pm_api_url = var.proxmox_api_url
-  pm_api_token_id = var.proxmox_api_token_id
-  pm_api_token_secret = var.proxmox_api_token_secret
+  pm_user = var.proxmox_username
+  pm_password = var.proxmox_password
   pm_tls_insecure = true
   
   pm_log_enable = true 
@@ -185,6 +185,21 @@ resource "proxmox_vm_qemu" "k3s_worker" {
   serial {
     id = 0
     type = "socket"
+  }
+
+  # Intel iGPU passthrough for first worker only
+  dynamic "pcis" {
+    for_each = count.index == 0 ? [1] : []
+    content {
+      pci0 {
+        raw {
+          raw_id = var.igpu_pcie_id
+          pcie = true
+          primary_gpu = false
+          rombar = true
+        }
+      }
+    }
   }
 
   ipconfig0 = "ip=${cidrhost(var.subnet, var.worker_first_num + count.index)}/24,gw=${var.gateway}"

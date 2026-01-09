@@ -4,14 +4,14 @@ variable "proxmox_api_url" {
   default = "https://<YOUR_PROXMOX_HOST>:8006/api2/json"
 }
 
-variable "proxmox_api_token_id" {
-  description = "Proxmox API Token ID (format: user@realm!tokenname)"
+variable "proxmox_username" {
+  description = "Proxmox username (Passthrough of raw PCIe devices requires root)"
   type = string
-  default = "root@pam!terraform"
+  default = "root@pam"
 }
 
-variable "proxmox_api_token_secret" {
-  description = "Proxmox API Token Secret"
+variable "proxmox_password" {
+  description = "Proxmox password"
   type = string
   sensitive = true
 }
@@ -148,6 +148,12 @@ variable "worker_first_num" {
   description = "A starting number in a subnet"
   type = number
   default = 185
+}
+
+variable "igpu_pcie_id" {
+  description = "PCIe ID of Intel iGPU for passthrough"
+  type = string
+  default = "0000:00:02.0"
 }
 
 # K3s Configuration

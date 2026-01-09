@@ -103,7 +103,7 @@ spec:
               memory: 512Mi
             limits:
               memory: 4Gi
-              gpu.intel.com/i915: "1"
+              gpu.intel.com/i915: "1" # require iGPU
           volumeMounts:
             - name: config
               mountPath: /config
