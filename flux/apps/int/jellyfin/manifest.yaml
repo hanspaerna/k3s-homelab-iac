@@ -51,12 +51,6 @@ spec:
       automountServiceAccountToken: true
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        supplementalGroups:
-          - 992  # render group for GPU access
       containers:
         - name: jellyfin
           image: "jellyfin/jellyfin:10.10.6"
