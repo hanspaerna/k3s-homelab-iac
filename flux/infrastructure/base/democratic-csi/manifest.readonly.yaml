@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-10T15:54:35+0100
+# Generated with Renderer.sh at 2026-01-10T16:21:16+0100
 # Chart version: 0.15.0
 # Repo name: democratic-csi
 # Repo: https://democratic-csi.github.io/charts/
@@ -31,25 +31,19 @@ metadata:
 stringData:
   driver-config-file.yaml: |-
     driver: local-hostpath
+    instance_id: default-local-hostpath
     local-hostpath:
       controllerBasePath: /var/lib/csi-local-hostpath
       dirPermissionsGroup: 0
       dirPermissionsMode: "0777"
       dirPermissionsUser: 0
       shareBasePath: /var/lib/csi-local-hostpath
-      snapshots:
-        default_driver: filecopy
-        restic:
-          env: {}
-          global_flags: []
-          prune: true
-          tags: []
 ---
 # Source: democratic-csi/templates/storage-classes.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: controller-expand-secret-local-hostpath-democratic-csi
+  name: controller-expand-secret-democratic-local-hostpath-democratic-c
   namespace: kube-system
 type: Opaque
 stringData:
@@ -58,7 +52,7 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: controller-publish-secret-local-hostpath-democratic-csi
+  name: controller-publish-secret-democratic-local-hostpath-democratic
   namespace: kube-system
 type: Opaque
 stringData:
@@ -67,7 +61,7 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: node-publish-secret-local-hostpath-democratic-csi
+  name: node-publish-secret-democratic-local-hostpath-democratic-csi
   namespace: kube-system
 type: Opaque
 stringData:
@@ -76,7 +70,7 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: node-stage-secret-local-hostpath-democratic-csi
+  name: node-stage-secret-democratic-local-hostpath-democratic-csi
   namespace: kube-system
 type: Opaque
 stringData:
@@ -85,7 +79,7 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: provisioner-secret-local-hostpath-democratic-csi
+  name: provisioner-secret-democratic-local-hostpath-democratic-csi
   namespace: kube-system
 type: Opaque
 stringData:
@@ -108,7 +102,9 @@ data:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: local-hostpath
+  name: democratic-local-hostpath
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
   labels:
     app.kubernetes.io/name: democratic-csi
     helm.sh/chart: democratic-csi-0.15.0
@@ -122,15 +118,15 @@ volumeBindingMode: WaitForFirstConsumer
 parameters:
 
 # this loop is deeply connected to the loop for Secret creation below
-  csi.storage.k8s.io/controller-expand-secret-name: controller-expand-secret-local-hostpath-democratic-csi
+  csi.storage.k8s.io/controller-expand-secret-name: controller-expand-secret-democratic-local-hostpath-democratic-c
   csi.storage.k8s.io/controller-expand-secret-namespace: kube-system
-  csi.storage.k8s.io/controller-publish-secret-name: controller-publish-secret-local-hostpath-democratic-csi
+  csi.storage.k8s.io/controller-publish-secret-name: controller-publish-secret-democratic-local-hostpath-democratic
   csi.storage.k8s.io/controller-publish-secret-namespace: kube-system
-  csi.storage.k8s.io/node-publish-secret-name: node-publish-secret-local-hostpath-democratic-csi
+  csi.storage.k8s.io/node-publish-secret-name: node-publish-secret-democratic-local-hostpath-democratic-csi
   csi.storage.k8s.io/node-publish-secret-namespace: kube-system
-  csi.storage.k8s.io/node-stage-secret-name: node-stage-secret-local-hostpath-democratic-csi
+  csi.storage.k8s.io/node-stage-secret-name: node-stage-secret-democratic-local-hostpath-democratic-csi
   csi.storage.k8s.io/node-stage-secret-namespace: kube-system
-  csi.storage.k8s.io/provisioner-secret-name: provisioner-secret-local-hostpath-democratic-csi
+  csi.storage.k8s.io/provisioner-secret-name: provisioner-secret-democratic-local-hostpath-democratic-csi
   csi.storage.k8s.io/provisioner-secret-namespace: kube-system
 
 
@@ -275,7 +271,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/secret: 8f108a1ed2a4ceb8cfafeff7ed049f9a91483a0efa581c92aa808251f8f1b171
+        checksum/secret: 36fad9ba051711b7898ee107db55b89cc5d0500b177bb52b259f0ecd573a0453
         checksum/configmap: 3f035c22a03adb145dfe698965ef1026b1b956294af5169e622070342c27e085
       labels:
         app.kubernetes.io/name: democratic-csi
@@ -547,10 +543,7 @@ spec:
 # Source: democratic-csi/templates/required.yaml
 # 09d244c5fd0938a1a1c1e25f2f524df43a90a829c8d1a83bbb89ecaa83a04bb5
 # 1f4dc096d58f7d21e3875671aee6f29b120ab84218fa47db2cb53bc9eb5b4dac
-# 4810df222b90cd56c8b99f9ffbbce9b43c97edbfcd134638fc67526ae2db9d80
----
-# Source: democratic-csi/templates/snapshot-classes.yaml
-# this loop is deeply connected to the loop for secret parameter settings above
+# 4b179f5523fffd671ede697d3f3f0b3d6929b532258483464e1b1fdb80b71491
 ---
 # Source: democratic-csi/templates/driver.yaml
 apiVersion: storage.k8s.io/v1
@@ -572,3 +565,25 @@ spec:
   #  - Persistent
   #  - Ephemeral
   storageCapacity: true
+---
+# Source: democratic-csi/templates/snapshot-classes.yaml
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: csi-democratic-csi-hostpath
+  annotations:
+  labels:
+    app.kubernetes.io/name: democratic-csi
+    helm.sh/chart: democratic-csi-0.15.0
+    app.kubernetes.io/instance: democratic-csi
+    app.kubernetes.io/managed-by: Helm
+driver: org.democratic-csi.local-hostpath
+deletionPolicy: Delete
+parameters:
+  cluster: "default"
+
+# this loop is deeply connected to the loop for Secret creation below
+
+
+
+# this loop is deeply connected to the loop for secret parameter settings above
