@@ -30,5 +30,4 @@ spec:
     repository: restic-config
     # Use an existing PVC, don't provision a new one
     destinationPVC: config-pvc
-    copyMethod: Direct
-    enableFileDeletion: true
+    copyMethod: Snapshot
