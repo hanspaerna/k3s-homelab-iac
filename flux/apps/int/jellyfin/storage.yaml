@@ -89,7 +89,7 @@ spec:
     kind: ReplicationDestination
     apiGroup: volsync.backube
     name: jellyfin-config-pvc-dest
-  storageClassName: local-path
+  storageClassName: democratic-local-hostpath
   resources:
     requests:
       storage: 5Gi
