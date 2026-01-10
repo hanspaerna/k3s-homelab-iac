@@ -28,6 +28,12 @@ spec:
     manual: restore-once
   restic:
     repository: restic-config
-    # Use an existing PVC, don't provision a new one
     destinationPVC: config-pvc
     copyMethod: Snapshot
+    volumeSnapshotClassName: csi-democratic-csi-hostpath
+    cacheStorageClassName: democratic-local-hostpath
+    accessModes:
+      - ReadWriteOnce
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true
