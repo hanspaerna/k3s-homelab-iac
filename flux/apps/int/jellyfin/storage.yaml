@@ -85,6 +85,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  dataSourceRef: # use Volume Populator, a pod will wait until PVC is populated with data source (VolSync's ReplicationDestination in our case)
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: jellyfin-config-pvc-dest
   storageClassName: local-path
   resources:
     requests:

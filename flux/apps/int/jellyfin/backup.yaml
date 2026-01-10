@@ -17,7 +17,7 @@ spec:
       weekly: 4
       monthly: 2
       yearly: 1
-    copyMethod: Direct
+    copyMethod: Direct # see comment: https://github.com/backube/volsync/issues/627#issuecomment-1664630333 
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
