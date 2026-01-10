@@ -32,6 +32,7 @@ spec:
     copyMethod: Snapshot
     volumeSnapshotClassName: csi-democratic-csi-hostpath
     cacheStorageClassName: democratic-local-hostpath
+    storageClassName: democratic-local-hostpath
     accessModes:
       - ReadWriteOnce
     enableFileDeletion: true
