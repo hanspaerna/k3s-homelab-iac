@@ -1,0 +1,17 @@
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: pvc-backup
+  namespace: velero
+spec:
+  schedule: "0 1 * * *"
+  template:
+    includedResources:
+      - persistentvolumeclaims
+    includedNamespaces:
+      - jellyfin
+      - navidrome
+    defaultVolumesToFsBackup: false # 'false' means we are not backing up all the volumes but only those that are listed in pod's annotation
+    snapshotVolumes: false
+    ttl: 720h  # 30 days retention

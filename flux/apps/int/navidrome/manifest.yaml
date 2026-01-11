@@ -46,8 +46,8 @@ spec:
       labels:
         app.kubernetes.io/name: navidrome
         app.kubernetes.io/instance: navidrome
+        backup.velero.io/backup-volumes: navidrome-data
     spec:
-      
       serviceAccountName: default
       automountServiceAccountToken: true
       dnsPolicy: ClusterFirst

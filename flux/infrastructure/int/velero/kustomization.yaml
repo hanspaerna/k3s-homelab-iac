@@ -1,0 +1,11 @@
+namespace: velero
+
+resources:
+  - ../../base/velero/
+  - namespace.yaml
+  - secrets.yaml
+  - schedule.yaml
+
+patches:
+  - path: backupstoragelocation.yaml
+  - path: maintenance-configmap.yaml

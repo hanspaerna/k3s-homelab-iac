@@ -6,7 +6,7 @@ Number of clusters: 2
 
 ## CLI tools to install
 
-Brew: kubectl, opentofu, ansible, FluxCD CLI, kustomize, age, sops
+Brew: kubectl, opentofu, ansible, FluxCD CLI, kustomize, age, sops, velero
 
 ## Rendered Manifests Pattern
 
