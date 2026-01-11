@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-11T22:57:04+0100
+# Generated with Renderer.sh at 2026-01-11T23:08:55+0100
 # Chart version: 11.3.2
 # Repo name: vmware-tanzu
 # Repo: https://vmware-tanzu.github.io/helm-charts
@@ -324,6 +324,12 @@ spec:
             - name: ALIBABA_CLOUD_CREDENTIALS_FILE
               value: /credentials/cloud
       dnsPolicy: ClusterFirst
+      initContainers:
+        - image: velero/velero-plugin-for-aws:v1.13.1
+          name: velero-plugin-for-aws
+          volumeMounts:
+          - mountPath: /target
+            name: plugins
       volumes:
         - name: cloud-credentials
           secret:
