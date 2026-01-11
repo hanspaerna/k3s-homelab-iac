@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-11T12:57:39+0100
+# Generated with Renderer.sh at 2026-01-11T13:34:19+0100
 # Chart version: 0.15.0
 # Repo name: democratic-csi
 # Repo: https://democratic-csi.github.io/charts/
@@ -340,8 +340,8 @@ spec:
         - --timeout=90s
         - --worker-threads=10
         - --csi-address=/csi-data/csi.sock
-        - --leader-election=false
-        - --node-deployment=true
+        - --leader-election=true
+        - --leader-election-namespace=kube-system
         volumeMounts:
         - mountPath: /csi-data
           name: socket-dir
