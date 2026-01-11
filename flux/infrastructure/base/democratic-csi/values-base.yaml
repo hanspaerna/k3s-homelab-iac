@@ -9,7 +9,7 @@ storageClasses:
   - name: democratic-local-hostpath
     defaultClass: true
     reclaimPolicy: Delete
-    volumeBindingMode: WaitForFirstConsumer
+    volumeBindingMode: Immediate
     # distributed support is not yet ready for expansion
     allowVolumeExpansion: false
     parameters:
