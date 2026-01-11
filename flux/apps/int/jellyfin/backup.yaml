@@ -11,13 +11,16 @@ spec:
   restic:
     pruneIntervalDays: 14
     repository: restic-config
+    copyMethod: Snapshot # see comment: https://github.com/backube/volsync/issues/627#issuecomment-1664630333 
+    volumeSnapshotClassName: csi-democratic-csi-hostpath
+    cacheStorageClassName: democratic-local-hostpath
+    storageClassName: democratic-local-hostpath
     retain:
       hourly: 6
       daily: 5
       weekly: 4
       monthly: 2
       yearly: 1
-    copyMethod: Snapshot # see comment: https://github.com/backube/volsync/issues/627#issuecomment-1664630333 
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
@@ -28,7 +31,6 @@ spec:
     manual: restore-once
   restic:
     repository: restic-config
-    destinationPVC: config-pvc
     copyMethod: Snapshot
     volumeSnapshotClassName: csi-democratic-csi-hostpath
     cacheStorageClassName: democratic-local-hostpath
