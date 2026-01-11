@@ -5,4 +5,4 @@ namespace: flux-system
 resources:
   - ../../base/crds/traefik-crds.readonly.yaml
   - ../../base/crds/cert-manager-crds.readonly.yaml
-  - ../../base/crds/volsync-crds.readonly.yaml
+  - ../../base/crds/velero-crds.readonly.yaml

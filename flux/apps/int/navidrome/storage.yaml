@@ -7,7 +7,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadOnlyMany
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: ""  # Must match PVC (empty string for static binding)
   csi:
     driver: smb.csi.k8s.io
