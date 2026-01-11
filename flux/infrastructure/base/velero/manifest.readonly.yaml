@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-11T21:44:36+0100
+# Generated with Renderer.sh at 2026-01-11T22:54:12+0100
 # Chart version: 11.3.2
 # Repo name: vmware-tanzu
 # Repo: https://vmware-tanzu.github.io/helm-charts
@@ -350,21 +350,6 @@ spec:
   accessMode: ReadWrite
   objectStorage:
     bucket: ""
----
-# Source: velero/templates/volumesnapshotlocation.yaml
-apiVersion: velero.io/v1
-kind: VolumeSnapshotLocation
-metadata:
-  name: default
-  namespace: velero
-  labels:
-    app.kubernetes.io/name: velero
-    app.kubernetes.io/instance: velero
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: velero-11.3.2
-spec:
-  credential:
-  provider:
 ---
 # Source: velero/templates/upgrade-crds/serviceaccount-upgrade.yaml
 apiVersion: v1
