@@ -1,1 +1,2 @@
 deployNodeAgent: true
+snapshotsEnabled: false
