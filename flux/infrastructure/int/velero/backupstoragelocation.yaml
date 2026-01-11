@@ -6,7 +6,8 @@ metadata:
   namespace: velero
 spec:
   provider: "aws"
-  bucket: "velero-int"
+  objectStorage:
+    bucket: "velero-int"
   default: true
   config:
     region: "minio"
