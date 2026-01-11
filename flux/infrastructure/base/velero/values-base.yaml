@@ -1,2 +1,3 @@
 deployNodeAgent: true
 snapshotsEnabled: false
+upgradeCRDs: false
