@@ -35,6 +35,7 @@ spec:
     volumeSnapshotClassName: csi-democratic-csi-hostpath
     cacheStorageClassName: democratic-local-hostpath
     storageClassName: democratic-local-hostpath
+    capacity: 5Gi
     accessModes:
       - ReadWriteOnce
     enableFileDeletion: true
