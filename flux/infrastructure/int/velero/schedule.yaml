@@ -8,6 +8,7 @@ spec:
   schedule: "0 1 * * *"
   template:
     includedResources:
+      - pods # required by FSB mode
       - persistentvolumeclaims
     includedNamespaces:
       - jellyfin
