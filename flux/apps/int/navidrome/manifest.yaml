@@ -46,6 +46,7 @@ spec:
       labels:
         app.kubernetes.io/name: navidrome
         app.kubernetes.io/instance: navidrome
+      annotations:
         backup.velero.io/backup-volumes: navidrome-data
     spec:
       serviceAccountName: default

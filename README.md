@@ -87,6 +87,20 @@ To avoid duplication of same resources for each namespace where they're needed, 
 Each shared resource has its separate directory and can be included in Kustomization.yaml of any app/infrastructure where it is needed.
 A copy will be created in the clusterfor each namespace on the reconciliation step.
 
+## Volume backups (Velero)
+
+FSB is used instead of Volume Snapshots to support rancher's local-path volumes as there is no need for anything more advanced (yet).
+Only volumes from int cluster are backed up because almost everything on ext cluster is defined declaratively in this repo.
+
+### Force backup (from schedule)
+
+velero backup create --from-schedule pvc-backup
+
+### Restore 
+
+velero restore create --from-backup pvc-backup-20260111221920 --include-namespaces jellyfin
+
+
 ## TODOs
 
 - Connect renovate or dependabot to Github repo for getting update PRs
