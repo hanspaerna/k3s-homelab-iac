@@ -1,0 +1,33 @@
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: navidrome-data-pvc-backup
+spec:
+  sourcePVC: data-pvc
+  trigger:
+    # Take a backup every night at 01:00 AM
+    schedule: "0 1 * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-config
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Direct
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: navidrome-data-pvc-dest
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-config
+    # Use an existing PVC, don't provision a new one
+    destinationPVC: data-pvc
+    copyMethod: Direct
+    enableFileDeletion: true

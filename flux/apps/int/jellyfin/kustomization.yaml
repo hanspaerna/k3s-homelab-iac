@@ -3,4 +3,5 @@ namespace: jellyfin
 resources:
   - manifest.yaml
   - storage.yaml
+  - backup.yaml
   - httproute.yaml

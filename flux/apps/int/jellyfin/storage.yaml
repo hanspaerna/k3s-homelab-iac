@@ -7,7 +7,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadOnlyMany
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   csi:
     driver: smb.csi.k8s.io
@@ -34,7 +34,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadOnlyMany
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   csi:
     driver: smb.csi.k8s.io
@@ -85,11 +85,11 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-#  dataSourceRef: # use Volume Populator, a pod will wait until PVC is populated with data source (VolSync's ReplicationDestination in our case)
-#    kind: ReplicationDestination
-#    apiGroup: volsync.backube
-#    name: jellyfin-config-pvc-dest
-#  storageClassName: democratic-local-hostpath
+  dataSourceRef: # use Volume Populator, a pod will wait until PVC is populated with data source (VolSync's ReplicationDestination in our case)
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: jellyfin-config-pvc-dest
+  storageClassName: democratic-local-hostpath
   resources:
     requests:
       storage: 5Gi

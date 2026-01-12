@@ -4,3 +4,4 @@ resources:
   - manifest.yaml
   - httproute.yaml
   - storage.yaml
+  - backup.yaml
