@@ -1,2 +1,2 @@
 resources:
-  - manifest.readonly.yaml
+- ../../base/snapshot-controller/
