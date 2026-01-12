@@ -21,13 +21,6 @@ k3s:
           ansible_host: ${control_plane_ips[index]}
 %{endfor ~}
 
-    workers:
-      hosts:
-%{ for index, hostname in worker_hostnames ~}
-        ${hostname}:
-          ansible_host: ${worker_ips[index]}
-%{endfor ~}
-
     control_plane_external:
       hosts:
         ${control_plane_external_hostname}:

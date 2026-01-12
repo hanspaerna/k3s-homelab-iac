@@ -29,7 +29,7 @@
         msg: 'System utilities installed: QEMU guest agent and vim editor'
 
 - name: Install iGPU-specific utilities and drivers to the first worker
-  hosts: k3s-worker-1
+  hosts: k3s-cp-1
   tags: gpu
   become: true
   tasks:

@@ -113,43 +113,6 @@ variable "control_plane_first_num" {
   default = 180
 }
 
-# Worker Configuration
-variable "worker_count" {
-  description = "Number of worker nodes"
-  type = number
-  default = 3
-}
-
-variable "worker_cpu" {
-  description = "CPU cores for worker nodes"
-  type = number
-  default = 2
-}
-
-variable "worker_memory" {
-  description = "Memory in MB for worker nodes"
-  type = number
-  default = 8192
-}
-
-variable "worker_disk_size" {
-  description = "Disk size for worker nodes"
-  type = string
-  default = "40G"
-}
-
-variable "worker_ip_start" {
-  description = "Starting IP for worker nodes"
-  type = string
-  default = "192.168.1.185"
-}
-
-variable "worker_first_num" {
-  description = "A starting number in a subnet"
-  type = number
-  default = 185
-}
-
 variable "igpu_pcie_id" {
   description = "PCIe ID of Intel iGPU for passthrough"
   type = string

@@ -98,6 +98,7 @@ resource "proxmox_vm_qemu" "k3s_control_plane" {
     }
   }
 
+
   network {
     id = 0
     model = "virtio"
@@ -108,6 +109,21 @@ resource "proxmox_vm_qemu" "k3s_control_plane" {
   serial {
     id = 0
     type = "socket"
+  }
+
+  # Intel iGPU passthrough for first control plane node only
+  dynamic "pcis" {
+    for_each = count.index == 0 ? [1] : []
+    content {
+      pci0 {
+        raw {
+          raw_id = var.igpu_pcie_id
+          pcie = true
+          primary_gpu = false
+          rombar = true
+        }
+      }
+    }
   }
   
   ipconfig0 = "ip=${cidrhost(var.subnet, var.control_plane_first_num + count.index)}/24,gw=${var.gateway}"
@@ -126,100 +142,6 @@ resource "proxmox_vm_qemu" "k3s_control_plane" {
       sshkeys,
     ]
   }
-}
-
-# Worker Nodes
-resource "proxmox_vm_qemu" "k3s_worker" {
-  count = var.worker_count
-
-  name = "k3s-worker-${count.index + 1}"
-  target_node = var.proxmox_node
-  clone = var.template_id
-  full_clone = true
-  vmid = var.vm_id_start + var.control_plane_count + count.index
-
-  agent = 1
-  os_type = "cloud-init"
-  memory = var.worker_memory
-
-  cpu {
-    type = "host"
-    cores = var.worker_cpu
-    sockets = 1
-  }
-
-  scsihw = "virtio-scsi-single"
-  bootdisk = "scsi0"
-
-  start_at_node_boot = true
-  startup_shutdown {
-    order = 2
-  }
-
-  disks {
-    scsi {
-      scsi0 {
-        disk {
-          storage = var.storage
-          size = var.worker_disk_size
-        }
-      }
-    }
-    # CloudInit drive
-    ide {
-      ide2 {
-        cloudinit {
-          storage = var.storage
-        }
-      }
-    }
-  }
-
-  network {
-    id = 0
-    model = "virtio"
-    bridge = var.bridge
-  }
-
-  # Serial port for console access
-  serial {
-    id = 0
-    type = "socket"
-  }
-
-  # Intel iGPU passthrough for first worker only
-  dynamic "pcis" {
-    for_each = count.index == 0 ? [1] : []
-    content {
-      pci0 {
-        raw {
-          raw_id = var.igpu_pcie_id
-          pcie = true
-          primary_gpu = false
-          rombar = true
-        }
-      }
-    }
-  }
-
-  ipconfig0 = "ip=${cidrhost(var.subnet, var.worker_first_num + count.index)}/24,gw=${var.gateway}"
-
-  nameserver = var.nameserver
-  searchdomain = var.searchdomain
-
-  ciuser = var.cloud_init_username
-  cipassword = var.cloud_init_password
-  sshkeys = var.ssh_public_key
-
-  lifecycle {
-    ignore_changes = [
-      network,
-      ciuser,
-      sshkeys,
-    ]
-  }
-
-  depends_on = [proxmox_vm_qemu.k3s_control_plane]
 }
 
 resource "hcloud_ssh_key" "main" {
@@ -264,8 +186,6 @@ resource "local_file" "ansible_inventory" {
       cloud_init_username = var.cloud_init_username
       control_plane_hostnames = [for vm in proxmox_vm_qemu.k3s_control_plane : vm.name]
       control_plane_ips = [for i in range(var.control_plane_count) : cidrhost(var.subnet, var.control_plane_first_num + i)]
-      worker_hostnames = [for vm in proxmox_vm_qemu.k3s_worker : vm.name] 
-      worker_ips = [for i in range(var.worker_count) : cidrhost(var.subnet, var.worker_first_num + i)]
       control_plane_external_hostname = hcloud_server.k3s_control_plane_external.name
       control_plane_external_ip = hcloud_server.k3s_control_plane_external.ipv4_address
     }

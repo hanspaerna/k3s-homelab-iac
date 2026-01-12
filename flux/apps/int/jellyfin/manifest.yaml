@@ -46,8 +46,6 @@ spec:
       labels:
         app.kubernetes.io/name: jellyfin
         app.kubernetes.io/instance: jellyfin
-      annotations:
-        backup.velero.io/backup-volumes: config
     spec:
       serviceAccountName: default
       automountServiceAccountToken: true

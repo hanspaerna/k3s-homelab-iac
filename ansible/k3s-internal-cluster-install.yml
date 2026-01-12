@@ -76,47 +76,6 @@
       ansible.builtin.debug:
         var: nodes_status.stdout_lines
 
-- name: Install K3s on Workers
-  hosts: workers
-  become: true
-  vars:
-    k3s_url: https://{{ hostvars[groups['control_plane'][0]]['ansible_host'] }}:6443
-    k3s_token: '{{ hostvars[groups[''control_plane''][0]][''k3s_node_token''] }}'
-  tasks:
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 3600
-
-    - name: Install required packages
-      ansible.builtin.apt:
-        name:
-          - curl
-          - apt-transport-https
-          - ca-certificates
-        state: present
-
-    - name: Download K3s install script
-      ansible.builtin.get_url:
-        url: https://get.k3s.io
-        dest: /tmp/k3s-install.sh
-        mode: '0755'
-
-    - name: Install K3s agent
-      ansible.builtin.shell: |
-        INSTALL_K3S_VERSION={{ k3s_version }} \
-        K3S_URL={{ k3s_url }} \
-        K3S_TOKEN={{ k3s_token }} \
-        sh /tmp/k3s-install.sh agent \
-          --node-name={{ inventory_hostname }}
-      args:
-        creates: /usr/local/bin/k3s-agent
-
-    - name: Wait for K3s agent to be ready
-      ansible.builtin.wait_for:
-        path: /var/lib/rancher/k3s/agent/kubelet.kubeconfig
-        timeout: 300
-
 - name: Verify Cluster
   hosts: control_plane
   become: true
@@ -166,7 +125,6 @@
         msg:
           - K3s cluster is ready!
           - 'Control plane: {{ ansible_host }}'
-          - 'Workers: {{ groups[''workers''] | map(''extract'', hostvars, ''ansible_host'') | list }}'
           - 'Kubeconfig saved to: {{ playbook_dir }}/../.kubeconfig-internal'
           - 'Use: export KUBECONFIG={{ playbook_dir }}/../.kubeconfig-internal'
 

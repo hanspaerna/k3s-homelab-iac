@@ -22,19 +22,11 @@ cloud_init_password = "<PASSWORD>"
 
 # Control Plane Configuration
 control_plane_count = 1
-control_plane_cpu = 2
-control_plane_memory = 4096
-control_plane_disk_size = "15G"
+control_plane_cpu = 4
+control_plane_memory = 8192
+control_plane_disk_size = "200G"
 control_plane_ip_start = "192.168.1.180"
 control_plane_first_num = 180
-
-# Worker Configuration
-worker_count = 2
-worker_cpu = 1
-worker_memory = 2048
-worker_disk_size = "10G"
-worker_ip_start = "192.168.1.185"
-worker_first_num = 185
 
 # K3s Configuration
 k3s_version = "v1.34.1+k3s1"
