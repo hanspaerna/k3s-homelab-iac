@@ -4,7 +4,6 @@ resources:
   - ../../../shared-resources/restic-secret/
   - manifest.yaml
   - storage.yaml
-  - backup.yaml
   - httproute.yaml
 
 patches:
