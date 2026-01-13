@@ -17,43 +17,43 @@ spec:
         app.kubernetes.io/name: koito
         app.kubernetes.io/instance: koito
     spec:
-      containers:
-        - name: koito
-          image: gabehf/koito:v0.1.1
+      initContainers:
+        - name: init-postgres
+          image: postgres:16
           env:
-            - name: KOITO_DATABASE_URL
+            - name: POSTGRES_DB
+              value: koitodb
+            - name: POSTGRES_USER
+              value: koito
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: koito-db-secret
-                  key: KOITO_DATABASE_URL
-            - name: KOITO_ALLOWED_HOSTS
-              value: "koito.vpn.fingol.pro"
-          ports:
-            - containerPort: 4110
-              name: http
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -s "$PGDATA/PG_VERSION" ]; then
+                echo "Initializing database..."
+                docker-entrypoint.sh postgres &
+                PID=$!
+                until pg_isready -U koito -d koitodb; do
+                  sleep 1
+                done
+                echo "Database initialized, shutting down..."
+                kill $PID
+                wait $PID 2>/dev/null || true
+              else
+                echo "Database already initialized"
+              fi
           volumeMounts:
-            - mountPath: /etc/koito
+            - mountPath: /var/lib/postgresql/data
               name: koito-data
-              subPath: koito
-          resources:
-            limits:
-              cpu: 200m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 4110
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 4110
-            initialDelaySeconds: 5
-            periodSeconds: 5
+              subPath: postgres
+      containers:
         - name: postgres
           image: postgres:16
           env:
@@ -66,6 +66,8 @@ spec:
                 secretKeyRef:
                   name: koito-db-secret
                   key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: koito-data
@@ -85,8 +87,50 @@ spec:
                 - koito
                 - -d
                 - koitodb
+            initialDelaySeconds: 10
+            periodSeconds: 10
+        - name: koito
+          image: gabehf/koito:v0.1.1
+          env:
+            - name: KOITO_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: koito-db-secret
+                  key: KOITO_DATABASE_URL
+            - name: KOITO_ALLOWED_HOSTS
+              value: "*"
+          ports:
+            - containerPort: 4110
+              name: http
+          volumeMounts:
+            - mountPath: /etc/koito
+              name: koito-data
+              subPath: koito
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          startupProbe:
+            httpGet:
+              path: /
+              port: 4110
+            failureThreshold: 30
+            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 4110
             initialDelaySeconds: 30
             periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 4110
+            initialDelaySeconds: 5
+            periodSeconds: 5
       volumes:
         - name: koito-data
           persistentVolumeClaim:
