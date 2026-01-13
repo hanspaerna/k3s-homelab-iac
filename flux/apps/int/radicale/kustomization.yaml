@@ -1,0 +1,8 @@
+namespace: radicale
+
+resources:
+  - namespace.yaml
+  - storage.yaml
+  - deployment.yaml
+  - svc.yaml
+  - httproute.yaml

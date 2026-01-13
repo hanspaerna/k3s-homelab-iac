@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: radicale-svc
+  labels:
+    app.kubernetes.io/name: radicale
+    app.kubernetes.io/instance: radicale
+spec:
+  selector:
+    app.kubernetes.io/name: radicale
+    app.kubernetes.io/instance: radicale
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5232
+      targetPort: 5232
+  type: ClusterIP
