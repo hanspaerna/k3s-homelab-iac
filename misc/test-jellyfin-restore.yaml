@@ -4,6 +4,7 @@ metadata:
   name: jellyfin-test-restore
   namespace: jellyfin
 spec:
+#  snapshot: "58e0b348" 
   backend:
     repoPasswordSecretRef:
       name: k8up-secret
