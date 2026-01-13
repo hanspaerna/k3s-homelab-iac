@@ -1,0 +1,26 @@
+#
+# Usage:
+# ansible-playbook restore-internal-applications.yml
+# 
+# Or filter specific namespaces:
+# ansible-playbook restore-internal-applications.yml -e "namespaces=['jellyfin','navidrome']"
+#
+
+- name: Restore all K8up backed up applications
+  hosts: localhost
+  gather_facts: true
+  vars:
+    kubeconfig_path: "{{ playbook_dir }}/../.kubeconfig-internal"
+    namespaces: []  # Empty = all, or specify ['jellyfin', 'navidrome']
+  pre_tasks:
+    - name: Confirm restore
+      pause:
+        prompt: "Are you sure you want to destroy the data currently existing in PVCs? (yes/no)"
+      register: confirm_restore
+
+    - name: End the play if rejected
+      ansible.builtin.meta: end_host
+      when:
+      - confirm_restore.user_input  != 'yes'
+  roles:
+    - k8up-restore

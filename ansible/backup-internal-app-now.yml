@@ -1,0 +1,60 @@
+#
+# Usage:
+# ansible-playbook ansible/backup-internal-app-now.yml -e "namespace=jellyfin"
+#
+- name: Force backup of a specific application
+  hosts: localhost
+  gather_facts: false
+  vars:
+    kubeconfig_path: "{{ playbook_dir }}/../.kubeconfig-internal"
+    namespace: ""
+  tasks:
+    - name: Validate namespace is provided
+      fail:
+        msg: "namespace is required: -e 'namespace=jellyfin'"
+      when: namespace == ""
+
+    - name: Delete existing backup resources
+      shell: |
+        kubectl get backups.k8up.io -n {{ namespace }} -o name --kubeconfig {{ kubeconfig_path }} | \
+        xargs -r kubectl delete -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
+      ignore_errors: true
+
+    - name: Get schedule for backend config
+      command: kubectl get schedules.k8up.io -n {{ namespace }} -o json --kubeconfig {{ kubeconfig_path }}
+      register: schedule_raw
+      changed_when: false
+
+    - name: Parse schedule
+      set_fact:
+        schedule: "{{ schedule_raw.stdout | from_json | json_query('items') }}"
+
+    - name: Fail if no schedule found
+      fail:
+        msg: "No K8up Schedule found in namespace {{ namespace }}"
+      when: schedule | length == 0
+      
+    - name: Create backup
+      command: kubectl apply -f - --kubeconfig {{ kubeconfig_path }}
+      args:
+        stdin: |
+          apiVersion: k8up.io/v1
+          kind: Backup
+          metadata:
+            name: manual-backup-{{ lookup('pipe', 'date +%s') }}
+            namespace: {{ namespace }}
+          spec:
+            backend: {{ schedule[0].spec.backend | to_json }}
+
+    - name: Wait for backup job to complete
+      shell: |
+        kubectl get jobs -n {{ namespace }} -l k8up.io/type=backup -o json --kubeconfig {{ kubeconfig_path }} | \
+        jq -e '.items[] | select(.status.succeeded == 1)' > /dev/null
+      register: backup_job
+      until: backup_job.rc == 0
+      retries: 60
+      delay: 10
+
+    - name: Backup complete
+      debug:
+        msg: "Backup completed successfully for {{ namespace }}"

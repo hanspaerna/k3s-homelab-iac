@@ -1,0 +1,42 @@
+- name: Get all K8up Schedules
+  command: kubectl get schedules.k8up.io -A -o json --kubeconfig {{ kubeconfig_path }}
+  register: schedules_raw
+  changed_when: false
+
+- name: Parse schedules
+  set_fact:
+    schedules: "{{ schedules_raw.stdout | from_json | json_query('items') }}"
+
+- name: Get PVCs for each namespace
+  command: kubectl get pvc -n {{ item.metadata.namespace }} -o json --kubeconfig {{ kubeconfig_path }}
+  register: pvcs_per_namespace
+  loop: "{{ schedules }}"
+  loop_control:
+    label: "{{ item.metadata.namespace }}"
+  changed_when: false
+
+- name: Build restore list with PVCs
+  set_fact:
+    restore_items: >-
+      {{
+        restore_items | default([]) + [{
+          'name': item.item.metadata.name,
+          'namespace': item.item.metadata.namespace,
+          'pvcs': (item.stdout | from_json | json_query('items[?metadata.annotations."k8up.io/backup"]')) | map(attribute='metadata.name') | list,
+          'backend': item.item.spec.backend
+        }]
+      }}
+  loop: "{{ pvcs_per_namespace.results }}"
+  loop_control:
+    label: "{{ item.item.metadata.namespace }}"
+
+- name: Display apps to restore
+  debug:
+    msg: "Will restore: {{ restore_items | map(attribute='namespace') | list }}"
+
+- name: Restore each application
+  include_tasks: restore-app.yml
+  loop: "{{ restore_items }}"
+  loop_control:
+    loop_var: app
+    label: "{{ app.namespace }}"
