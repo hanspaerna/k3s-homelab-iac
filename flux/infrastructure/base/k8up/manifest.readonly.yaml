@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-13T00:33:00+0100
+# Generated with Renderer.sh at 2026-01-13T01:17:04+0100
 # Chart version: 4.8.6
 # Repo name: k8up-io
 # Repo: https://k8up-io.github.io/k8up
@@ -413,7 +413,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: k8up
-  namespace: k8up
+  namespace: k8up-system
 ---
 # Source: k8up/templates/service.yaml
 apiVersion: v1
@@ -515,7 +515,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: k8up-cleanup-roles
-  namespace: k8up
+  namespace: k8up-system
   annotations:
     "helm.sh/hook": post-install,post-upgrade,post-delete
     "helm.sh/hook-weight": "2"
@@ -562,7 +562,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cleanup-service-account
-  namespace: k8up
+  namespace: k8up-system
 ---
 # Source: k8up/templates/cleanup-hook.yaml
 apiVersion: batch/v1

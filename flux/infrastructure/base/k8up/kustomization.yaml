@@ -1,2 +1,4 @@
+namespace: k8up-system
+
 resources:
   - manifest.readonly.yaml
