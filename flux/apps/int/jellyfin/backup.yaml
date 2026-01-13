@@ -11,7 +11,7 @@ spec:
       key: password
     s3:
       endpoint: http://truenas.lan:9000
-      bucket: k8up-backups
+      bucket: jellyfin
       accessKeyIDSecretRef:
         name: k8up-secret
         key: username

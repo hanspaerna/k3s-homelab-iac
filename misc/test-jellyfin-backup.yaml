@@ -1,9 +1,8 @@
----
 apiVersion: k8up.io/v1
-kind: Schedule
+kind: Backup
 metadata:
-  name: navidrome-backup
-  namespace: navidrome
+  name: jellyfin-test-backup
+  namespace: jellyfin
 spec:
   backend:
     repoPasswordSecretRef:
@@ -11,20 +10,10 @@ spec:
       key: password
     s3:
       endpoint: http://truenas.lan:9000
-      bucket: navidrome
+      bucket: jellyfin
       accessKeyIDSecretRef:
         name: k8up-secret
         key: username
       secretAccessKeySecretRef:
         name: k8up-secret
         key: password
-  backup:
-    schedule: "0 1 * * *"
-    failedJobsHistoryLimit: 3
-    successfulJobsHistoryLimit: 3
-  prune:
-    schedule: "0 3 * * 0"
-    retention:
-      keepDaily: 7
-      keepWeekly: 4
-      keepMonthly: 3
