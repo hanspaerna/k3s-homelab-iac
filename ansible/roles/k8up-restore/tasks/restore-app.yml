@@ -22,11 +22,25 @@
     msg: "{{ app }}"
 
 - name: "{{ app.namespace }} - Clear PVCs"
+  vars:
+    pod_spec:
+      spec:
+        containers:
+          - name: cleanup
+            image: busybox
+            command: ["sh", "-c", "rm -rf /data/* /data/.* 2>/dev/null; echo done"]
+            volumeMounts:
+              - name: data
+                mountPath: /data
+        volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: "{{ item }}"
   command: >
     kubectl run cleanup-{{ item }} -n {{ app.namespace }}
     --image=busybox
     --restart=Never
-    --overrides='{"spec":{"containers":[{"name":"cleanup","image":"busybox","command":["sh","-c","rm -rf /data/* /data/.* 2>/dev/null; echo done"],"volumeMounts":[{"name":"data","mountPath":"/data"}]}],"volumes":[{"name":"data","persistentVolumeClaim":{"claimName":"{{ item }}"}}]}}'
+    --overrides='{{ pod_spec | to_json }}'
     --kubeconfig {{ kubeconfig_path }}
   loop: "{{ app.pvcs }}"
 
@@ -66,6 +80,10 @@
   until: restore_job.rc == 0
   retries: 60
   delay: 10
+
+- name: "{{ app.namespace }} - Wait for filesystem sync"
+  pause:
+    seconds: 30
 
 - name: "{{ app.namespace }} - Scale up deployments"
   command: kubectl scale deployment {{ item.metadata.name }} -n {{ app.namespace }} --replicas={{ item.spec.replicas | default(1) }} --kubeconfig {{ kubeconfig_path }}
