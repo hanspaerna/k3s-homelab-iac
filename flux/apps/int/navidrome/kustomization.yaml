@@ -1,16 +1,8 @@
 namespace: navidrome
 
 resources:
-  - ../../../shared-resources/restic-secret/
+  - ../../../shared-resources/k8up-secret/
   - manifest.yaml
   - httproute.yaml
   - storage.yaml
-
-patches:
-  - target:
-      kind: Secret
-      name: restic-config
-    patch: |
-      - op: replace
-        path: /stringData/RESTIC_REPOSITORY
-        value: rest:http://truenas.lan:8888/navidrome
+  - backup.yaml
