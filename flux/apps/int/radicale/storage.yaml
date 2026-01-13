@@ -65,9 +65,9 @@ spec:
   storageClassName: ""
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: "truenas.lan#radicale/users#radicale"
+    volumeHandle: "truenas.lan#private/radicale/users#radicale"
     volumeAttributes:
-      source: "//truenas.lan/radicale/users"
+      source: "//truenas.lan/private/radicale/users"
     nodeStageSecretRef:
       name: smb-secret
       namespace: default
