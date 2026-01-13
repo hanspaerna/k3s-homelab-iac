@@ -28,10 +28,12 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
-            - name: config
+            - name: private
               mountPath: /etc/radicale/config
+              subPath: config
             - name: users
               mountPath: /config/users
+              subPath: users
           resources:
             limits:
               cpu: 100m
@@ -55,9 +57,9 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: radicale-data-pvc
-        - name: config
+        - name: private
           persistentVolumeClaim:
-            claimName: radicale-config-pvc
+            claimName: radicale-private-pvc
         - name: users
           persistentVolumeClaim:
             claimName: radicale-users-pvc

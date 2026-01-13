@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: radicale-config-pv
+  name: radicale-private-pv
 spec:
   capacity:
     storage: 1Gi
@@ -38,9 +38,9 @@ spec:
   storageClassName: ""
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: "truenas.lan#private/radicale/config#radicale"
+    volumeHandle: "truenas.lan#private/radicale#radicale"
     volumeAttributes:
-      source: "//truenas.lan/private/radicale/config"
+      source: "//truenas.lan/private/radicale"
     nodeStageSecretRef:
       name: smb-secret
       namespace: default
@@ -95,14 +95,14 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: radicale-config-pvc
+  name: radicale-private-pvc
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
-  volumeName: radicale-config-pv
+  volumeName: radicale-private-pv
   storageClassName: ""
 ---
 apiVersion: v1
