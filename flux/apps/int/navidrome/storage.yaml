@@ -42,6 +42,8 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: data-pvc
+  annotations:
+    k8up.io/backup: "true"
 spec:
   accessModes:
     - ReadWriteOnce
