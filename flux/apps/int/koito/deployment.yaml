@@ -26,8 +26,6 @@ spec:
                 secretKeyRef:
                   name: koito-db-secret
                   key: KOITO_DATABASE_URL
-            - name: KOITO_ALLOWED_HOSTS
-              value: "koito.vpn.fingol.pro"
           ports:
             - containerPort: 4110
               name: http
