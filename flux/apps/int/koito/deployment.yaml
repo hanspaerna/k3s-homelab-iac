@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: koito
+  labels:
+    app.kubernetes.io/name: koito
+    app.kubernetes.io/instance: koito
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: koito
+      app.kubernetes.io/instance: koito
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: koito
+        app.kubernetes.io/instance: koito
+    spec:
+      containers:
+        - name: koito
+          image: gabehf/koito:v0.1.1
+          env:
+            - name: KOITO_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: koito-db-secret
+                  key: KOITO_DATABASE_URL
+            - name: KOITO_ALLOWED_HOSTS
+              value: "koito.vpn.fingol.pro"
+          ports:
+            - containerPort: 4110
+              name: http
+          volumeMounts:
+            - mountPath: /etc/koito
+              name: koito-data
+              subPath: koito
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 4110
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 4110
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_DB
+              value: koitodb
+            - name: POSTGRES_USER
+              value: koito
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: koito-db-secret
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: koito-data
+              subPath: postgres
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - koito
+                - -d
+                - koitodb
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: koito-data
+          persistentVolumeClaim:
+            claimName: koito-pvc

@@ -1,0 +1,9 @@
+namespace: koito
+
+resources:
+  - namespace.yaml
+  - secrets.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - svc.yaml
+  - httproute.yaml
