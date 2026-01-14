@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: slskd-config-template
+data:
+  slskd.yml: |
+    soulseek:
+      listen_port: 50300

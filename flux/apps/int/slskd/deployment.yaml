@@ -19,6 +19,24 @@ spec:
         app.kubernetes.io/name: slskd
         app.kubernetes.io/instance: slskd
     spec:
+      initContainers:
+        - name: init-config
+          image: busybox:latest
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /app/slskd.yml ]; then
+                cp /config-template/slskd.yml /app/slskd.yml
+                echo "Created slskd.yml from template"
+              else
+                echo "slskd.yml already exists"
+              fi
+          volumeMounts:
+            - name: data
+              mountPath: /app
+            - name: config-template
+              mountPath: /config-template
       containers:
         - name: gluetun
           image: qmcgaw/gluetun:latest
@@ -75,6 +93,9 @@ spec:
               memory: 64Mi
             limits:
               memory: 256Mi
+          volumeMounts:
+            - name: data
+              mountPath: /app
           startupProbe:
             exec:
               command:
@@ -146,3 +167,6 @@ spec:
         - name: books
           persistentVolumeClaim:
             claimName: slskd-books-pvc
+        - name: config-template
+          configMap:
+            name: slskd-config-template
