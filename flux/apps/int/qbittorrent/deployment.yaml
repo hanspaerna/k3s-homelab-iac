@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: gluetun
-          image: qmcgaw/gluetun:v3
+          image: qmcgaw/gluetun:latest
           securityContext:
             capabilities:
               add:
@@ -54,6 +54,13 @@ spec:
                   key: SERVER_COUNTRIES
             - name: FIREWALL_VPN_INPUT_PORTS
               value: "6881"
+            # Killswitch settings
+            - name: FIREWALL
+              value: "on"
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "10.42.0.0/16,10.43.0.0/16"  # K3s pod and service CIDRs
+            - name: DOT
+              value: "off"
           ports:
             - containerPort: 8080
               name: http
@@ -77,7 +84,7 @@ spec:
                 - healthcheck
             periodSeconds: 30
         - name: qbittorrent
-          image: linuxserver/qbittorrent:0.24.2
+          image: linuxserver/qbittorrent:latest
           env:
             - name: TZ
               value: "Europe/Berlin"

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: gluetun
-          image: qmcgaw/gluetun:v3
+          image: qmcgaw/gluetun:latest
           securityContext:
             capabilities:
               add:
@@ -52,10 +52,27 @@ spec:
                 secretKeyRef:
                   name: slskd-secret
                   key: SERVER_COUNTRIES
+            - name: UPDATER_PERIOD
+              value: "24h"
+            - name: BLOCK_MALICIOUS
+              value: "off"
+            - name: PORT_FORWARD_ONLY
+              value: "on"
+            - name: VPN_PORT_FORWARDING
+              value: "on"
+            - name: VPN_PORT_FORWARDING_UP_COMMAND
+              value: "/bin/sh -c 'sed -i -r \"s/^([[:space:]]+listen_port:).*/\1 $(cat /tmp/gluetun/forwarded_port)/\" /app/slskd.yml"
             - name: FIREWALL_VPN_INPUT_PORTS
               value: "50300"
+            # Killswitch settings
+            - name: FIREWALL
+              value: "on"
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "10.42.0.0/16,10.43.0.0/16"  # K3s pod and service CIDRs
+            - name: DOT
+              value: "off"
           ports:
-            - containerPort: 8080
+            - containerPort: 5030
               name: http
           resources:
             requests:
@@ -77,7 +94,7 @@ spec:
                 - healthcheck
             periodSeconds: 30
         - name: slskd
-          image: slskd/slskd:0.24.2
+          image: slskd/slskd:latest
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -93,6 +110,8 @@ spec:
                   key: SLSKD_SLSK_PASSWORD
             - name: SLSKD_SLSK_LISTEN_PORT
               value: "50300"
+            - name: SLSKD_CONFIG
+              value: "/app/slskd.yml" # should match a path from VPN_PORT_FORWARDING_UP_COMMAND
           volumeMounts:
             - name: data
               mountPath: /app
