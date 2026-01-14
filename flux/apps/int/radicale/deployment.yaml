@@ -31,7 +31,7 @@ spec:
             - name: private
               mountPath: /etc/radicale/config
               subPath: config
-            - name: users
+            - name: private
               mountPath: /config/users
               subPath: users
           resources:
@@ -60,6 +60,3 @@ spec:
         - name: private
           persistentVolumeClaim:
             claimName: radicale-private-pvc
-        - name: users
-          persistentVolumeClaim:
-            claimName: radicale-users-pvc

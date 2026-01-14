@@ -53,33 +53,6 @@ spec:
     - noserverino
 ---
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: radicale-users-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: ""
-  csi:
-    driver: smb.csi.k8s.io
-    volumeHandle: "truenas.lan#private/radicale/users#radicale"
-    volumeAttributes:
-      source: "//truenas.lan/private/radicale/users"
-    nodeStageSecretRef:
-      name: smb-secret
-      namespace: default
-  mountOptions:
-    - dir_mode=0777
-    - file_mode=0777
-    - noperm
-    - mfsymlinks
-    - cache=strict
-    - noserverino
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: radicale-data-pvc
@@ -103,17 +76,4 @@ spec:
     requests:
       storage: 1Gi
   volumeName: radicale-private-pv
-  storageClassName: ""
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: radicale-users-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  volumeName: radicale-users-pv
   storageClassName: ""
