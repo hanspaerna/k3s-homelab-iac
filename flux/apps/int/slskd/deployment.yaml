@@ -20,6 +20,23 @@ spec:
         app.kubernetes.io/instance: slskd
     spec:
       initContainers:
+        - name: init-config
+          image: busybox:latest
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /app/slskd.yml ]; then
+                cp /config-template/slskd.yml /app/slskd.yml
+                echo "Created slskd.yml from template"
+              else
+                echo "slskd.yml already exists"
+              fi
+          volumeMounts:
+            - name: data
+              mountPath: /app
+            - name: config-template
+              mountPath: /config-template
         - name: gluetun
           image: qmcgaw/gluetun:latest
           # restartPolicy: Always makes gluetun a native sidecar
