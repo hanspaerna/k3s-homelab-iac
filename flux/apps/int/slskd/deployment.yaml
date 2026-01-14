@@ -76,7 +76,7 @@ spec:
             - name: VPN_PORT_FORWARDING_UP_COMMAND
               value: /bin/sh -c 'sed -i -r "s/^([[:space:]]+listen_port:).*/\1 $(cat /tmp/gluetun/forwarded_port)/" /app/slskd.yml'
             - name: FIREWALL_VPN_INPUT_PORTS
-              value: "50300"
+              value: "5030"
             # Killswitch settings
             - name: FIREWALL
               value: "on"
@@ -85,7 +85,7 @@ spec:
             - name: DOT
               value: "off"
           ports:
-            - containerPort: 5030
+            - containerPort: 5030 # slskd web ui
               name: http
           resources:
             requests:
@@ -124,8 +124,6 @@ spec:
                 secretKeyRef:
                   name: slskd-secret
                   key: SLSKD_SLSK_PASSWORD
-            - name: SLSKD_SLSK_LISTEN_PORT
-              value: "50300"
             - name: SLSKD_CONFIG
               value: "/app/slskd.yml" # should match a path from VPN_PORT_FORWARDING_UP_COMMAND
           volumeMounts:
