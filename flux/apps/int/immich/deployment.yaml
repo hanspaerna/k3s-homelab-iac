@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: immich-server
-          image: ghcr.io/immich-app/immich-server:2.4.1
+          image: ghcr.io/immich-app/immich-server:v2
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -104,7 +104,7 @@ spec:
     spec:
       containers:
         - name: immich-ml
-          image: ghcr.io/immich-app/immich-machine-learning:2.4.1
+          image: ghcr.io/immich-app/immich-machine-learning:v2
           env:
             - name: TZ
               value: "Europe/Berlin"
