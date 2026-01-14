@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  labels:
+    app.kubernetes.io/name: qbittorrent
+    app.kubernetes.io/instance: qbittorrent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: qbittorrent
+      app.kubernetes.io/instance: qbittorrent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: qbittorrent
+        app.kubernetes.io/instance: qbittorrent
+    spec:
+      containers:
+        - name: gluetun
+          image: qmcgaw/gluetun:v3
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          env:
+            - name: VPN_SERVICE_PROVIDER
+              valueFrom:
+                secretKeyRef:
+                  name: qbittorrent-secret
+                  key: VPN_SERVICE_PROVIDER
+            - name: VPN_TYPE
+              valueFrom:
+                secretKeyRef:
+                  name: qbittorrent-secret
+                  key: VPN_TYPE
+            - name: WIREGUARD_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: qbittorrent-secret
+                  key: WIREGUARD_PRIVATE_KEY
+            - name: WIREGUARD_ADDRESSES
+              valueFrom:
+                secretKeyRef:
+                  name: qbittorrent-secret
+                  key: WIREGUARD_ADDRESSES
+            - name: SERVER_COUNTRIES
+              valueFrom:
+                secretKeyRef:
+                  name: qbittorrent-secret
+                  key: SERVER_COUNTRIES
+            - name: FIREWALL_VPN_INPUT_PORTS
+              value: "6881"
+          ports:
+            - containerPort: 8080
+              name: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          startupProbe:
+            exec:
+              command:
+                - /gluetun-entrypoint
+                - healthcheck
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - /gluetun-entrypoint
+                - healthcheck
+            periodSeconds: 30
+        - name: qbittorrent
+          image: linuxserver/qbittorrent:0.24.2
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: WEBUI_PORT
+              value: "8080"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 5
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: qbittorrent-downloads-pvc

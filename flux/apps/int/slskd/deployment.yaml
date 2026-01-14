@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slskd
+  labels:
+    app.kubernetes.io/name: slskd
+    app.kubernetes.io/instance: slskd
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: slskd
+      app.kubernetes.io/instance: slskd
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: slskd
+        app.kubernetes.io/instance: slskd
+    spec:
+      containers:
+        - name: gluetun
+          image: qmcgaw/gluetun:v3
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          env:
+            - name: VPN_SERVICE_PROVIDER
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: VPN_SERVICE_PROVIDER
+            - name: VPN_TYPE
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: VPN_TYPE
+            - name: WIREGUARD_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: WIREGUARD_PRIVATE_KEY
+            - name: WIREGUARD_ADDRESSES
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: WIREGUARD_ADDRESSES
+            - name: SERVER_COUNTRIES
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: SERVER_COUNTRIES
+            - name: FIREWALL_VPN_INPUT_PORTS
+              value: "50300"
+          ports:
+            - containerPort: 8080
+              name: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          startupProbe:
+            exec:
+              command:
+                - /gluetun-entrypoint
+                - healthcheck
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - /gluetun-entrypoint
+                - healthcheck
+            periodSeconds: 30
+        - name: slskd
+          image: slskd/slskd:0.24.2
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: SLSKD_SLSK_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: SLSKD_SLSK_USERNAME
+            - name: SLSKD_SLSK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: SLSKD_SLSK_PASSWORD
+            - name: SLSKD_SLSK_LISTEN_PORT
+              value: "50300"
+          volumeMounts:
+            - name: data
+              mountPath: /app
+            - name: music
+              mountPath: /shares/music
+            - name: books
+              mountPath: /shares/books
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          startupProbe:
+            httpGet:
+              path: /
+              port: 5030
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5030
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5030
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: slskd-data-pvc
+        - name: music
+          persistentVolumeClaim:
+            claimName: slskd-music-pvc
+        - name: books
+          persistentVolumeClaim:
+            claimName: slskd-books-pvc
