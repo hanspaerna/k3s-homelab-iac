@@ -42,11 +42,6 @@ spec:
                 secretKeyRef:
                   name: slskd-secret
                   key: WIREGUARD_PRIVATE_KEY
-            - name: WIREGUARD_ADDRESSES
-              valueFrom:
-                secretKeyRef:
-                  name: slskd-secret
-                  key: WIREGUARD_ADDRESSES
             - name: SERVER_COUNTRIES
               valueFrom:
                 secretKeyRef:
