@@ -56,7 +56,7 @@ spec:
             - name: VPN_PORT_FORWARDING
               value: "on"
             - name: VPN_PORT_FORWARDING_UP_COMMAND
-              value: /bin/sh -c 'sed -i -r "s/^([[:space:]]+listen_port:).*/\1 $(cat /tmp/gluetun/forwarded_port)/" /app/slskd.yml
+              value: /bin/sh -c 'sed -i -r "s/^([[:space:]]+listen_port:).*/\1 $(cat /tmp/gluetun/forwarded_port)/" /app/slskd.yml'
             - name: FIREWALL_VPN_INPUT_PORTS
               value: "50300"
             # Killswitch settings
