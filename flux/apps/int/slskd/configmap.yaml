@@ -5,4 +5,4 @@ metadata:
 data:
   slskd.yml: |
     soulseek:
-      listen_port: 50300
+      listen_port: 88888
