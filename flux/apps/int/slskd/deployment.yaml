@@ -20,26 +20,12 @@ spec:
         app.kubernetes.io/instance: slskd
     spec:
       initContainers:
-        - name: init-config
-          image: busybox:latest
-          command:
-            - sh
-            - -c
-            - |
-              if [ ! -f /app/slskd.yml ]; then
-                cp /config-template/slskd.yml /app/slskd.yml
-                echo "Created slskd.yml from template"
-              else
-                echo "slskd.yml already exists"
-              fi
-          volumeMounts:
-            - name: data
-              mountPath: /app
-            - name: config-template
-              mountPath: /config-template
-      containers:
         - name: gluetun
           image: qmcgaw/gluetun:latest
+          # restartPolicy: Always makes gluetun a native sidecar
+          # if you do not add restartPolicy the other init containers will never start
+          # it will be an initContainer and not a native sidecar container https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/
+          restartPolicy: Always
           securityContext:
             capabilities:
               add:
@@ -96,19 +82,42 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /app
-          startupProbe:
+          readinessProbe:
             exec:
               command:
-                - /gluetun-entrypoint
-                - healthcheck
-            failureThreshold: 30
-            periodSeconds: 5
+                - sh
+                - -c
+                - "ping -c 1 $(echo $WIREGUARD_ADDRESSES | cut -d'/' -f1)"
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            timeoutSeconds: 2
+            failureThreshold: 3
           livenessProbe:
             exec:
               command:
-                - /gluetun-entrypoint
-                - healthcheck
-            periodSeconds: 30
+                - sh
+                - -c
+                - "ping -c 1 $(echo $WIREGUARD_ADDRESSES | cut -d'/' -f1)"
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+        # check that external IP differs from the default one
+        - name: curlpodtest
+          image: curlimages/curl
+          command: ['/bin/sh', '-c']
+          args:
+            - &check-ip |
+                IP=$(curl -s checkip.amazonaws.com)
+                EXPECTED_IP="YOUR_IP_ADDRESS"
+                if [ "$IP" != "$EXPECTED_IP" ]; then
+                  echo "IP is different from $EXPECTED_IP. Current IP is $IP."
+                else
+                  echo "IP is $EXPECTED_IP. Exiting..."
+                  exit 1
+                fi
+      containers:
         - name: slskd
           image: slskd/slskd:latest
           env:
