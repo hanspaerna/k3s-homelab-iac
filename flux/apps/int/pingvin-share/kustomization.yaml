@@ -1,0 +1,8 @@
+namespace: pingvin-share
+
+resources:
+  - namespace.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - svc.yaml
+  - httproute.yaml

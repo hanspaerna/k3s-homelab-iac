@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pingvin-share-pvc
+  labels:
+    app.kubernetes.io/name: pingvin-share
+    app.kubernetes.io/instance: pingvin-share
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi
