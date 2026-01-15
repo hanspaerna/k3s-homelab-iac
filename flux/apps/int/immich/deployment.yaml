@@ -48,8 +48,6 @@ spec:
               value: "immich-redis"
             - name: IMMICH_MACHINE_LEARNING_URL
               value: "http://immich-ml:3003"
-            - name: IMMICH_MEDIA_LOCATION
-              value: "/data"
           ports:
             - containerPort: 2283
               name: http
