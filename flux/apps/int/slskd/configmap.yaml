@@ -5,4 +5,6 @@ metadata:
 data:
   slskd.yml: |
     soulseek:
+      # a listening port will be replaced dynamically on startup
       listen_port: 88888
+      description: O hi!
