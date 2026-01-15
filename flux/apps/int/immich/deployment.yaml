@@ -15,6 +15,9 @@ spec:
       app.kubernetes.io/component: server
   template:
     metadata:
+      annotations:
+        k8up.io/backupcommand: pg_dumpall --clean --if-exists --username=postgres
+        k8up.io/file-extension: .sql
       labels:
         app.kubernetes.io/name: immich
         app.kubernetes.io/component: server
