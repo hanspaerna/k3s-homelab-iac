@@ -4,7 +4,18 @@ metadata:
   name: slskd-config-template
 data:
   slskd.yml: |
+    remote_configuration: true
     soulseek:
       # a listening port will be replaced dynamically on startup
-      listen_port: 88888
+      listen_port: 55555
       description: O hi!
+    shares:
+      directories:
+        - /shares/music
+        - /shares/books
+      filters:
+        - \.ini$
+        - Thumbs.db$
+        - \.DS_Store$
+        - metadata.db$
+        - metadata_db_prefs_backup.json$
