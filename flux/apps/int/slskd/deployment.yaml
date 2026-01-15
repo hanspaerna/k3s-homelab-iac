@@ -140,6 +140,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /app
+            - name: downloads
+              mountPath: /downloads
             - name: music
               mountPath: /shares/music
             - name: books
@@ -169,13 +171,16 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: slskd-data-pvc
+            claimName: data-pvc
         - name: music
           persistentVolumeClaim:
-            claimName: slskd-music-pvc
+            claimName: music-pvc
         - name: books
           persistentVolumeClaim:
-            claimName: slskd-books-pvc
+            claimName: books-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads-pvc
         - name: config-template
           configMap:
             name: slskd-config-template

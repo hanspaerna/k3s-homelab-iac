@@ -9,6 +9,9 @@ data:
       # a listening port will be replaced dynamically on startup
       listen_port: 55555
       description: O hi!
+    directories:
+      incomplete: /downloads/soulseek/incomplete
+      downloads: /downloads/soulseek
     shares:
       directories:
         - /shares/music

@@ -53,9 +53,49 @@ spec:
     - noserverino
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: slskd-downloads-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: ""
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: "truenas.lan#downloads#slskd"
+    volumeAttributes:
+      source: "//truenas.lan/downloads"
+    nodeStageSecretRef:
+      name: smb-secret
+      namespace: default
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - noperm
+    - mfsymlinks
+    - cache=strict
+    - noserverino
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: slskd-music-pvc
+  name: downloads-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: slskd-downloads-pv
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: music-pvc
 spec:
   accessModes:
     - ReadWriteMany
@@ -68,7 +108,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: slskd-books-pvc
+  name: books-pvc
 spec:
   accessModes:
     - ReadWriteMany
@@ -81,9 +121,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: slskd-data-pvc
-  annotations:
-    k8up.io/backup: "true"
+  name: data-pvc
 spec:
   accessModes:
     - ReadWriteOnce

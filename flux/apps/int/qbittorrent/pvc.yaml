@@ -1,12 +1,50 @@
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qbittorrent-downloads-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: ""
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: "truenas.lan#downloads#qbittorrent"
+    volumeAttributes:
+      source: "//truenas.lan/downloads"
+    nodeStageSecretRef:
+      name: smb-secret
+      namespace: default
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - noperm
+    - mfsymlinks
+    - cache=strict
+    - noserverino
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: qbittorrent-downloads-pv
+  storageClassName: ""
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: qbittorrent-config-pvc
   labels:
     app.kubernetes.io/name: qbittorrent
     app.kubernetes.io/instance: qbittorrent
-  annotations:
-    k8up.io/backup: "true"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -14,18 +52,3 @@ spec:
   resources:
     requests:
       storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: qbittorrent-downloads-pvc
-  labels:
-    app.kubernetes.io/name: qbittorrent
-    app.kubernetes.io/instance: qbittorrent
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 50Gi

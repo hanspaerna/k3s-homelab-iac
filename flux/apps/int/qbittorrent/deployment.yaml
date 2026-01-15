@@ -168,4 +168,4 @@ spec:
             claimName: qbittorrent-config-pvc
         - name: downloads
           persistentVolumeClaim:
-            claimName: qbittorrent-downloads-pvc
+            claimName: downloads-pvc

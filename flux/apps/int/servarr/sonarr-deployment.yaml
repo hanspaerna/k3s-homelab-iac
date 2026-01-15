@@ -37,6 +37,8 @@ spec:
               mountPath: /config
             - name: tv
               mountPath: /tv
+            - name: downloads
+              mountPath: /downloads
           resources:
             requests:
               cpu: 100m
@@ -66,3 +68,6 @@ spec:
         - name: tv
           persistentVolumeClaim:
             claimName: series-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads-pvc
