@@ -71,6 +71,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: profilarr-svc
+  labels:
+    app.kubernetes.io/name: profilarr
+    app.kubernetes.io/instance: profilarr
+spec:
+  selector:
+    app.kubernetes.io/name: profilarr
+    app.kubernetes.io/instance: profilarr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: watcharr-svc
   labels:
     app.kubernetes.io/name: watcharr
