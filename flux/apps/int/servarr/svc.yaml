@@ -1,0 +1,86 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr-svc
+  labels:
+    app.kubernetes.io/name: radarr
+    app.kubernetes.io/instance: radarr
+spec:
+  selector:
+    app.kubernetes.io/name: radarr
+    app.kubernetes.io/instance: radarr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr-svc
+  labels:
+    app.kubernetes.io/name: sonarr
+    app.kubernetes.io/instance: sonarr
+spec:
+  selector:
+    app.kubernetes.io/name: sonarr
+    app.kubernetes.io/instance: sonarr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr-svc
+  labels:
+    app.kubernetes.io/name: prowlarr
+    app.kubernetes.io/instance: prowlarr
+spec:
+  selector:
+    app.kubernetes.io/name: prowlarr
+    app.kubernetes.io/instance: prowlarr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazarr-svc
+  labels:
+    app.kubernetes.io/name: bazarr
+    app.kubernetes.io/instance: bazarr
+spec:
+  selector:
+    app.kubernetes.io/name: bazarr
+    app.kubernetes.io/instance: bazarr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: watcharr-svc
+  labels:
+    app.kubernetes.io/name: watcharr
+    app.kubernetes.io/instance: watcharr
+spec:
+  selector:
+    app.kubernetes.io/name: watcharr
+    app.kubernetes.io/instance: watcharr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http

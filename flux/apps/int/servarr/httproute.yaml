@@ -1,0 +1,95 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: radarr-route
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-int
+  hostnames:
+    - "radarr.vpn.fingol.pro"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: radarr-svc
+          port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: sonarr-route
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-int
+  hostnames:
+    - "sonarr.vpn.fingol.pro"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: sonarr-svc
+          port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prowlarr-route
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-int
+  hostnames:
+    - "prowlarr.vpn.fingol.pro"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: prowlarr-svc
+          port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: bazarr-route
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-int
+  hostnames:
+    - "bazarr.vpn.fingol.pro"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: bazarr-svc
+          port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: watcharr-route
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik-int
+  hostnames:
+    - "watcharr.vpn.fingol.pro"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: watcharr-svc
+          port: 8080

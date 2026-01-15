@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: watcharr
+  labels:
+    app.kubernetes.io/name: watcharr
+    app.kubernetes.io/instance: watcharr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: watcharr
+      app.kubernetes.io/instance: watcharr
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: watcharr
+        app.kubernetes.io/instance: watcharr
+    spec:
+      containers:
+        - name: watcharr
+          image: ghcr.io/sbondco/watcharr:v2.1.1
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - containerPort: 3080
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          startupProbe:
+            httpGet:
+              path: /
+              port: 3080
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3080
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3080
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: watcharr-data-pvc

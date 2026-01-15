@@ -1,0 +1,12 @@
+namespace: servarr
+
+resources:
+  - namespace.yaml
+  - httproute.yaml
+  - storage.yaml
+  - svc.yaml
+  - bazarr-deployment.yaml
+  - prowlarr-deployment.yaml
+  - radarr-deployment.yaml
+  - sonarr-deployment.yaml
+  - watcharr-deployment.yaml
