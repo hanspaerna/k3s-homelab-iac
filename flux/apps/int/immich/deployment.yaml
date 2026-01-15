@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: immich-server
-          image: ghcr.io/immich-app/immich-server:v2
+          image: ghcr.io/immich-app/immich-server:v2.1.0
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -48,6 +48,8 @@ spec:
               value: "immich-redis"
             - name: IMMICH_MACHINE_LEARNING_URL
               value: "http://immich-ml:3003"
+            - name: IMMICH_MEDIA_LOCATION
+              value: "/data"
           ports:
             - containerPort: 2283
               name: http
@@ -104,7 +106,7 @@ spec:
     spec:
       containers:
         - name: immich-ml
-          image: ghcr.io/immich-app/immich-machine-learning:v2
+          image: ghcr.io/immich-app/immich-machine-learning:v2.1.0
           env:
             - name: TZ
               value: "Europe/Berlin"
