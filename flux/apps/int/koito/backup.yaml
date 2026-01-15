@@ -3,7 +3,6 @@ apiVersion: k8up.io/v1
 kind: Schedule
 metadata:
   name: backup-schedule
-  namespace: navidrome
 spec:
   backend:
     repoPasswordSecretRef:
@@ -11,7 +10,7 @@ spec:
       key: password
     s3:
       endpoint: http://truenas.lan:9000
-      bucket: navidrome
+      bucket: koito
       accessKeyIDSecretRef:
         name: k8up-secret
         key: username

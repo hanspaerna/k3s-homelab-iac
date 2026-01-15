@@ -1,6 +1,7 @@
 namespace: servarr
 
 resources:
+  - ../../../shared-resources/k8up-secret/
   - namespace.yaml
   - httproute.yaml
   - storage.yaml
@@ -11,3 +12,4 @@ resources:
   - sonarr-deployment.yaml
   - profilarr-deployment.yaml
   - watcharr-deployment.yaml
+  - backup.yaml

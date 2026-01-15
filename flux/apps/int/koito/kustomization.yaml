@@ -1,9 +1,11 @@
 namespace: koito
 
 resources:
+  - ../../../shared-resources/k8up-secret/
   - namespace.yaml
   - secrets.yaml
   - pvc.yaml
   - deployment.yaml
   - svc.yaml
   - httproute.yaml
+  - backup.yaml

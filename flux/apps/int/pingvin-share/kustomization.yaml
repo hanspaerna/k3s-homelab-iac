@@ -1,6 +1,7 @@
 namespace: pingvin-share
 
 resources:
+  - ../../../shared-resources/k8up-secret/
   - namespace.yaml
   - pvc.yaml
   - deployment.yaml
