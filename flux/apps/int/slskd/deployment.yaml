@@ -137,6 +137,8 @@ spec:
                   key: SLSKD_SLSK_PASSWORD
             - name: SLSKD_CONFIG
               value: "/app/slskd.yml" # should match a path from VPN_PORT_FORWARDING_UP_COMMAND
+            - name: DOTNET_USE_POLLING_FILE_WATCHER # disables auto-reload on config changes to prevent inotify leak (not needed anyway)
+              value: "1"
           volumeMounts:
             - name: data
               mountPath: /app
