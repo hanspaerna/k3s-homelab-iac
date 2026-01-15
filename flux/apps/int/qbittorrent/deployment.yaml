@@ -19,9 +19,13 @@ spec:
         app.kubernetes.io/name: qbittorrent
         app.kubernetes.io/instance: qbittorrent
     spec:
-      containers:
+      initContainers:
         - name: gluetun
-          image: qmcgaw/gluetun:latest
+          image: qmcgaw/gluetun:v3.41
+          # restartPolicy: Always makes gluetun a native sidecar
+          # if you do not add restartPolicy the other init containers will never start
+          # it will be an initContainer and not a native sidecar container https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/
+          restartPolicy: Always
           securityContext:
             capabilities:
               add:
@@ -42,18 +46,23 @@ spec:
                 secretKeyRef:
                   name: qbittorrent-secret
                   key: WIREGUARD_PRIVATE_KEY
-            - name: WIREGUARD_ADDRESSES
-              valueFrom:
-                secretKeyRef:
-                  name: qbittorrent-secret
-                  key: WIREGUARD_ADDRESSES
             - name: SERVER_COUNTRIES
               valueFrom:
                 secretKeyRef:
                   name: qbittorrent-secret
                   key: SERVER_COUNTRIES
+            - name: UPDATER_PERIOD
+              value: "24h"
+            - name: BLOCK_MALICIOUS
+              value: "off"
+            - name: PORT_FORWARD_ONLY
+              value: "on"
+            - name: VPN_PORT_FORWARDING
+              value: "on"
+            - name: VPN_PORT_FORWARDING_UP_COMMAND
+              value: /bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORTS}}}" http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'
             - name: FIREWALL_VPN_INPUT_PORTS
-              value: "6881"
+              value: "8080"
             # Killswitch settings
             - name: FIREWALL
               value: "on"
@@ -62,7 +71,7 @@ spec:
             - name: DOT
               value: "off"
           ports:
-            - containerPort: 8080
+            - containerPort: 8080 # qbittorrent  web ui
               name: http
           resources:
             requests:
@@ -70,21 +79,28 @@ spec:
               memory: 64Mi
             limits:
               memory: 256Mi
-          startupProbe:
+          readinessProbe:
             exec:
               command:
                 - /gluetun-entrypoint
                 - healthcheck
-            failureThreshold: 30
-            periodSeconds: 5
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            timeoutSeconds: 2
+            failureThreshold: 3
           livenessProbe:
             exec:
               command:
                 - /gluetun-entrypoint
                 - healthcheck
-            periodSeconds: 30
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+      containers:
         - name: qbittorrent
-          image: linuxserver/qbittorrent:latest
+          image: linuxserver/qbittorrent:5.1.4
           env:
             - name: TZ
               value: "Europe/Berlin"

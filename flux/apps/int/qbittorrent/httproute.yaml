@@ -7,7 +7,7 @@ spec:
     - name: traefik-gateway
       namespace: traefik-int
   hostnames:
-    - "qbittorrent.vpn.fingol.pro"
+    - "torrent.vpn.fingol.pro"
   rules:
     - matches:
         - path:
