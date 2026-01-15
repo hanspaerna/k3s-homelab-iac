@@ -1,4 +1,4 @@
-# Generated with Renderer.sh at 2026-01-13T01:17:04+0100
+# Generated with Renderer.sh at 2026-01-15T21:22:55+0100
 # Chart version: 4.8.6
 # Repo name: k8up-io
 # Repo: https://k8up-io.github.io/k8up
@@ -470,7 +470,7 @@ spec:
             - name: BACKUP_ENABLE_LEADER_ELECTION
               value: "true"
             - name: BACKUP_SKIP_WITHOUT_ANNOTATION
-              value: "false"
+              value: "true"
             - name: BACKUP_OPERATOR_NAMESPACE
               valueFrom:
                 fieldRef:
