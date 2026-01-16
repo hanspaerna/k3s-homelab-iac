@@ -32,10 +32,6 @@
   command: kubectl delete pod cleanup-{{ pvc.metadata.name }} -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
   ignore_errors: true
 
-- name: "Show schedule"
-  debug:
-    msg: "{{ schedule }}"
-
 - name: "{{ namespace }} - Create restore"
   command: >
     kubectl apply -f - --kubeconfig {{ kubeconfig_path }}
