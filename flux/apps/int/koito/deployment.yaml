@@ -63,6 +63,18 @@ spec:
                   key: KOITO_DATABASE_URL
             - name: KOITO_ALLOWED_HOSTS
               value: "*"
+            - name: KOITO_DEFAULT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: koito-db-secret
+                  key: KOITO_DEFAULT_USERNAME
+            - name: KOITO_DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: koito-db-secret
+                  key: KOITO_DEFAULT_PASSWORD
+            - name: KOITO_DEFAULT_THEME
+              value: "black"
           ports:
             - containerPort: 4110
               name: http
