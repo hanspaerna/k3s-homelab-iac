@@ -17,42 +17,6 @@ spec:
         app.kubernetes.io/name: koito
         app.kubernetes.io/instance: koito
     spec:
-      initContainers:
-        - name: init-postgres
-          image: postgres:16
-          env:
-            - name: POSTGRES_DB
-              value: koitodb
-            - name: POSTGRES_USER
-              value: koito
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: koito-db-secret
-                  key: POSTGRES_PASSWORD
-            - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
-          command:
-            - sh
-            - -c
-            - |
-              if [ ! -s "$PGDATA/PG_VERSION" ]; then
-                echo "Initializing database..."
-                docker-entrypoint.sh postgres &
-                PID=$!
-                until pg_isready -U koito -d koitodb; do
-                  sleep 1
-                done
-                echo "Database initialized, shutting down..."
-                kill $PID
-                wait $PID 2>/dev/null || true
-              else
-                echo "Database already initialized"
-              fi
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: koito-db
-              subPath: postgres
       containers:
         - name: postgres
           image: postgres:16
@@ -67,7 +31,7 @@ spec:
                   name: koito-db-secret
                   key: POSTGRES_PASSWORD
             - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
+              value: /var/lib/postgresql/data
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: koito-db
@@ -84,7 +48,7 @@ spec:
               command:
                 - pg_isready
                 - -U
-                - koito
+                - postgres
                 - -d
                 - koitodb
             initialDelaySeconds: 10
