@@ -1,42 +1,44 @@
-- name: Get all K8up Schedules
-  command: kubectl get schedules.k8up.io -A -o json --kubeconfig {{ kubeconfig_path }}
-  register: schedules_raw
+- name: "{{ namespace }} - Get deployments"
+  command: kubectl get deployments -n {{ namespace }} -o json --kubeconfig {{ kubeconfig_path }}
+  register: deployments_raw
   changed_when: false
 
-- name: Parse schedules
+- name: Parse deployments
   set_fact:
-    schedules: "{{ schedules_raw.stdout | from_json | json_query('items') }}"
+    deployments: "{{ deployments_raw.stdout | from_json | json_query('items') }}"
 
-- name: Get PVCs for each namespace
-  command: kubectl get pvc -n {{ item.metadata.namespace }} -o json --kubeconfig {{ kubeconfig_path }}
-  register: pvcs_per_namespace
-  loop: "{{ schedules }}"
+- name: "{{ namespace }} - Scale down deployments"
+  command: kubectl scale deployment {{ item.metadata.name }} -n {{ namespace }} --replicas=0 --kubeconfig {{ kubeconfig_path }}
+  loop: "{{ deployments }}"
   loop_control:
-    label: "{{ item.metadata.namespace }}"
+    label: "{{ item.metadata.name }}"
+
+- name: Get PVCs of the namespace
+  command: kubectl get pvc -o json -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
+  register: pvcs
   changed_when: false
 
-- name: Build restore list with PVCs
+- name: Filter PVCs that have k8up.io/backup annotation set to
   set_fact:
-    restore_items: >-
-      {{
-        restore_items | default([]) + [{
-          'name': item.item.metadata.name,
-          'namespace': item.item.metadata.namespace,
-          'pvcs': (item.stdout | from_json | json_query('items[?metadata.annotations."k8up.io/backup"]')) | map(attribute='metadata.name') | list,
-          'backend': item.item.spec.backend
-        }]
-      }}
-  loop: "{{ pvcs_per_namespace.results }}"
-  loop_control:
-    label: "{{ item.item.metadata.namespace }}"
+    pvcs_filtered: >-
+      {{ pvcs.stdout | from_json | json_query('items[?metadata.annotations."k8up.io/backup"]') }}
 
-- name: Display apps to restore
+- name: Show a filtered list of PVCs from selected namespace that are to be backed up
   debug:
-    msg: "Will restore: {{ restore_items | map(attribute='namespace') | list }}"
+    msg: "{{ item.metadata.name }}"
+  loop: "{{ pvcs_filtered }}"
+  loop_control:
+    label: "pvc"
 
 - name: Restore each application
-  include_tasks: restore-app.yml
-  loop: "{{ restore_items }}"
+  include_tasks: restore-pvc.yml
+  loop: "{{ pvcs_filtered }}"
   loop_control:
-    loop_var: app
-    label: "{{ app.namespace }}"
+    loop_var: pvc
+    label: "{{ pvc.metadata.name }}"
+
+- name: "{{ namespace }} - Scale up deployments"
+  command: kubectl scale deployment {{ item.metadata.name }} -n {{ namespace }} --replicas={{ item.spec.replicas | default(1) }} --kubeconfig {{ kubeconfig_path }}
+  loop: "{{ deployments }}"
+  loop_control:
+    label: "{{ item.metadata.name }}"

@@ -45,6 +45,9 @@
             namespace: {{ namespace }}
           spec:
             backend: {{ schedule[0].spec.backend | to_json }}
+            podSecurityContext:
+              fsGroup: 0
+              runAsUser: 0
 
     - name: Wait for backup job to complete
       shell: |

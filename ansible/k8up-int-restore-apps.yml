@@ -11,8 +11,13 @@
   gather_facts: true
   vars:
     kubeconfig_path: "{{ playbook_dir }}/../.kubeconfig-internal"
-    namespaces: []  # Empty = all, or specify ['jellyfin', 'navidrome']
+    namespace: ""
   pre_tasks:
+    - name: End the play if namespace is not specified
+      ansible.builtin.meta: end_host
+      when:
+      - namespace is not defined or namespace == ""
+
     - name: Confirm restore
       pause:
         prompt: "Are you sure you want to destroy the data currently existing in PVCs? (yes/no)"
@@ -22,5 +27,21 @@
       ansible.builtin.meta: end_host
       when:
       - confirm_restore.user_input  != 'yes'
+
+    - name: Get schedule for backend config
+      command: kubectl get schedules.k8up.io -n {{ namespace }} -o json --kubeconfig {{ kubeconfig_path }}
+      register: schedule_raw
+      changed_when: false
+
+    - name: Parse schedule
+      set_fact:
+        schedule: "{{ schedule_raw.stdout | from_json | json_query('items') }}"
+
+    - name: Fail if no schedule found
+      fail:
+        msg: "No K8up Schedule found in namespace {{ namespace }}"
+      when: schedule | length == 0
   roles:
     - k8up-restore
+
+

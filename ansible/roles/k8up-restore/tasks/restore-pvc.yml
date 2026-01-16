@@ -1,0 +1,69 @@
+- name: "{{ namespace }} - Wait for pods to terminate"
+  command: kubectl wait --for=delete pod -l app.kubernetes.io/name={{ namespace }} -n {{ namespace }} --timeout=120s --kubeconfig {{ kubeconfig_path }}
+  ignore_errors: true
+
+- name: "{{ namespace }} - Clear PVCs"
+  vars:
+    pod_spec:
+      spec:
+        containers:
+          - name: cleanup
+            image: busybox
+            command: ["sh", "-c", "rm -rf /data/* /data/.* 2>/dev/null; echo done"]
+            volumeMounts:
+              - name: data
+                mountPath: /data
+        volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: "{{ pvc.metadata.name }}"
+  command: >
+    kubectl run cleanup-{{ pvc.metadata.name }} -n {{ namespace }}
+    --image=busybox
+    --restart=Never
+    --overrides='{{ pod_spec | to_json }}'
+    --kubeconfig {{ kubeconfig_path }}
+
+- name: "{{ namespace }} - Wait for cleanup pods"
+  command: kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/cleanup-{{ pvc.metadata.name }} -n {{ namespace }} --timeout=120s --kubeconfig {{ kubeconfig_path }}
+  ignore_errors: true
+
+- name: "{{ namespace }} - Delete cleanup pods"
+  command: kubectl delete pod cleanup-{{ pvc.metadata.name }} -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
+  ignore_errors: true
+
+- name: "Show schedule"
+  debug:
+    msg: "{{ schedule }}"
+
+- name: "{{ namespace }} - Create restore"
+  command: >
+    kubectl apply -f - --kubeconfig {{ kubeconfig_path }}
+  args:
+    stdin: |
+      apiVersion: k8up.io/v1
+      kind: Restore
+      metadata:
+        name: restore-{{ lookup('pipe', 'date +%s') }}
+        namespace: {{ namespace }}
+      spec:
+        backend: {{ schedule[0].spec.backend | to_json }}
+        podSecurityContext:
+          fsGroup: 0
+          runAsUser: 0
+        restoreMethod:
+          folder:
+            claimName: {{ pvc.metadata.name }}
+
+- name: "{{ namespace }} - Wait for restore job"
+  shell: |
+    kubectl get jobs -n {{ namespace }} -l k8up.io/type=restore -o json --kubeconfig {{ kubeconfig_path }} | \
+    jq -e '.items[] | select(.status.succeeded == 1)' > /dev/null
+  register: restore_job
+  until: restore_job.rc == 0
+  retries: 60
+  delay: 10
+
+- name: "{{ namespace }} - Wait for filesystem sync"
+  pause:
+    seconds: 30

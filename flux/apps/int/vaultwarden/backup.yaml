@@ -17,6 +17,9 @@ spec:
       secretAccessKeySecretRef:
         name: k8up-secret
         key: password
+  podSecurityContext:
+    fsGroup: 0
+    runAsUser: 0
   backup:
     schedule: "0 1 * * *"
     failedJobsHistoryLimit: 3
