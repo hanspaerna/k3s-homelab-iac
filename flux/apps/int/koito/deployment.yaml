@@ -54,7 +54,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
         - name: koito
-          image: gabehf/koito:v0.1.1
+          image: gabehf/koito:v0.1.4
           env:
             - name: KOITO_DATABASE_URL
               valueFrom:
