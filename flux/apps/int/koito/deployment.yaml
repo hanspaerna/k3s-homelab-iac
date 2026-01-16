@@ -13,10 +13,6 @@ spec:
       app.kubernetes.io/instance: koito
   template:
     metadata:
-      annotations:
-        k8up.io/backupcommand: sh -c 'PGDATABASE="$POSTGRES_DB" PGUSER="$POSTGRES_USER" PGPASSWORD="$POSTGRES_PASSWORD" pg_dumpall --clean --if-exists --username=$POSTGRES_USER'
-        k8up.io/file-extension: .sql
-        k8up.io/backupcommand-container: postgres
       labels:
         app.kubernetes.io/name: koito
         app.kubernetes.io/instance: koito

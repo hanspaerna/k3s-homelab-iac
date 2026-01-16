@@ -196,9 +196,6 @@ spec:
       app.kubernetes.io/component: database
   template:
     metadata:
-      annotations:
-        k8up.io/backupcommand: sh -c 'PGDATABASE="$POSTGRES_DB" PGUSER="$POSTGRES_USER" PGPASSWORD="$POSTGRES_PASSWORD" pg_dumpall --clean --if-exists --username=$POSTGRES_USER'
-        k8up.io/file-extension: .sql
       labels:
         app.kubernetes.io/name: immich
         app.kubernetes.io/component: database
