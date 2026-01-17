@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: obsidian-couchdb-svc
+spec:
+  selector:
+    app: obsidian-couchdb
+  type: ClusterIP
+  ports:
+    - port: 5984
+      targetPort: http

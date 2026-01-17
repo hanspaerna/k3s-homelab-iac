@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obsidian-couchdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obsidian-couchdb
+  template:
+    metadata:
+      labels:
+        app: obsidian-couchdb
+    spec:
+      containers:
+        - name: couchdb
+          image: couchdb:3.5.0
+          ports:
+            - containerPort: 5984
+              name: http
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-secret
+                  key: username
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-secret
+                  key: password
+          volumeMounts:
+            - name: couchdb-data
+              mountPath: /opt/couchdb/data
+            - name: couchdb-etc
+              mountPath: /opt/couchdb/etc/local.d
+      volumes:
+        - name: couchdb-data
+          persistentVolumeClaim:
+            claimName: couchdb-data
+        - name: couchdb-etc
+          persistentVolumeClaim:
+            claimName: couchdb-etc
