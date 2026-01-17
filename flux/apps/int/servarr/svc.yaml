@@ -101,3 +101,20 @@ spec:
       protocol: TCP
       port: 8080
       targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaresolverr-svc
+  labels:
+    app.kubernetes.io/name: flaresolverr
+    app.kubernetes.io/instance: flaresolverr
+spec:
+  selector:
+    app.kubernetes.io/name: flaresolverr
+    app.kubernetes.io/instance: flaresolverr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8191
+      targetPort: http

@@ -12,4 +12,5 @@ resources:
   - sonarr-deployment.yaml
   - profilarr-deployment.yaml
   - watcharr-deployment.yaml
+  - flaresolverr-deployment.yaml
   - backup.yaml
