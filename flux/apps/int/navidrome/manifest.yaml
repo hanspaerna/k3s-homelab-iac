@@ -10,10 +10,6 @@ metadata:
   labels:
     app.kubernetes.io/service: navidrome
     app.kubernetes.io/instance: navidrome
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: navidrome
-    app.kubernetes.io/version: 0.58.5
-    helm.sh/chart: navidrome-6.7.6
   annotations:
 spec:
   type: ClusterIP
@@ -68,8 +64,14 @@ spec:
               value: "false"
             - name: ND_SESSIONTIMEOUT
               value: 24h
+            - name: ND_LISTENBRAINZ_BASEURL
+              value: "http://koito-svc.koito.svc.cluster.local:4110/apis/listenbrainz/1/" # connect to Koito
+            - name: ND_DEFAULTTHEME
+              value: "Spotify-ish"
+            - name: ND_UILOGINBACKGROUNDURL
+              value: "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" # the only way to disable rotating backgrounds
             - name: TZ
-              value: UTC
+              value: "Europe/Berlin"
           ports:
             - name: http
               containerPort: 4533
