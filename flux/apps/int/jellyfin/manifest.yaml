@@ -53,7 +53,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: jellyfin
-          image: "jellyfin/jellyfin:10.10.6"
+          image: "jellyfin/jellyfin:10.11.4"
           imagePullPolicy: IfNotPresent
           env:
             - name: JELLYFIN_PublishedServerUrl
