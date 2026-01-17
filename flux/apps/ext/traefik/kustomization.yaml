@@ -10,6 +10,7 @@ resources:
   - middlewares.yaml
   - grants.yaml
   - secrets.yaml
+  - vpn-proxy.yaml
   - ../../base/traefik/
 
 patches:
@@ -92,6 +93,7 @@ patches:
                   - "--providers.kubernetescrd"
                   - "--providers.kubernetescrd.allowCrossNamespace=true"
                   - "--providers.kubernetesgateway=true"
+                  - "--providers.kubernetescrd.allowExternalNameServices=true"
                   - "--accesslog=true"
                   - "--accesslog.format=json"
                   - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
