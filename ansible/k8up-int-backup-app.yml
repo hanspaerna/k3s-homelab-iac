@@ -1,8 +1,10 @@
 #
 # Usage:
-# ansible-playbook ansible/backup-internal-app-now.yml -e "namespace=jellyfin"
+# ansible-playbook -i inventory.tf.yml k8up-int-backup-app.yml -e "namespace=jellyfin"
 #
-- name: Force backup of a specific application
+# Namespace is required.
+#
+- name: Force backup of a specific K8up-registered application
   hosts: localhost
   gather_facts: false
   vars:

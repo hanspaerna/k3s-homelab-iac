@@ -32,6 +32,7 @@
   command: >
     kubectl delete job restore-{{ pvc.metadata.name }} -n {{ namespace }}
   ignore_errors: true
+  no_log: true
 
 - name: "{{ namespace }} - {{ pvc.metadata.name }} - Create restore Job"
   command: >

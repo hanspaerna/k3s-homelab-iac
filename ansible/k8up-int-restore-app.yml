@@ -1,22 +1,21 @@
 #
 # Usage:
-# ansible-playbook restore-internal-applications.yml
-# 
-# Or filter specific namespaces:
-# ansible-playbook restore-internal-applications.yml -e "namespaces=['jellyfin','navidrome']"
+# ansible-playbook -i inventory.tf.yml k8up-int-restore-app.yml -e "namespace=jellyfin" 
+#
+# Namespace is required.
 #
 
-- name: Restore all K8up backed up applications
+- name: Restore a K8up backed up application
   hosts: localhost
   gather_facts: true
   vars:
     kubeconfig_path: "{{ playbook_dir }}/../.kubeconfig-internal"
     namespace: ""
   pre_tasks:
-    - name: End the play if namespace is not specified
-      ansible.builtin.meta: end_host
-      when:
-      - namespace is not defined or namespace == ""
+    - name: Validate namespace is provided
+      fail:
+        msg: "namespace is required: -e 'namespace=jellyfin'"
+      when: namespace == ""
 
     - name: Confirm restore
       pause:
