@@ -29,6 +29,19 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Berlin"
+            - name: FORGEJO__database__DB_TYPE
+              value: "postgres"
+            - name: FORGEJO__database__HOST
+              value: "postgres:5432"
+            - name: FORGEJO__database__NAME
+              value: "forgejo"
+            - name: FORGEJO__database__USER
+              value: "forgejo"
+            - name: FORGEJO__database__PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-secret
+                  key: POSTGRES_PASSWORD
           ports:
             - containerPort: 3000
               name: http
