@@ -1,23 +1,12 @@
-# Define all 
 ---
 apiVersion: traefik.io/v1alpha1
-kind: IngressRoute # HTTPRoute from Gateway API does not support references to ExternalName services, and probably never will
+kind: IngressRoute
 metadata:
-  name: vpn-ingressroute
+  name: navidrome-vpn-ingressroute
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`scrobbler.fingol.pro`)
-      middlewares:
-      - name: bouncer
-      - name: vpn-host-rewrite
-      kind: Rule
-      services:
-      - name: koito-vpn
-        kind: Service
-        scheme: https
-        port: 443
     - match: Host(`music.fingol.pro`)
       middlewares:
       - name: bouncer
@@ -51,23 +40,3 @@ spec:
   headers:
     customRequestHeaders:
       Host: navidrome.vpn.fingol.pro
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: koito-vpn
-spec:
-  type: ExternalName
-  externalName: koito.vpn.fingol.pro
-  ports:
-    - name: https
-      port: 443
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: koito-host-rewrite
-spec:
-  headers:
-    customRequestHeaders:
-      Host: koito.vpn.fingol.pro

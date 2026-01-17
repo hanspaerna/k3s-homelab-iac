@@ -10,8 +10,8 @@ resources:
   - middlewares.yaml
   - grants.yaml
   - secrets.yaml
-  - vpn-proxy.yaml
   - ../../base/traefik/
+  - vpn-proxies/ # create a YAML for any internal website that needs to be exposed to the public internet in this folder
 
 patches:
   # we bind Traefik directly to host network, no need for a Service
