@@ -11,32 +11,48 @@
     kubeconfig_path: "{{ playbook_dir }}/../.kubeconfig-internal"
     namespace: ""
   tasks:
-    - name: Validate namespace is provided
+    - name: "{{ namespace }} - Validate namespace is provided }}"
       fail:
         msg: "namespace is required: -e 'namespace=jellyfin'"
       when: namespace == ""
 
-    - name: Delete existing backup resources
+    - name: "{{ namespace }} - Delete existing backup resources }}"
       shell: |
         kubectl get backups.k8up.io -n {{ namespace }} -o name --kubeconfig {{ kubeconfig_path }} | \
         xargs -r kubectl delete -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
       ignore_errors: true
 
-    - name: Get schedule for backend config
+    - name: "{{ namespace }} - Get schedule for backend config"
       command: kubectl get schedules.k8up.io -n {{ namespace }} -o json --kubeconfig {{ kubeconfig_path }}
       register: schedule_raw
       changed_when: false
 
-    - name: Parse schedule
+    - name: "{{ namespace }} - Parse schedule"
       set_fact:
         schedule: "{{ schedule_raw.stdout | from_json | json_query('items') }}"
 
-    - name: Fail if no schedule found
+    - name: "{{ namespace }} - Fail if no schedule found"
       fail:
         msg: "No K8up Schedule found in namespace {{ namespace }}"
       when: schedule | length == 0
-      
-    - name: Create backup
+
+
+    - name: "{{ namespace }} - Get deployments"
+      command: kubectl get deployments -n {{ namespace }} -o json --kubeconfig {{ kubeconfig_path }}
+      register: deployments_raw
+      changed_when: false
+
+    - name: "{{ namespace }} - Parse deployments"
+      set_fact:
+        deployments: "{{ deployments_raw.stdout | from_json | json_query('items') }}"
+
+    - name: "{{ namespace }} - Scale down deployments"
+      command: kubectl scale deployment {{ item.metadata.name }} -n {{ namespace }} --replicas=0 --kubeconfig {{ kubeconfig_path }}
+      loop: "{{ deployments }}"
+      loop_control:
+        label: "{{ item.metadata.name }}"
+
+    - name: "{{ namespace }} - Create backup"
       command: kubectl apply -f - --kubeconfig {{ kubeconfig_path }}
       args:
         stdin: |
@@ -51,7 +67,7 @@
               fsGroup: 0
               runAsUser: 0
 
-    - name: Wait for backup job to complete
+    - name: "{{ namespace }} - Wait for backup job to complete"
       shell: |
         kubectl get jobs -n {{ namespace }} -l k8up.io/type=backup -o json --kubeconfig {{ kubeconfig_path }} | \
         jq -e '.items[] | select(.status.succeeded == 1)' > /dev/null
@@ -60,6 +76,12 @@
       retries: 60
       delay: 10
 
-    - name: Backup complete
+    - name: "{{ namespace }} - Backup complete"
       debug:
         msg: "Backup completed successfully for {{ namespace }}"
+
+    - name: "{{ namespace }} - Scale up deployments"
+      command: kubectl scale deployment {{ item.metadata.name }} -n {{ namespace }} --replicas={{ item.spec.replicas | default(1) }} --kubeconfig {{ kubeconfig_path }}
+      loop: "{{ deployments }}"
+      loop_control:
+        label: "{{ item.metadata.name }}"
