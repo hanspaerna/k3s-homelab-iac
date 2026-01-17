@@ -13,6 +13,30 @@
   loop_control:
     label: "{{ item.metadata.name }}"
 
+- name: "{{ namespace }} - Create a ConfigMap with restic shell script"
+  command: >
+    kubectl apply -f - --kubeconfig {{ kubeconfig_path }}
+  args:
+    stdin: |
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: restore-scripts
+        namespace: {{ namespace }}
+        annotations:
+          kustomize.toolkit.fluxcd.io/substitute: disabled
+      data:
+        restore-command.sh: |
+          #!/bin/bash
+          set -eux -o pipefail
+          : ${SNAPSHOT:=latest}
+          restic restore \
+            -r ${RESTIC_REPOSITORY}{{ namespace }} \
+            --host ${VOLUME_NAMESPACE} \
+            --path /data/${VOLUME_NAME} \
+            --target / \
+            ${SNAPSHOT}
+
 - name: Get PVCs of the namespace
   command: kubectl get pvc -o json -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
   register: pvcs
@@ -40,6 +64,10 @@
   loop_control:
     loop_var: pvc
     label: "{{ pvc.metadata.name }}"
+
+- name: "{{ namespace }} - Delete a ConfigMap resource with restic shell script"
+  command: >
+    kubectl delete configmap restore-scripts -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
 
 - name: "{{ namespace }} - Wait for filesystem sync"
   pause:

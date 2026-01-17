@@ -28,24 +28,59 @@
   command: kubectl delete pod cleanup-{{ pvc.metadata.name }} -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
   ignore_errors: true
 
-- name: "{{ namespace }} - {{ pvc.metadata.name }} - Create restore"
+- name: "{{ namespace }} - {{ pvc.metadata.name }} - Create restore Job"
   command: >
     kubectl apply -f - --kubeconfig {{ kubeconfig_path }}
   args:
     stdin: |
-      apiVersion: k8up.io/v1
-      kind: Restore
+      apiVersion: batch/v1
+      kind: Job
       metadata:
-        name: restore-{{ lookup('pipe', 'date +%s') }}
+        name: restore-{{ pvc.metadata.name }}
         namespace: {{ namespace }}
+        labels:
+          k8up.io/type: restore
+        annotations:
+          kustomize.toolkit.fluxcd.io/force: enabled
       spec:
-        backend: {{ schedule[0].spec.backend | to_json }}
-        podSecurityContext:
-          fsGroup: 0
-          runAsUser: 0
-        restoreMethod:
-          folder:
-            claimName: {{ pvc.metadata.name }}
+        completions: 1
+        parallelism: 1
+        # The Job must stay, otherwise Flux will re-create it regularly
+        # ttlSecondsAfterFinished:
+        template:
+          spec:
+            containers:
+              - command:
+                  - /scripts/restore-command.sh
+                image: ghcr.io/k8up-io/k8up:v2.13.1
+                imagePullPolicy: IfNotPresent
+                name: restore-{{ pvc.metadata.name }}
+                securityContext:
+                  runAsUser: 0
+                env:
+                  - name: VOLUME_NAMESPACE
+                    value: {{ namespace }}
+                  - name: VOLUME_NAME
+                    value: {{ pvc.metadata.name }}
+                  - name: SNAPSHOT
+                    value: latest
+                envFrom:
+                  - secretRef:
+                      name: k8up-secret
+                volumeMounts:
+                  - name: scripts
+                    mountPath: "/scripts"
+                  - name: data
+                    mountPath: "/data/{{ pvc.metadata.name }}"
+            volumes:
+              - name: scripts
+                configMap:
+                  name: restore-scripts
+                  defaultMode: 0555
+              - name: data
+                persistentVolumeClaim:
+                  claimName: {{ pvc.metadata.name }}
+            restartPolicy: OnFailure
 
 - name: "{{ namespace }} - {{ pvc.metadata.name }} - Wait for restore job"
   shell: |
