@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: forgejo
-          image: codeberg.org/forgejo/forgejo:13
+          image: codeberg.org/forgejo/forgejo:14.0.1
           env:
             - name: USER_UID
               value: "1000"
@@ -35,10 +35,10 @@ spec:
             - containerPort: 22
               name: ssh
           volumeMounts:
+            - name: repositories
+              mountPath: /data/git
             - name: data
-              mountPath: /var/lib/gitea
-            - name: conf
-              mountPath: /etc/gitea
+              mountPath: /data/gitea
           resources:
             requests:
               cpu: 100m
@@ -61,10 +61,47 @@ spec:
               path: /api/healthz
               port: 3000
             periodSeconds: 5
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_DB
+              value: forgejo
+            - name: POSTGRES_USER
+              value: forgejo
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-secret
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: db
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - forgejo
+                - -d
+                - forgejo
+            initialDelaySeconds: 10
+            periodSeconds: 10
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: forgejo-data-pvc
-        - name: conf
+        - name: repositories
           persistentVolumeClaim:
-            claimName: forgejo-conf-pvc
+            claimName: forgejo-repositories-pvc
+        - name: db
+          persistentVolumeClaim:
+            claimName: forgejo-db-pvc

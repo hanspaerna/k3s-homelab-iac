@@ -11,7 +11,7 @@ spec:
       key: password
     s3:
       endpoint: http://truenas.lan:9000
-      bucket: navidrome
+      bucket: navidrome # must match the namespace!
       accessKeyIDSecretRef:
         name: k8up-secret
         key: username
