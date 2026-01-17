@@ -75,7 +75,7 @@ spec:
               port: 3000
             periodSeconds: 5
         - name: postgres
-          image: postgres:16
+          image: postgres:14
           env:
             - name: POSTGRES_DB
               value: forgejo
