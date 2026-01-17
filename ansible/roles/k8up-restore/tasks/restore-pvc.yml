@@ -28,6 +28,11 @@
   command: kubectl delete pod cleanup-{{ pvc.metadata.name }} -n {{ namespace }} --kubeconfig {{ kubeconfig_path }}
   ignore_errors: true
 
+- name: "{{ namespace }} - {{ pvc.metadata.name }} - Delete old restore Job if exists"
+  command: >
+    kubectl delete job restore-{{ pvc.metadata.name }} -n {{ namespace }}
+  ignore_errors: true
+
 - name: "{{ namespace }} - {{ pvc.metadata.name }} - Create restore Job"
   command: >
     kubectl apply -f - --kubeconfig {{ kubeconfig_path }}
