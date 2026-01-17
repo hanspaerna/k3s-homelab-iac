@@ -35,7 +35,6 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: koito-db
-              subPath: postgres
           resources:
             limits:
               cpu: 200m

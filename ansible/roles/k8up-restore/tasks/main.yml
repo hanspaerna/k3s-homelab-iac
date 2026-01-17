@@ -3,7 +3,7 @@
   register: deployments_raw
   changed_when: false
 
-- name: Parse deployments
+- name: "{{ namespace }} - Parse deployments"
   set_fact:
     deployments: "{{ deployments_raw.stdout | from_json | json_query('items') }}"
 
@@ -18,7 +18,7 @@
   register: pvcs
   changed_when: false
 
-- name: Filter PVCs that have k8up.io/backup annotation set to
+- name: "{{ namespace }} - Filter PVCs that have k8up.io/backup annotation set to"
   set_fact:
     pvcs_filtered: >-
       {{ pvcs.stdout | from_json | json_query('items[?metadata.annotations."k8up.io/backup"]') }}
@@ -30,12 +30,20 @@
   loop_control:
     label: "pvc"
 
-- name: Restore each application
+- name: "{{ namespace }} - Wait for pods to terminate"
+  command: kubectl wait --for=delete pod -l app.kubernetes.io/name={{ namespace }} -n {{ namespace }} --timeout=120s --kubeconfig {{ kubeconfig_path }}
+  ignore_errors: true
+
+- name: "{{ namespace }} - Restore each application"
   include_tasks: restore-pvc.yml
   loop: "{{ pvcs_filtered }}"
   loop_control:
     loop_var: pvc
     label: "{{ pvc.metadata.name }}"
+
+- name: "{{ namespace }} - Wait for filesystem sync"
+  pause:
+    seconds: 30
 
 - name: "{{ namespace }} - Scale up deployments"
   command: kubectl scale deployment {{ item.metadata.name }} -n {{ namespace }} --replicas={{ item.spec.replicas | default(1) }} --kubeconfig {{ kubeconfig_path }}
