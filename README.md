@@ -96,6 +96,25 @@ If a backup of a certain namespace needs to be created, without waiting for the 
 ansible-playbook -i inventory.tf.yml k8up-int-backup-app.yml -e 'namespace=<ns>'
 ```
 
+## Keeping TLS certificates
+
+By default, new certificates will be requested via DNS challenge from Let's Encrypt.
+If you re-create the clusters often (e.g. when debugging), it makes sense to store an issued certificate in the repo to avoid hitting pretty strict limits of the issuer (~20 certificates / month).
+
+To backup a certificate (repeat for both clusters):
+
+```
+export KUBECONFIG=./.kubeconfig-<internal/external>
+
+kubectl get secret -n traefik-<int/ext> letsencrypt-dns-wildcard-cert -o yaml > flux/cert-secrets/<ext/int>/wildcard-cert.yaml
+
+Remove resourceVersion, uid, creationTimestamp, and managedFields from wildcard-cert.yaml
+
+sops -e -i flux/cert-secrets/<ext/int>/wildcard-cert.yaml
+```
+
+cert-manager will use certificates from the repo automatically, instead of requesting the new ones.
+
 ## A note on Helm
 
 This repository follows the *Rendered Manifests Pattern*, i.e. all Helm charts are rendered once and kept statically as read-only manifests inside 'flux/apps/base' or 'flux/infrastructure/base'.
