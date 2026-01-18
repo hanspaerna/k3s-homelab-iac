@@ -3,9 +3,8 @@
 #
 # To backup a certificate:
 #   kubectl get secret -n traefik-int letsencrypt-dns-wildcard-cert -o yaml > wildcard-cert.yaml
-#   # Remove resourceVersion, uid, creationTimestamp, and managedFields
+#   Remove resourceVersion, uid, creationTimestamp, and managedFields
 #   sops -e -i wildcard-cert.yaml
-#   mv wildcard-cert.yaml wildcard-cert.sops.yaml
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
