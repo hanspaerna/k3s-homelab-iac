@@ -1,0 +1,204 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+  <diagram name="Page-1" id="sa7hSdNRnZwGHTlr-lc-">
+    <mxGraphModel dx="1028" dy="736" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="163" pageHeight="107" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zBupLaltT4tufrp884e7-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="100" width="680" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="270" width="680" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-7" value="Internet" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="360" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-11" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.501;entryY=0.927;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-28" target="zBupLaltT4tufrp884e7-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="20" as="sourcePoint" />
+            <mxPoint x="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-12" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-23" target="zBupLaltT4tufrp884e7-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="130" y="290" as="sourcePoint" />
+            <mxPoint x="180" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-16" value="Traefik w/ Gateway API" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="360" y="100" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-17" value="Netbird client" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="360" y="210" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-18" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="40" y="490" as="sourcePoint" />
+            <mxPoint x="40" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-19" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="79.17000000000002" as="sourcePoint" />
+            <mxPoint x="40" y="79.17000000000002" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-20" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="490" as="sourcePoint" />
+            <mxPoint x="780" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-21" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="490" as="sourcePoint" />
+            <mxPoint x="40" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-22" value="Netbird network" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="700" y="490" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-23" value="Netbird client" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="360" y="270" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-24" value="&lt;font size=&quot;1&quot;&gt;Traefik middlewares&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="120" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-25" value="&lt;h6&gt;&lt;font style=&quot;line-height: 30%; font-weight: normal; font-size: 5px;&quot;&gt;makes *.vpn.fingol.pro hosts accessible from EXT cluster&lt;/font&gt;&lt;/h6&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="230" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-27" value="Traefik w/ Gateway API" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="360" y="290" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-28" value="" style="shape=or;whiteSpace=wrap;html=1;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="420" y="80" width="10" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-47" value="EXT single-node K3s cluster (Hetzner VPS)" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="510" y="80" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-48" value="INT single-node K3s cluster (home server, Proxmox)" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="510" y="250" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-52" value="ExternalName proxy services" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="360" y="190" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;startArrow=blockThin;startFill=1;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-14" target="zBupLaltT4tufrp884e7-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-14" value="Crowdsec" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="80" y="130" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;startArrow=blockThin;startFill=1;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-15" target="zBupLaltT4tufrp884e7-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-15" value="Authelia SSO" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="80" y="150" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;startArrow=blockThin;startFill=1;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-41" target="zBupLaltT4tufrp884e7-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-41" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;cert-manager (*.fingol.pro)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="110" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;startArrow=blockThin;startFill=1;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-13" target="zBupLaltT4tufrp884e7-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-13" value="Netbird VPN Server" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="80" y="170" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-56" value="&lt;p data-start=&quot;120&quot; data-end=&quot;352&quot;&gt;&lt;span data-start=&quot;120&quot; data-end=&quot;165&quot;&gt;Serves two purposes:&lt;/span&gt; running a VPN server outside the home network’s NAT and exposing specific routes from the internal cluster to the public internet (either via an authentication middleware or without it).&lt;/p&gt;&lt;p data-start=&quot;357&quot; data-end=&quot;403&quot;&gt;&lt;span data-start=&quot;357&quot; data-end=&quot;403&quot;&gt;It is not intended to host user workloads.&lt;/span&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="570" y="110" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-58" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-52" target="zBupLaltT4tufrp884e7-24">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="430" y="180" as="sourcePoint" />
+            <mxPoint x="430" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-59" value="&lt;div&gt;Hosted at home location, on a single physical server, behind NAT.&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Hosts all user workloads.&amp;nbsp; &amp;nbsp;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="570" y="280" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-60" value="Github (source of truth)" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fontSize=7;" vertex="1" parent="1">
+          <mxGeometry x="500" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-61" value="FluxCD" style="rounded=0;whiteSpace=wrap;html=1;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="695" y="155" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-62" value="FluxCD" style="rounded=0;whiteSpace=wrap;html=1;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="695" y="325" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.875;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-61" target="zBupLaltT4tufrp884e7-60">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="38" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="165" />
+              <mxPoint x="800" y="20" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.875;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-62" target="zBupLaltT4tufrp884e7-60">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="38" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="335" />
+              <mxPoint x="800" y="20" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-65" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;cert-manager (*.vpn.fingol.pro)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="280" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-66" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;csi-driver-smb (SMB shares)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="300" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-68" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;intel-node-feature-discovery (iGPU)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-76" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;k8up (scheduled volume backups)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="340" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-77" value="user workloads" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="340" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-80" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="zBupLaltT4tufrp884e7-77">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="425" y="310" as="sourcePoint" />
+            <mxPoint x="420" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-83" value="TrueNAS VM * (Proxmox)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-84" value="MinIO (S3)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="100" y="420" width="60" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-85" value="External backup storage" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="40" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.16;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-83" target="zBupLaltT4tufrp884e7-85">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="20" y="450" />
+              <mxPoint x="20" y="22" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-91" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="zBupLaltT4tufrp884e7-76" target="zBupLaltT4tufrp884e7-84">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="430" as="sourcePoint" />
+            <mxPoint x="190" y="380" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="250" y="350" />
+              <mxPoint x="250" y="370" />
+              <mxPoint x="250" y="390" />
+              <mxPoint x="130" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zBupLaltT4tufrp884e7-92" value="* not managed by GitOps repo" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="40" y="490" width="180" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
