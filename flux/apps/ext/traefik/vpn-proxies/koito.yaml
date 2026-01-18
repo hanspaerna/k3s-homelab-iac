@@ -10,7 +10,7 @@ spec:
     - match: Host(`scrobbler.fingol.pro`)
       middlewares:
       - name: bouncer
-      - name: vpn-host-rewrite
+      - name: koito-host-rewrite
       kind: Rule
       services:
       - name: koito-vpn
