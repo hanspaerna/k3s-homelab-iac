@@ -54,8 +54,21 @@
   tags: inotify
   become: true
   tasks:
-  - name: Run sysctl
-    sysctl: name=fs.inotify.max_user_watches value=262144 name=fs.inotify.max_user_instances value=512 sysctl_set=yes
+    - name: Increase max_user_watches
+      ansible.builtin.sysctl:
+        name: fs.inotify.max_user_watches
+        value: "262144"
+        sysctl_file: /etc/sysctl.d/99-inotify.conf
+        state: present
+        reload: true
+
+    - name: Increase max_user_instances
+      ansible.builtin.sysctl:
+        name: fs.inotify.max_user_instances
+        value: "512"
+        sysctl_file: /etc/sysctl.d/99-inotify.conf
+        state: present
+        reload: true
 
 - name: Install iGPU-specific utilities and drivers to the first worker
   hosts: k3s-cp-1
