@@ -1,49 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qbittorrent
+  name: transmission
   labels:
-    app.kubernetes.io/name: qbittorrent
-    app.kubernetes.io/instance: qbittorrent
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/instance: transmission
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/name: qbittorrent
-      app.kubernetes.io/instance: qbittorrent
+      app.kubernetes.io/name: transmission
+      app.kubernetes.io/instance: transmission
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: qbittorrent
-        app.kubernetes.io/instance: qbittorrent
+        app.kubernetes.io/name: transmission
+        app.kubernetes.io/instance: transmission
     spec:
       initContainers:
-        - name: init-config
-          image: busybox:latest
-          command:
-            - sh
-            - -c
-            - |
-              CONFIG_DIR="/config/qBittorrent"
-              CONFIG_FILE="$CONFIG_DIR/qBittorrent.conf"
-              mkdir -p "$CONFIG_DIR"
-              if [ ! -f "$CONFIG_FILE" ]; then
-                cat > "$CONFIG_FILE" << 'EOF'
-              [Preferences]
-              WebUI\LocalHostAuth=false
-              EOF
-                echo "Created qBittorrent.conf with localhost auth disabled"
-              elif ! grep -q "LocalHostAuth" "$CONFIG_FILE"; then
-                echo "WebUI\LocalHostAuth=false" >> "$CONFIG_FILE"
-                echo "Added LocalHostAuth=false to existing config"
-              else
-                echo "LocalHostAuth already configured"
-              fi
-          volumeMounts:
-            - name: config
-              mountPath: /config
         - name: gluetun
           image: qmcgaw/gluetun:v3.41
           # restartPolicy: Always makes gluetun a native sidecar
@@ -58,22 +34,22 @@ spec:
             - name: VPN_SERVICE_PROVIDER
               valueFrom:
                 secretKeyRef:
-                  name: qbittorrent-secret
+                  name: transmission-secret
                   key: VPN_SERVICE_PROVIDER
             - name: VPN_TYPE
               valueFrom:
                 secretKeyRef:
-                  name: qbittorrent-secret
+                  name: transmission-secret
                   key: VPN_TYPE
             - name: WIREGUARD_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
-                  name: qbittorrent-secret
+                  name: transmission-secret
                   key: WIREGUARD_PRIVATE_KEY
             - name: SERVER_COUNTRIES
               valueFrom:
                 secretKeyRef:
-                  name: qbittorrent-secret
+                  name: transmission-secret
                   key: SERVER_COUNTRIES
             - name: UPDATER_PERIOD
               value: "24h"
@@ -84,10 +60,9 @@ spec:
             - name: VPN_PORT_FORWARDING
               value: "on"
             - name: VPN_PORT_FORWARDING_UP_COMMAND
-              # LocalHostAuth=false bypasses auth for localhost
-              value: /bin/sh -c 'until wget -q --spider http://127.0.0.1:8080; do sleep 2; done; wget -q -O- --post-data "json={\"listen_port\":{{PORTS}}}" http://127.0.0.1:8080/api/v2/app/setPreferences'
+              value: /bin/sh -c 'apk add transmission-remote && transmission-remote localhost --auth admin:admin -p {{PORTS}} && transmission-remote localhost --auth admin:admin -t all --reannounce'
             - name: FIREWALL_VPN_INPUT_PORTS
-              value: "8080"
+              value: "9091"
             # Killswitch settings
             - name: FIREWALL
               value: "on"
@@ -96,7 +71,7 @@ spec:
             - name: DOT
               value: "off"
           ports:
-            - containerPort: 8080 # qbittorrent  web ui
+            - containerPort: 9091 # transmission web ui
               name: http
           resources:
             requests:
@@ -124,8 +99,8 @@ spec:
             failureThreshold: 3
 
       containers:
-        - name: qbittorrent
-          image: linuxserver/qbittorrent:5.1.4
+        - name: transmission
+          image: linuxserver/transmission:4.0.6
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -133,39 +108,29 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
-            - name: WEBUI_PORT
-              value: "8080"
+            - name: USER
+              value: "admin"
+            - name: PASS
+              value: "admin"
           volumeMounts:
             - name: config
               mountPath: /config
             - name: downloads
-              mountPath: /config/Downloads
+              mountPath: /downloads
+            - name: watch
+              mountPath: /watch
           resources:
             requests:
               cpu: 100m
               memory: 256Mi
             limits:
               memory: 1Gi
-          startupProbe:
-            httpGet:
-              path: /
-              port: 8080
-            failureThreshold: 30
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            periodSeconds: 5
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: qbittorrent-config-pvc
+            claimName: transmission-config-pvc
         - name: downloads
           persistentVolumeClaim:
             claimName: downloads-pvc
+        - name: watch
+          emptyDir: {}

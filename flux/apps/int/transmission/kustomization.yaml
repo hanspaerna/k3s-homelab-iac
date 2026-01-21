@@ -1,4 +1,4 @@
-namespace: qbittorrent
+namespace: transmission
 
 resources:
   - namespace.yaml

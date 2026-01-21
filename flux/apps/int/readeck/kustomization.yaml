@@ -1,12 +1,11 @@
-namespace: immich
+namespace: readeck
 
 resources:
   - ../../../shared-resources/k8up-secret/
   - ../../../shared-resources/k8up-prebackup/
   - namespace.yaml
-  - secrets.yaml
-  - storage.yaml
   - deployment.yaml
+  - storage.yaml
   - svc.yaml
   - httproute.yaml
   - backup.yaml

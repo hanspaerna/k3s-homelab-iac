@@ -2,6 +2,7 @@ namespace: jellyfin
 
 resources:
   - ../../../shared-resources/k8up-secret/
+  - ../../../shared-resources/k8up-prebackup/
   - manifest.yaml
   - storage.yaml
   - httproute.yaml

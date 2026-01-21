@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readeck
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: readeck
+  template:
+    metadata:
+      labels:
+        app: readeck
+    spec:
+      containers:
+        - name: readeck
+          image: codeberg.org/readeck/readeck:0.21.6
+          securityContext:
+            allowPrivilegeEscalation: false
+          env:
+            - name: READECK_SERVER_HOST
+              value: 0.0.0.0 
+            - name: READECK_SERVER_PORT
+              value: "9090"
+            - name: READECK_LOG_FORMAT
+              value: text
+          volumeMounts:
+            - name: readeck-data-pvc
+              mountPath: /readeck
+          ports:
+            - containerPort: 9090
+              name: http
+      volumes:
+        - name: readeck-data-pvc
+          persistentVolumeClaim:
+            claimName: readeck-data-pvc

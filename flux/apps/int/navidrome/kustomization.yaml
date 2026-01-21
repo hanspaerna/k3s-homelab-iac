@@ -2,6 +2,7 @@ namespace: navidrome
 
 resources:
   - ../../../shared-resources/k8up-secret/
+  - ../../../shared-resources/k8up-prebackup/
   - manifest.yaml
   - httproute.yaml
   - storage.yaml

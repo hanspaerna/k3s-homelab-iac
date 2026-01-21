@@ -2,6 +2,7 @@ namespace: servarr
 
 resources:
   - ../../../shared-resources/k8up-secret/
+  - ../../../shared-resources/k8up-prebackup/
   - namespace.yaml
   - httproute.yaml
   - storage.yaml

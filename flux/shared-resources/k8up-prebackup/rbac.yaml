@@ -1,0 +1,73 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8up-prebackup-scripts
+data:
+  scale-down.sh: |
+    #!/bin/sh
+    set -e
+    echo "Starting scale-down script..."
+    echo "Current namespace: $(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
+
+    echo "Listing deployments (excluding scale-down to prevent self-termination):"
+    kubectl get deployments -l 'k8up.io/preBackupPod!=scale-down'
+    echo "Scaling down all deployments (excluding scale-down)..."
+    kubectl scale deployment --all --replicas=0 -l 'k8up.io/preBackupPod!=scale-down'
+    echo "Waiting 10 seconds..."
+    sleep 10
+    echo "Done."
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8up-prebackup
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: k8up-prebackup
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/scale"]
+    verbs: ["get", "list", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k8up-prebackup
+subjects:
+  - kind: ServiceAccount
+    name: k8up-prebackup
+roleRef:
+  kind: Role
+  name: k8up-prebackup
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: k8up.io/v1
+kind: PreBackupPod
+metadata:
+  name: scale-down
+spec:
+  backupCommand: echo
+  pod:
+    spec:
+      serviceAccountName: k8up-prebackup
+      initContainers:
+        - name: scale-down
+          image: alpine/k8s:1.34.1
+          imagePullPolicy: IfNotPresent
+          command: ["/scripts/scale-down.sh"]
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      containers:
+        - name: wait
+          image: alpine/k8s:1.34.1
+          imagePullPolicy: IfNotPresent
+          command: ["sleep", "infinity"]
+      volumes:
+        - name: scripts
+          configMap:
+            name: k8up-prebackup-scripts
+            defaultMode: 0755
