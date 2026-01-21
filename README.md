@@ -143,5 +143,5 @@ A copy will be created in the clusterfor each namespace on the reconciliation st
 
 ## Cons/TODOs
 
-- It would be much safer to scale down deployments during k8up's scheduled backup creation. Maybe a custom scheduled Job would do the job.
+- All deployments from namespaces that have a scheduled backup resource will be automatically scaled down for ~5 minutes every night. FluxCD's reconciliation is also suspended during this period. It's absolutely not critical for a private home server though. 
 - Unfortunately, using FluxCD's envsubst to remove repeating domain names from the repo has too many side-effects, primarily because of shell scripts in configmaps that are used in the dependencies.
